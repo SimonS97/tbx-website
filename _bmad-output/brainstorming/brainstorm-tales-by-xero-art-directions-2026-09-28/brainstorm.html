@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tales by Xero: Drei Art Directions</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #12101b; color: #f5f0e5; font-family: Arial, sans-serif; }
+    main { max-width: 1280px; margin: auto; padding: 4rem clamp(1.25rem, 4vw, 4rem) 6rem; }
+    .kicker { color: #d8b86d; font-size: .73rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
+    h1 { max-width: 16ch; margin: .5rem 0 1rem; font-family: Georgia, serif; font-size: clamp(3rem, 7vw, 6.7rem); font-weight: 400; line-height: .91; }
+    .intro { max-width: 65ch; color: #c9c1b4; font-size: 1.08rem; line-height: 1.65; }
+    .thesis { display: grid; grid-template-columns: auto 1fr; gap: 1rem; margin: 3rem 0 4rem; padding: 1.25rem 0; border-block: 1px solid #3d3849; }
+    .thesis strong { color: #f5d889; }
+    .thesis p { margin: 0; color: #c9c1b4; line-height: 1.55; }
+    .directions { display: grid; gap: 2rem; }
+    article { position: relative; overflow: hidden; min-height: 620px; padding: clamp(1.5rem, 4vw, 3.5rem); border: 1px solid var(--line); background: var(--surface); }
+    article::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: var(--wash); opacity: .86; }
+    article > * { position: relative; }
+    .number { display: flex; align-items: center; justify-content: space-between; color: var(--accent); font-size: .76rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; }
+    .number span:last-child { font-size: 2.2rem; font-weight: 400; letter-spacing: -.06em; opacity: .55; }
+    h2 { max-width: 11ch; margin: 1.4rem 0 .65rem; font-family: Georgia, serif; font-size: clamp(2.7rem, 5vw, 5.4rem); font-weight: 400; line-height: .88; }
+    .premise { max-width: 45ch; color: var(--copy); font-size: 1.12rem; line-height: 1.55; }
+    .grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 3rem; margin-top: 2.5rem; }
+    h3 { margin: 0 0 .55rem; color: var(--accent); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; }
+    ul { display: grid; gap: .65rem; margin: 0; padding: 0; list-style: none; color: var(--copy); line-height: 1.45; }
+    li { padding-left: 1rem; border-left: 1px solid var(--accent); }
+    .scene { align-self: end; min-height: 250px; padding: 1.35rem; border: 1px solid var(--line); background: var(--scene); }
+    .scene p { max-width: 28ch; margin: .45rem 0 0; color: var(--copy); font-family: Georgia, serif; font-size: 1.3rem; line-height: 1.25; }
+    .field { --surface: #163234; --line: #78a99a; --accent: #e9c978; --copy: #e2e9dd; --scene: #0d2426; --wash: radial-gradient(circle at 89% 13%, rgba(233,201,120,.22), transparent 27%), linear-gradient(120deg, transparent 62%, rgba(87,145,132,.22)); }
+    .archive { --surface: #1a151b; --line: #7d5362; --accent: #d7a482; --copy: #e5d9d5; --scene: #100c10; --wash: radial-gradient(circle at 13% 18%, rgba(162,60,68,.26), transparent 25%), repeating-linear-gradient(135deg, transparent 0 18px, rgba(255,255,255,.025) 19px 20px); }
+    .cabinet { --surface: #2b241e; --line: #ba9463; --accent: #f1d491; --copy: #f1e6d5; --scene: #17120f; --wash: linear-gradient(100deg, rgba(240,190,104,.12), transparent 44%), repeating-linear-gradient(90deg, transparent 0 60px, rgba(255,255,255,.025) 61px 62px); }
+    .theatre { --surface: #132750; --line: #d9995e; --accent: #f3c55b; --copy: #e9edf1; --scene: #0b1732; --wash: radial-gradient(circle at 83% 15%, rgba(235,112,103,.35), transparent 26%), linear-gradient(125deg, transparent 54%, rgba(242,197,91,.16)); }
+    .atelier { --surface: #e8e4dc; --line: #243653; --accent: #a53835; --copy: #233048; --scene: #d5d2cd; --wash: radial-gradient(circle at 86% 13%, rgba(125,105,165,.18), transparent 27%), repeating-linear-gradient(0deg, transparent 0 15px, rgba(36,54,83,.035) 16px 17px); color: #17243a; }
+    .atelier .number, .atelier h3 { color: #a53835; }
+    .decision { margin-top: 4rem; padding: 2rem; border: 1px solid #554c63; background: #1d1927; }
+    .decision h2 { max-width: none; margin: 0 0 1rem; font-size: clamp(2rem, 4vw, 3.5rem); }
+    .decision p { max-width: 65ch; color: #c9c1b4; line-height: 1.6; }
+    .tag { display: inline-block; margin: .4rem .35rem 0 0; padding: .35rem .55rem; border: 1px solid #625a70; color: #d9cbe8; font-size: .75rem; }
+    @media (max-width: 760px) { main { padding-top: 2.5rem; } article { min-height: auto; } .grid { grid-template-columns: 1fr; gap: 1.5rem; } h1 { font-size: 3.4rem; } }
+    @media (prefers-reduced-motion: no-preference) { article { animation: arrive .6s both; } article:nth-child(2) { animation-delay: .1s; } article:nth-child(3) { animation-delay: .2s; } @keyframes arrive { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } } }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="kicker">Tales by Xero / Art-Direction-Session / 28.09.2026</div>
+    <h1>Drei Wege, damit eine Geschichte am Tisch landet.</h1>
+    <p class="intro">Die Richtung ist nicht „wie viel Fantasy“. Sie entscheidet, welche Wahrheit die Website zuerst beweist: dass es eine Welt zu entdecken gibt, dass ihre Geschichten gefährlich locken, oder dass das Material tatsächlich eine gute Runde trägt.</p>
+    <section class="thesis">
+      <strong>Der feste Kern</strong>
+      <p>Gespielt, bevor es publiziert wird. Detailtiefe ohne Überkonstruktion. Alle drei Systeme vermeiden Shop-Optik, Generik und Partikelnebel. Produktart, Prämisse und ein ungewöhnlicher Haken bleiben immer unmittelbar lesbar.</p>
+    </section>
+
+    <section class="directions">
+      <article class="field">
+        <div class="number"><span>01 / Weltneugier</span><span>FG</span></div>
+        <h2>The Wayfinder's Field Guide</h2>
+        <p class="premise">Tales by Xero als Fundstück aus einer Welt, die größer ist als jede einzelne Veröffentlichung. Besucher blättern nicht durch Produkte, sondern folgen Spuren zu spielbaren Orten, Wesen und Problemen.</p>
+        <div class="grid">
+          <div>
+            <h3>Visuelle Grammatik</h3>
+            <ul><li>Tiefes Moosgrün, stumpfes Teal, Sternenmessing und helles Knochenpapier als lesende Fläche.</li><li>Asymmetrische Editorial-Grid-Struktur, Kartenränder, Wegmarken und präzise Beschriftungen statt Parchment-Textur.</li><li>Das Logo erscheint punktuell als Siegel oder Himmelszeichen, nicht als dauerndes Wappen.</li></ul>
+            <h3 style="margin-top:1.5rem">Produktreise</h3>
+            <ul><li>„Was wurde hier entdeckt?“ als Einstieg: Bild, Prämisse, Produktart, ein seltsames Detail.</li><li>Produkte erhalten unterschiedliche Größen und Bildzuschnitte, abhängig von ihrer Rolle als One-Shot, Framework oder Tool.</li><li>Cheat Sheets wirken wie Feldnotizen: sichtbarer Beleg für Tisch-Tauglichkeit.</li></ul>
+          </div>
+          <div class="scene"><h3>Motion</h3><p>Ruhige, einmalige Enthüllungen wie eine Karte, die sich beim Weiterlesen erschließt. Kein künstliches Scroll-Hijacking, keine Dauerschleifen.</p></div>
+        </div>
+      </article>
+
+      <article class="archive">
+        <div class="number"><span>02 / Dunkle Anziehung</span><span>BA</span></div>
+        <h2>The Black Lantern Archive</h2>
+        <p class="premise">Produkte erscheinen als geborgene, unvollständige Dossiers. Nicht alles wird erklärt. Die Seite macht aus jedem Werk einen Fall, dessen gefährlichster Satz, NSC oder Gegenstand gerade genug verrät.</p>
+        <div class="grid">
+          <div>
+            <h3>Visuelle Grammatik</h3>
+            <ul><li>Fast-schwarzes Pflaume, Rauch, stumpfes Elfenbein und ein einzelnes Kupferrot als Warnsignal.</li><li>Schwere Bildflächen, scharfe Kanten, Aktennummern, Randnotizen und selektive „geschwärzte“ Flächen.</li><li>Keine Gothic-Kulisse aus Kerzen und Totenköpfen: Bedrohung entsteht durch Aussparung, nicht Dekoration.</li></ul>
+            <h3 style="margin-top:1.5rem">Produktreise</h3>
+            <ul><li>Die Prämisse liest sich wie eine Warnung oder ein wiedergefundenes Fragment.</li><li>Lore-Hooks öffnen sich als kontrollierte Enthüllungen; Produktart und DriveThruRPG-CTA bleiben sachlich klar.</li><li>Starke für Dark Fantasy und Horror, aber neutrale Rahmen verhindern, dass andere Tonlagen fremd wirken.</li></ul>
+          </div>
+          <div class="scene"><h3>Motion</h3><p>Ein einzelnes Dokument kann beim Eintritt freigelegt werden; danach bleibt die Lektüre ruhig. Unter reduzierter Bewegung ist alles sofort vollständig sichtbar.</p></div>
+        </div>
+      </article>
+
+      <article class="cabinet">
+        <div class="number"><span>03 / Bewiesene Spielbarkeit</span><span>TC</span></div>
+        <h2>The Tablemaker's Cabinet</h2>
+        <p class="premise">Keine sterile Produktbibliothek, sondern der aufgeräumte Moment vor einer großartigen Session. Hier liegen Hooks, Hilfsmittel, Charaktere und Entscheidungen nebeneinander und beweisen: Dieses Material will gespielt werden.</p>
+        <div class="grid">
+          <div>
+            <h3>Visuelle Grammatik</h3>
+            <ul><li>Nachtdunkles Walnussbraun, Tintenblau, warmes Papier und goldene Messingmarkierungen.</li><li>Präzise Arbeitsflächen, modulare Blätter und überlappende Bildausschnitte, aber keine künstliche 3D-Schreibtisch-Simulation.</li><li>Das Cheat Sheet wird zur Leitform für klare Informationshierarchie und praktische Produktmetadaten.</li></ul>
+            <h3 style="margin-top:1.5rem">Produktreise</h3>
+            <ul><li>Jedes Produkt beginnt mit „Was bringt es an den Tisch?“ und einer kurzen, spielbaren Situation.</li><li>NPCs, Hinweise und kleine Mechanik- oder Vorbereitungsbeweise bauen Vertrauen auf, bevor Lore vertieft wird.</li><li>Ideal, um die Played-first-Philosophie direkt und glaubwürdig zu kommunizieren.</li></ul>
+          </div>
+          <div class="scene"><h3>Motion</h3><p>Leichte, gezielte Layoutbewegungen legen Inhalte in eine Lesereihenfolge. Interaktionen fühlen sich wie sortierte Spielmaterialien an, nicht wie ein gamifizierter Webshop.</p></div>
+        </div>
+      </article>
+
+      <article class="theatre">
+        <div class="number"><span>04 / Vivid Myth</span><span>MT</span></div>
+        <h2>The Saffron Myth Theatre</h2>
+        <p class="premise">Jedes Produkt beginnt wie der Vorhang zu einer unmöglichen Szene: eine Kreatur, ein Versprechen, ein Problem, das eine Gruppe lösen muss. Die Seite ist kein düsteres Archiv, sondern eine farbgesättigte Bühne für Geschichten mit Konsequenzen.</p>
+        <div class="grid">
+          <div>
+            <h3>Visuelle Grammatik</h3>
+            <ul><li>Tiefes Mineralblau als Nacht, leuchtendes Safran als Bühnenlicht, Korallenrose als seltene Gefahr und kühles Kalkweiß für ruhigen Text.</li><li>Große, präzise Bildausschnitte treffen auf dramatische Flächen, Vorhangkanten und versetzte Titelblöcke.</li><li>Keine Neon-Gradienten und keine Zirkus-Deko: Die Farbigkeit funktioniert wie Licht in einer Szene, nicht wie ein buntes UI.</li></ul>
+            <h3 style="margin-top:1.5rem">Produktreise</h3>
+            <ul><li>Die Prämisse erscheint als Auftaktzeile: Was geschieht, wenn diese Gruppe die Bühne betritt?</li><li>Ein einzelner NSC, Ort oder Gegenstand bekommt jeweils einen „Spotlight“-Moment.</li><li>Produktart und CTA bleiben als ruhige Kartenkante sichtbar, damit Inszenierung nicht zur Unklarheit wird.</li></ul>
+          </div>
+          <div class="scene"><h3>Motion</h3><p>Farbflächen und ein Bildausschnitt treten einmal gezielt in den Vordergrund, als würde eine Szene beleuchtet. Der Rest ist klarer, nativer Scroll.</p></div>
+        </div>
+      </article>
+
+      <article class="atelier">
+        <div class="number"><span>05 / Collectible Craft</span><span>LA</span></div>
+        <h2>The Lunar Print Atelier</h2>
+        <p class="premise">Tales by Xero wird als kleine, sorgfältig gedruckte Edition behandelt. Nicht nostalgische Pergament-Fantasy, sondern eine moderne Werkstatt aus Tinte, Mondweiß und kräftigen Farbplatten, in der jedes Produkt wie ein Objekt mit eigener Signatur wirkt.</p>
+        <div class="grid">
+          <div>
+            <h3>Visuelle Grammatik</h3>
+            <ul><li>Mondweiß und kühles Papiergrau als Grund, tiefes Tintenblau für Lesbarkeit, Zinnoberrot als Energie und ein kleiner Lavendel-Akzent aus dem vorhandenen Logo.</li><li>Editorial-Typografie, harte grafische Ränder, kleine Druckraster und bewusst versetzte Farbplatten statt Parchment oder „Handschrift“-Klischee.</li><li>Die KI-Bilder werden wie hochwertige Drucktafeln gerahmt und beschnitten, nicht als generische Full-Bleed-Hintergründe verwendet.</li></ul>
+            <h3 style="margin-top:1.5rem">Produktreise</h3>
+            <ul><li>Jedes Werk erhält eine klare Editionsseite: Titel, Produktart, Prämisse und ein herausgerissener Story-Hook.</li><li>Cheat Sheets und Materialauszüge sind nicht Nebenbilder, sondern kuratierte „Inside Pages“.</li><li>Die Sammlung darf unterschiedliche Genres tragen, weil die konstante Klammer das publizierte Objekt ist, nicht die Stimmung jeder Geschichte.</li></ul>
+          </div>
+          <div class="scene"><h3>Motion</h3><p>Keine Papier-Flip-Animationen. Nur ein präzises Einrücken oder Überdrucken von Ebenen beim Öffnen einer Produktansicht, mit vollständig statischer Alternative.</p></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="decision">
+      <div class="kicker">Entscheidung</div>
+      <h2>Wähle eine Hauptwahrheit.</h2>
+      <p><strong>Field Guide</strong> maximiert Weltneugier und lässt unterschiedliche Tonlagen am leichtesten zusammenleben. <strong>Black Lantern Archive</strong> hat die stärkste unverwechselbare Atmosphäre, darf aber kein Genregefängnis werden. <strong>Tablemaker's Cabinet</strong> ist die ehrlichste Übersetzung von „played first, published after“. <strong>Saffron Myth Theatre</strong> bringt dramatische Farbigkeit und unmittelbare Szenenenergie. <strong>Lunar Print Atelier</strong> macht die Arbeiten zu sammelbaren, kuratierten Editionen und hält unterschiedliche Genres elegant zusammen.</p>
+      <span class="tag">Field Guide: Entdecken</span><span class="tag">Black Lantern: Begehren</span><span class="tag">Tablemaker: Vertrauen</span><span class="tag">Myth Theatre: Erleben</span><span class="tag">Print Atelier: Sammeln</span>
+    </section>
+  </main>
+</body>
+</html>

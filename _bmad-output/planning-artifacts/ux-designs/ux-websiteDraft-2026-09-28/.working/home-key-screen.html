@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tales by Xero: Home Key Screen v2</title>
+  <style>
+    :root { --night: #132952; --deep: #0b1732; --saffron: #f0c65e; --coral: #e87067; --chalk: #f6f3eb; --mist: #d8e0e8; --ink: #182542; }
+    * { box-sizing: border-box; }
+    body { margin: 0; overflow-x: hidden; background: var(--night); color: var(--chalk); font-family: Arial, sans-serif; }
+    a { color: inherit; }
+    .page { overflow: hidden; }
+    .nav { position: relative; z-index: 3; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.2rem clamp(1.25rem,5vw,5rem); border-bottom: 1px solid rgba(216,224,232,.22); }
+    .mark { display: flex; align-items: center; gap: .65rem; font-size: .72rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; text-decoration: none; }
+    .mark img { width: 35px; height: 35px; object-fit: contain; }
+    .links { display: flex; gap: 1.5rem; color: var(--mist); font-size: .83rem; }
+    .hero { position: relative; display: grid; grid-template-columns: minmax(430px,.85fr) minmax(0,1.15fr); min-height: 560px; padding: clamp(1.25rem,2.8vw,2.6rem) clamp(1.25rem,5vw,5rem) 1.2rem; gap: clamp(.25rem,2vw,2rem); isolation: isolate; }
+    .hero::before { content: ""; position: absolute; z-index: -3; inset: 0; background: radial-gradient(circle at 12% 18%, rgba(240,198,94,.14), transparent 24%), linear-gradient(125deg, transparent 55%, rgba(232,112,103,.15)); }
+    .copy { position: relative; z-index: 2; align-self: center; max-width: 620px; }
+    .eyebrow { display: flex; align-items: center; gap: .75rem; color: var(--saffron); font-size: .72rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; }
+    .eyebrow::before { content: ""; width: 42px; height: 1px; background: currentColor; }
+    h1 { max-width: 8ch; margin: .8rem 0 .9rem; font-family: Georgia,serif; font-size: clamp(3.4rem,6.25vw,7.2rem); font-weight: 400; letter-spacing: -.075em; line-height: .8; }
+    .lead { max-width: 37ch; margin: 0; color: var(--mist); font-size: 1rem; line-height: 1.53; }
+    .origin { max-width: 34rem; margin: 1rem 0; color: #e6eaed; font-size: .83rem; line-height: 1.45; }
+    .origin p { margin: 0; padding-top: .65rem; border-top: 1px solid rgba(240,198,94,.6); }
+    .actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+    .button { display: inline-flex; align-items: center; gap: .75rem; min-height: 48px; padding: .82rem 1rem; border: 1px solid var(--saffron); background: var(--saffron); color: var(--ink); font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-decoration: none; text-transform: uppercase; }
+    .button.secondary { background: transparent; color: var(--chalk); border-color: rgba(216,224,232,.65); }
+    .hero-art { position: relative; z-index: 0; align-self: stretch; min-height: 470px; margin: -2rem -3rem -1.2rem -5rem; pointer-events: none; }
+    .hero-art::before { content: ""; position: absolute; z-index: 1; inset: -2px; background: linear-gradient(90deg, var(--night) 0%, rgba(19,41,82,.94) 9%, transparent 42%, rgba(19,41,82,.08) 77%, var(--night) 100%), linear-gradient(0deg, var(--night) 0%, rgba(19,41,82,.78) 13%, transparent 49%, rgba(19,41,82,.55) 100%); }
+    .hero-art::after { content: ""; position: absolute; z-index: 2; right: 3.5rem; bottom: 1.15rem; width: min(16rem,50%); height: 1px; background: var(--saffron); box-shadow: 0 10px 0 rgba(240,198,94,.25); }
+    .hero-art img { width: 100%; height: 100%; min-height: 530px; object-fit: contain; object-position: 69% bottom; filter: saturate(1.04) contrast(.98); -webkit-mask-image: radial-gradient(ellipse 76% 76% at 55% 52%, #000 38%, rgba(0,0,0,.92) 50%, rgba(0,0,0,.48) 66%, transparent 88%); mask-image: radial-gradient(ellipse 76% 76% at 55% 52%, #000 38%, rgba(0,0,0,.92) 50%, rgba(0,0,0,.48) 66%, transparent 88%); }
+    .hero-discovery { position: relative; z-index: 2; grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; padding-top: .85rem; border-top: 1px solid rgba(216,224,232,.24); }
+    .hero-discovery strong { display: flex; align-items: center; gap: .65rem; color: var(--mist); font-size: .75rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+    .hero-discovery strong::before { content: ""; width: 34px; height: 1px; background: var(--saffron); }
+    .hero-discovery a { color: var(--saffron); font-size: .8rem; font-weight: 700; letter-spacing: .1em; text-decoration: none; text-transform: uppercase; }
+    .works { position: relative; padding: 1.25rem clamp(1.25rem,5vw,5rem) 5rem; background: linear-gradient(180deg, var(--night), #102348); }
+    .works::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(240,198,94,.7), transparent); }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 2rem; margin-bottom: 1.75rem; }
+    .section-head p { max-width: 37ch; margin: 0; color: #c3d0dc; line-height: 1.5; }
+    h2 { margin: .55rem 0 0; font-family: Georgia,serif; font-size: clamp(2.7rem,5vw,5.5rem); font-weight: 400; letter-spacing: -.055em; line-height: .86; }
+    .work-grid { display: grid; grid-template-columns: 1.2fr .8fr .8fr; gap: 1rem; }
+    .work { display: flex; min-height: 300px; padding: 1.2rem; align-items: end; border: 1px solid rgba(216,224,232,.55); color: var(--chalk); text-decoration: none; }
+    .work:first-child { min-height: 450px; background: linear-gradient(0deg, rgba(11,23,50,.83), transparent 65%), url('../../../../../assets/Harmony_Upscaled.png') center/contain no-repeat, #0b1732; }
+    .work:nth-child(2) { background: linear-gradient(145deg, #0f1d3d, #1b3b6a); }
+    .work:nth-child(3) { background: linear-gradient(155deg, #26365a, #0b1732); }
+    .work small { color: var(--saffron); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    .work h3 { margin: .45rem 0 0; font-family: Georgia,serif; font-size: 2rem; font-weight: 400; }
+    .table-proof { position: relative; display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(2rem,6vw,7rem); align-items: center; padding: 5rem clamp(1.25rem,5vw,5rem) 6rem; background: linear-gradient(180deg, #102348, var(--deep)); }
+    .table-proof::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: rgba(216,224,232,.25); }
+    .sheet-wrap { position: relative; padding: 0 1.3rem 1.3rem 0; }
+    .sheet-wrap::before { content: ""; position: absolute; inset: 1.3rem 0 0 1.3rem; border: 1px solid var(--saffron); opacity: .65; }
+    .table-proof img { position: relative; display: block; width: 100%; border: 1px solid rgba(216,224,232,.55); }
+    .table-proof p { max-width: 40ch; color: var(--mist); line-height: 1.6; }
+    @media (max-width: 840px) { .links { display:none; } .hero, .table-proof { grid-template-columns:1fr; min-height: auto; } .hero { padding-block: 2rem .8rem; } .hero-art { min-height: 375px; margin: -1rem -1.25rem -.5rem; } .hero-art img { min-height: 420px; object-position: center bottom; -webkit-mask-image: radial-gradient(ellipse 85% 76% at 50% 55%, #000 36%, rgba(0,0,0,.85) 55%, transparent 90%); mask-image: radial-gradient(ellipse 85% 76% at 50% 55%, #000 36%, rgba(0,0,0,.85) 55%, transparent 90%); } .hero-art::before { background: linear-gradient(0deg, var(--night), transparent 43%), linear-gradient(180deg, rgba(19,41,82,.22), transparent 20%); } .hero-art::after { right: 1.25rem; bottom: 1.3rem; } .hero-discovery { grid-column:auto; } .work-grid { grid-template-columns:1fr; } .work, .work:first-child { min-height: 260px; } .section-head { display:block; } .section-head p { margin-top: 1rem; } }
+    @media (prefers-reduced-motion: no-preference) { .copy, .hero-art { animation: reveal .65s both; } .hero-art { animation-delay:.12s; } @keyframes reveal { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <nav class="nav" aria-label="Hauptnavigation"><a class="mark" href="#"><img src="../../../../../assets/TbX_logo.png" alt="">Tales by Xero</a><div class="links"><a href="#works">Werke</a><a href="#method">Über Tales by Xero</a><a href="#">Ko-fi ↗</a></div></nav>
+    <section class="hero">
+      <div class="copy"><div class="eyebrow">Tested at the table</div><h1>Stories made to be played.</h1><p class="lead">Daggerheart adventures, campaign frameworks, and play aids shaped by real sessions before they are shared.</p><div class="origin"><p>Every release begins at a table, with a group, before it becomes a page on a storefront.</p></div><div class="actions"><a class="button" href="#works">Explore the works <span>↘</span></a><a class="button secondary" href="#method">How they are made</a></div></div>
+      <div class="hero-art" aria-hidden="true"><img src="../../../../../assets/Harmony_Upscaled.png" alt=""></div>
+      <div class="hero-discovery"><strong>Three stories waiting below</strong><a href="#works">View selected works ↓</a></div>
+    </section>
+    <section class="works" id="works"><div class="section-head"><div><div class="eyebrow">Selected works</div><h2>Choose your opening scene.</h2></div><p>Each work starts with a playable premise. Explore one-shots, campaign frameworks, and table-ready material.</p></div><div class="work-grid"><a class="work" href="#"><div><small>One-Shot Adventure</small><h3>Ephemera</h3></div></a><a class="work" href="#"><div><small>Campaign Framework</small><h3>Abythera</h3></div></a><a class="work" href="#"><div><small>One-Shot Adventure</small><h3>Weeping Rift</h3></div></a></div></section>
+    <section class="table-proof" id="method"><div class="sheet-wrap"><img src="../../../../../assets/CheatSheet1.png" alt="Example of a German game master reference sheet"></div><div><div class="eyebrow">Played, then published</div><h2>Made for the moment when the table goes quiet.</h2><p>Each adventure is played, adjusted, and prepared for other game masters afterwards. Not a script to follow, but material your group can take somewhere unexpected.</p><a class="button" href="#">About the process</a></div></section>
+  </main>
+</body>
+</html>

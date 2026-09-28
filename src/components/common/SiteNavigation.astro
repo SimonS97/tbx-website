@@ -1,0 +1,46 @@
+---
+import makerSeal from "../../assets/brand/TbX_logo.png";
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+
+const navigationItems = [
+  { href: "/works", label: "Works" },
+  { href: "/about", label: "About" }
+];
+
+const isCurrentPage = (href: string) => currentPath === href;
+---
+
+<nav class="site-navigation" aria-label="Primary navigation">
+  <a class:list={["brand-link", { "is-current": currentPath === "/" }]} href="/" aria-label="Tales by Xero home" aria-current={currentPath === "/" ? "page" : undefined}>
+    <img class="brand-seal" src={makerSeal.src} width={makerSeal.width} height={makerSeal.height} alt="" />
+    <span class="brand-wordmark">Tales by Xero</span>
+  </a>
+
+  <div class="desktop-navigation">
+    <ul class="navigation-list">
+      {navigationItems.map((item) => (
+        <li>
+          <a class:list={["navigation-link", { "is-current": isCurrentPage(item.href) }]} href={item.href} aria-current={isCurrentPage(item.href) ? "page" : undefined}>{item.label}</a>
+        </li>
+      ))}
+      <li><a class="navigation-link external-link" href="https://ko-fi.com/talesbyxero">Ko-fi <span class="external-label">(external)</span></a></li>
+    </ul>
+  </div>
+
+  <details class="mobile-navigation">
+    <summary>Menu</summary>
+    <ul class="mobile-navigation-list">
+      {navigationItems.map((item) => (
+        <li>
+          <a class:list={["navigation-link", { "is-current": isCurrentPage(item.href) }]} href={item.href} aria-current={isCurrentPage(item.href) ? "page" : undefined}>{item.label}</a>
+        </li>
+      ))}
+      <li><a class="navigation-link external-link" href="https://ko-fi.com/talesbyxero">Ko-fi <span class="external-label">(external)</span></a></li>
+    </ul>
+  </details>
+</nav>

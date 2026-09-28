@@ -1,0 +1,34 @@
+---
+import "../styles/global.css";
+import SiteNavigation from "../components/common/SiteNavigation.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  currentPath: string;
+}
+
+const { title, description, currentPath } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title} | Tales by Xero</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <header class="site-header">
+      <SiteNavigation currentPath={currentPath} />
+    </header>
+    <main id="main-content" tabindex="-1">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <p>Tales by Xero</p>
+    </footer>
+  </body>
+</html>
