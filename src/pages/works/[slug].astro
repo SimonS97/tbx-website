@@ -1,0 +1,61 @@
+---
+import WorkFactsStrip from "../../components/works/WorkFactsStrip.astro";
+import WorkHero from "../../components/works/WorkHero.astro";
+import DaggerheartCompatibility from "../../components/works/DaggerheartCompatibility.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getPublishedWorks, workTypeLabels, type PublishedWork } from "../../lib/works";
+
+export async function getStaticPaths() {
+  const works = await getPublishedWorks();
+
+  return works.map((work) => ({
+    params: { slug: work.data.slug },
+    props: { work }
+  }));
+}
+
+interface Props {
+  work: PublishedWork;
+}
+
+const { work } = Astro.props;
+const hero = work.data.images.find((image) => image.role === "hero");
+
+if (!hero) {
+  throw new Error(`Published work ${work.data.slug} has no hero image.`);
+}
+---
+
+<BaseLayout title={work.data.seo.title} description={work.data.seo.description} currentPath={`/works/${work.data.slug}`} mainClass="work-detail-main">
+  <article class="work-detail">
+    <header class="work-detail-introduction">
+      <div class="work-detail-metadata" aria-label="Work classification">
+        <p class="work-type-label">{workTypeLabels[work.data.type]}</p>
+        <DaggerheartCompatibility />
+      </div>
+      <h1>{work.data.title}</h1>
+      <p class="work-premise">{work.data.premise}</p>
+      <div class="work-detail-hook-and-facts">
+        <p class="work-hook">{work.data.hook}</p>
+        <WorkFactsStrip facts={work.data.facts} />
+      </div>
+    </header>
+
+    <WorkHero image={hero} />
+
+    <div class="work-detail-content">
+      <section aria-labelledby="moment-heading">
+        <h2 id="moment-heading">Inside</h2>
+        <p>{work.data.theMoment}</p>
+      </section>
+      <section aria-labelledby="table-use-heading">
+        <h2 id="table-use-heading">At the table</h2>
+        <p>{work.data.tableUse}</p>
+      </section>
+      <section aria-labelledby="authors-note-heading">
+        <h2 id="authors-note-heading">A note from Xero</h2>
+        <p>{work.data.authorsNote}</p>
+      </section>
+    </div>
+  </article>
+</BaseLayout>

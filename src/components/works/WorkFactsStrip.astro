@@ -1,0 +1,34 @@
+---
+interface Props {
+  facts?: unknown;
+}
+
+const { facts } = Astro.props;
+const entries = Array.isArray(facts)
+  ? facts.flatMap((fact) => {
+      if (
+        !fact ||
+        typeof fact !== "object" ||
+        typeof fact.label !== "string" ||
+        typeof fact.value !== "string" ||
+        !fact.label.trim() ||
+        !fact.value.trim()
+      ) {
+        return [];
+      }
+
+      return [{ label: fact.label.trim(), value: fact.value.trim() }];
+    })
+  : [];
+---
+
+{entries.length > 0 && (
+  <dl class="work-facts-strip" aria-label="Work facts">
+    {entries.map((fact) => (
+      <div class="work-fact">
+        <dt>{fact.label}</dt>
+        <dd>{fact.value}</dd>
+      </div>
+    ))}
+  </dl>
+)}

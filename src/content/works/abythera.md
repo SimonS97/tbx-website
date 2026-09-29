@@ -1,20 +1,20 @@
 ---
 slug: abythera
 status: published
-title: "Abythera: A Campaign Framework Compatible with Daggerheart"
+title: Abythera
 type: campaign-framework
 compatibility: Daggerheart compatible
-premise: "A modular, hub-based campaign framework for Daggerheart that treats changing player counts as part of the story."
-hook: "Harmony is a physical convergence of lost souls whose shifting fragments become an unpredictable source of clues, contradictions, and later development in the hub."
+premise: "A modular Daggerheart campaign framework built around a central hub, an opening mission, and room to add the adventures that suit your group."
+hook: "Start in Karrhold, then build outward from a hub that changes with the people and choices around it."
 facts:
-  - label: Format
-    value: Campaign framework
-  - label: Campaign
-    value: 12+ missions
-  - label: First mission
-    value: Karrhold
   - label: Includes
     value: "Hub framework, NPC guide, mission structure, hub progression, Revelation Path, Opening Experience, and Karrhold"
+  - label: Format
+    value: Campaign framework
+  - label: Included mission
+    value: Karrhold
+  - label: Recommended campaign arc
+    value: 12+ missions
 images:
   - src: ../../assets/works/abythera/abythera-cover.png
     alt: "Abythera cover art showing a dark fantasy figure against a deep blue background."
@@ -29,14 +29,14 @@ images:
     role: gallery
     aspectRatio: 0.667
 externalUrl: https://www.drivethrurpg.com/en/product/551665/abythera-a-campaign-framework-compatible-with-daggerheart
-theMoment: "At the hub, Harmony's fragments can offer clues that do not neatly agree with one another."
-tableUse: "Run a long-term episodic campaign in which each mission can stand alone while the hub and the wider story react and develop."
-authorsNote: "Abythera includes its opening experience and Karrhold, its first mission."
+theMoment: "Harmony is a convergence of lost souls at the heart of the hub. Their conflicting fragments give the group leads to follow and reasons to doubt what they think they know."
+tableUse: "Use the hub to connect standalone adventures into a longer campaign without forcing every group through the same sequence."
+authorsNote: "Abythera gives you the framework and its opening mission, Karrhold. Add further missions as your campaign grows."
 nextWork: ephemera
 discovery:
   route: campaign
   order: 1
 seo:
   title: "Abythera | Daggerheart Campaign Framework"
-  description: "A modular, hub-based campaign framework for Daggerheart with 12+ missions and Karrhold included."
+  description: "A modular Daggerheart campaign framework with Karrhold included and room to build a longer campaign around your group."
 ---

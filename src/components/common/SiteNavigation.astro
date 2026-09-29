@@ -12,7 +12,9 @@ const navigationItems = [
   { href: "/about", label: "About" }
 ];
 
-const isCurrentPage = (href: string) => currentPath === href;
+const isCurrentPage = (href: string) => href === "/works"
+  ? currentPath === "/works" || currentPath.startsWith("/works/")
+  : currentPath === href;
 ---
 
 <nav class="site-navigation" aria-label="Primary navigation">

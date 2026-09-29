@@ -1,16 +1,16 @@
 ---
 slug: ephemera
 status: published
-title: "Ephemera: A Dark Fantasy Adventure Compatible with Daggerheart"
+title: Ephemera
 type: one-shot
 compatibility: Daggerheart compatible
-premise: "A playtested standalone one-shot or two-part session, and the second official mission for Abythera."
-hook: "Two thousand prisoners live beneath a mountain in an improvised city, where Orion Starshard holds souls at the moment of death and sees no fault in his work."
+premise: "A standalone Daggerheart adventure of investigation, infiltration, and faction choices in a prison city beneath a mountain."
+hook: "Two thousand prisoners live beneath the mountain. Orion Starshard keeps souls at the moment of death, and he believes he is doing the right thing."
 facts:
   - label: Session length
     value: 5-8 hours
-  - label: Characters
-    value: Tier 1
+  - label: Character tier
+    value: Tier 1 characters
   - label: Encounters
     value: Three prepared adversary encounters for 3-5 players
   - label: GM materials
@@ -33,9 +33,9 @@ images:
     role: evidence
     aspectRatio: 0.667
 externalUrl: https://www.drivethrurpg.com/en/product/580789/ephemera-an-dark-fantasy-adventure-compatible-with-daggerheart
-theMoment: "In the city beneath the mountain, Orion Starshard's conviction leaves the players to decide what they can accept."
-tableUse: "Use faction politics, investigation, infiltration, and player-led choices in place of a dungeon crawl."
-authorsNote: "Ephemera works as a standalone adventure or as Abythera's second official mission."
+theMoment: "The party enters an improvised city beneath the mountain, chooses which factions to trust, and decides what to do with the artefact at its centre."
+tableUse: "Run investigation, infiltration, and faction politics as players decide who to trust, how to enter the estate, and what to do with the central artefact."
+authorsNote: "Play Ephemera as a standalone adventure or use it as Abythera's second official mission."
 nextWork: daggerheart-item-bundle
 discovery:
   route: one-shot

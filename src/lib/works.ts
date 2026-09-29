@@ -1,6 +1,14 @@
 import { getCollection, type CollectionEntry } from "astro:content";
 
 export type Work = CollectionEntry<"works">;
+export type WorkType = Work["data"]["type"];
+
+export const workTypeLabels: Record<WorkType, string> = {
+  "one-shot": "One-shot",
+  "campaign-framework": "Campaign framework",
+  "item-bundle": "Item bundle"
+};
+
 export type PublishedWork = Work & {
   data: Work["data"] & {
     status: "published";

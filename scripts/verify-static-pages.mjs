@@ -1,12 +1,54 @@
-import { readFile } from "node:fs/promises";
-import { resolve } from "node:path";
+import { access, readFile, readdir } from "node:fs/promises";
+import { dirname, parse, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import { load } from "js-yaml";
 
+const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const worksDirectory = resolve(projectRoot, "src/content/works");
 const pages = ["index.html", "works/index.html", "about/index.html"];
+const typeLabels = {
+  "one-shot": "One-shot",
+  "campaign-framework": "Campaign framework",
+  "item-bundle": "Item bundle"
+};
 const globalStyles = await readFile(resolve("src/styles/global.css"), "utf8");
 const hasReducedMotionFallback = /@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*?animation-duration:\s*0\.01ms\s*!important;/iu.test(globalStyles);
+const hasContainedHero = /\.work-hero img\s*\{[\s\S]*?object-fit:\s*contain;/u.test(globalStyles);
 
-if (!hasReducedMotionFallback) {
-  throw new Error("Reduced-motion fallback is missing from the global shell styles.");
+const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
+const escapeHtml = (value) => value
+  .replace(/&/gu, "&amp;")
+  .replace(/</gu, "&lt;")
+  .replace(/>/gu, "&gt;")
+  .replace(/"/gu, "&quot;")
+  .replace(/'/gu, "&#39;");
+
+async function readWorks() {
+  const files = await (await import("node:fs/promises")).readdir(worksDirectory, { withFileTypes: true });
+  const entries = await Promise.all(
+    files
+      .filter((file) => file.isFile() && file.name.endsWith(".md"))
+      .map(async (file) => {
+        const contents = await readFile(resolve(worksDirectory, file.name), "utf8");
+        const match = /^---\s*\r?\n([\s\S]*?)\r?\n---/u.exec(contents);
+
+        if (!match) {
+          throw new Error(`Missing YAML frontmatter in ${file.name}.`);
+        }
+
+        return load(match[1]);
+      })
+  );
+
+  return entries;
+}
+
+const works = await readWorks();
+const publishedWorks = works.filter((work) => work.status === "published");
+const unpublishedSlugs = [...works.filter((work) => work.status !== "published").map((work) => work.slug), "unknown-work"];
+
+if (!hasReducedMotionFallback || !hasContainedHero) {
+  throw new Error("Reduced-motion fallback or contained work-hero styling is missing from the global styles.");
 }
 
 for (const page of pages) {
@@ -62,4 +104,85 @@ for (const page of pages) {
   }
 }
 
-console.log("Verified static routes, shared navigation, active routes, Ko-fi, and no client scripts.");
+for (const work of publishedWorks) {
+  const page = `works/${work.slug}/index.html`;
+  const html = await readFile(resolve("dist", page), "utf8");
+  const hero = work.images.find((image) => image.role === "hero");
+  const heroFilename = parse(hero.src);
+  const builtAssets = await readdir(resolve("dist", "_astro"));
+  const emittedHeroAsset = builtAssets.find((asset) => asset.startsWith(`${heroFilename.name}.`) && asset.endsWith(heroFilename.ext));
+  const heroSourcePattern = new RegExp(
+    `<img(?=[^>]*\\bsrc="\\/_astro\\/${escapeRegExp(heroFilename.name)}\\.[^"]+${escapeRegExp(heroFilename.ext)}")(?=[^>]*\\balt="${escapeRegExp(hero.alt)}")(?=[^>]*\\bloading="lazy")[^>]*>`,
+    "u"
+  );
+  const headingCount = (html.match(/<h1(?:\s[^>]*)?>/giu) ?? []).length;
+  const typeIndex = html.indexOf(typeLabels[work.type]);
+  const compatibilityIndex = html.indexOf('aria-label="Compatible with Daggerheart"');
+  const titleIndex = html.indexOf(`<h1>${escapeHtml(work.title)}</h1>`);
+  const premiseIndex = html.indexOf(`<p class="work-premise">${escapeHtml(work.premise)}</p>`);
+  const hookIndex = html.indexOf(`<p class="work-hook">${escapeHtml(work.hook)}</p>`);
+  const factsIndex = html.indexOf("work-facts-strip");
+  const heroIndex = html.indexOf("work-hero");
+  const momentHeadingIndex = html.indexOf("Inside");
+  const momentIndex = html.indexOf(`<p>${escapeHtml(work.theMoment)}</p>`);
+  const tableUseHeadingIndex = html.indexOf("At the table");
+  const tableUseIndex = html.indexOf(`<p>${escapeHtml(work.tableUse)}</p>`);
+  const authorsNoteHeadingIndex = html.indexOf("A note from Xero");
+  const authorsNoteIndex = html.indexOf(`<p>${escapeHtml(work.authorsNote)}</p>`);
+  const facts = [...html.matchAll(/<div class="work-fact"><dt>([^<]+)<\/dt><dd>([^<]+)<\/dd><\/div>/giu)];
+  const hasCanonicalFacts = facts.length === work.facts.length && facts.every(([match], index) => match === `<div class="work-fact"><dt>${escapeHtml(work.facts[index].label)}</dt><dd>${escapeHtml(work.facts[index].value)}</dd></div>`);
+  const hasDescription = html.includes(`<meta name="description" content="${escapeHtml(work.seo.description)}">`);
+  const seoTitle = work.seo.title.endsWith(" | Tales by Xero") ? work.seo.title : `${work.seo.title} | Tales by Xero`;
+  const hasSeoTitle = html.includes(`<title>${escapeHtml(seoTitle)}</title>`);
+  const hasDesktopActiveWorksLink = /<div class="desktop-navigation">[\s\S]*?<a[^>]+class="[^"]*\bnavigation-link\b[^"]*\bis-current\b[^"]*"[^>]+href="\/works"[^>]+aria-current="page"[^>]*>Works<\/a>/iu.test(html);
+  const hasMobileActiveWorksLink = /<details[^>]+class="mobile-navigation"[^>]*>[\s\S]*?<a[^>]+class="[^"]*\bnavigation-link\b[^"]*\bis-current\b[^"]*"[^>]+href="\/works"[^>]+aria-current="page"[^>]*>Works<\/a>/iu.test(html);
+  const hasHero = new RegExp(`<figure[^>]+class="work-hero"[^>]+style="--work-hero-aspect-ratio: ${escapeRegExp(String(hero.aspectRatio))}"[^>]*>[\\s\\S]*?${heroSourcePattern.source}`, "u").test(html);
+  const hasClientScript = /<script(?:\s[^>]*)?>/iu.test(html);
+
+  const checks = {
+    headingCount: headingCount === 1,
+    hasDescription,
+    hasSeoTitle,
+    hasDesktopActiveWorksLink,
+    hasMobileActiveWorksLink,
+    hasHero,
+    hasEmittedHeroAsset: Boolean(emittedHeroAsset),
+    hasCanonicalFacts,
+    hasNoClientScript: !hasClientScript,
+    hasOrderedContent:
+      typeIndex >= 0 &&
+      compatibilityIndex >= typeIndex &&
+      titleIndex >= compatibilityIndex &&
+      premiseIndex >= titleIndex &&
+      hookIndex >= premiseIndex &&
+      factsIndex >= hookIndex &&
+      heroIndex >= factsIndex &&
+      momentHeadingIndex >= heroIndex &&
+      momentIndex >= momentHeadingIndex &&
+      tableUseHeadingIndex >= momentIndex &&
+      tableUseIndex >= tableUseHeadingIndex &&
+      authorsNoteHeadingIndex >= tableUseIndex &&
+      authorsNoteIndex >= authorsNoteHeadingIndex
+  };
+
+  if (Object.values(checks).some((value) => !value)) {
+    throw new Error(`Work-detail static HTML verification failed for ${page}: ${JSON.stringify(checks)}.`);
+  }
+}
+
+for (const unpublishedSlug of unpublishedSlugs) {
+  try {
+    await access(resolve("dist", "works", unpublishedSlug, "index.html"));
+    throw new Error(`Unpublished work route exists for ${unpublishedSlug}.`);
+  } catch (error) {
+    if (error instanceof Error && error.message.startsWith("Unpublished work route exists")) {
+      throw error;
+    }
+
+    if (error?.code !== "ENOENT") {
+      throw error;
+    }
+  }
+}
+
+console.log("Verified static routes, published work details, shared navigation, active routes, Ko-fi, and no client scripts.");

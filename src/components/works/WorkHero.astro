@@ -1,0 +1,38 @@
+---
+import abytheraHero from "../../assets/works/abythera/abythera-cover.png?url";
+import ephemeraHero from "../../assets/works/ephemera/hero-cover.png?url";
+import itemBundleHero from "../../assets/works/daggerheart-item-bundle/daggerheart-item-bundle-cover.jpg?url";
+
+interface Props {
+  image: {
+    src: string;
+    alt: string;
+    aspectRatio?: number;
+  };
+  eager?: boolean;
+}
+
+const { image, eager = false } = Astro.props;
+const workImages: Record<string, string> = {
+  "../../assets/works/abythera/abythera-cover.png": abytheraHero,
+  "../../assets/works/ephemera/hero-cover.png": ephemeraHero,
+  "../../assets/works/daggerheart-item-bundle/daggerheart-item-bundle-cover.jpg": itemBundleHero
+};
+const src = workImages[image.src];
+
+if (!src) {
+  throw new Error(`Could not resolve published work hero image: ${image.src}`);
+}
+
+const aspectRatio = image.aspectRatio ?? 2 / 3;
+---
+
+<figure class="work-hero" style={`--work-hero-aspect-ratio: ${aspectRatio}`}>
+  <img
+    src={src}
+    alt={image.alt}
+    loading={eager ? "eager" : "lazy"}
+    decoding="async"
+    fetchpriority={eager ? "high" : "auto"}
+  />
+</figure>

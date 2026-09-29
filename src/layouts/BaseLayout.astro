@@ -6,9 +6,12 @@ interface Props {
   title: string;
   description: string;
   currentPath: string;
+  mainClass?: string;
 }
 
-const { title, description, currentPath } = Astro.props;
+const { title, description, currentPath, mainClass } = Astro.props;
+const brandSuffix = " | Tales by Xero";
+const documentTitle = title.endsWith(brandSuffix) ? title : `${title}${brandSuffix}`;
 ---
 
 <!doctype html>
@@ -17,14 +20,14 @@ const { title, description, currentPath } = Astro.props;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <title>{title} | Tales by Xero</title>
+    <title>{documentTitle}</title>
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <header class="site-header">
       <SiteNavigation currentPath={currentPath} />
     </header>
-    <main id="main-content" tabindex="-1">
+    <main id="main-content" class={mainClass} tabindex="-1">
       <slot />
     </main>
     <footer class="site-footer">
