@@ -71,6 +71,7 @@ context:
 - Abythera unterscheidet jetzt klar zwischen dem enthaltenen Karrhold und dem empfohlenen 12+-Missionen-Campaign-Arc. Ephemera nennt `Tier 1 characters`; das Item Bundle priorisiert 120+ Items, druckbare Varianten und Item Volumes vor seinen evolvierenden Items.
 - Die Daggerheart-Kompatibilität verwendet die bereitgestellte offizielle Marke als freie, rahmenlose Kennzeichnung neben dem Work-Type; der letzte Facts-Trenner wird nicht gerendert.
 - Ephemeras bereitgestellte PNG-Dateien sind nicht standardkonform dekodierbar: Astro kopiert den Hero als URL, aber Windows-Bilddecoder und Browser können Original sowie Build-Ausgabe nicht laden. Keine Bilddatei wurde verändert; für eine sichtbare Ephemera-Hero-Fläche ist ein funktionierender Export erforderlich.
+- Der aktuelle Asset-Blocker, die akzeptierten Copy- und Layoutkorrekturen sowie die Fortsetzungsschritte stehen in `detail-page-asset-blocker-handoff-2026-09-29.md` im selben Verzeichnis.
 
 ## Spec Change Log
 
