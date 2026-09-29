@@ -27,5 +27,6 @@ Portfolio and promotional website for a solo indie tabletop creator, focused on 
 - Use the local Taste Skill for portfolio/landing-page design work, UI UX Pro Max for design-system and responsive decisions, and Design Motion Principles when motion is added; apply each only when its scope fits.
 - Use motion to reveal hierarchy, narrative, or interaction feedback; do not add decorative perpetual animation. Respect `prefers-reduced-motion` for every effect.
 - Evaluate Lenis, GSAP, Vanta, and Refero as optional references or tools for the approved direction; never add them merely because they are available.
+- When reading image files with tools, load at most three images per tool call; split larger visual reviews into sequential batches to avoid Bad Request failures.
 
 <!-- /bmad:context -->
