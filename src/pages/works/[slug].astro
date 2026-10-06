@@ -3,7 +3,7 @@ import WorkFactsStrip from "../../components/works/WorkFactsStrip.astro";
 import WorkHero from "../../components/works/WorkHero.astro";
 import DaggerheartCompatibility from "../../components/works/DaggerheartCompatibility.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { getPublishedWorks, workTypeLabels, type PublishedWork } from "../../lib/works";
+import { getPublishedWorks, workTypeLabels, type PublishedWork, type WorkHeroImage } from "../../lib/works";
 
 export async function getStaticPaths() {
   const works = await getPublishedWorks();
@@ -19,7 +19,7 @@ interface Props {
 }
 
 const { work } = Astro.props;
-const hero = work.data.images.find((image) => image.role === "hero");
+const hero = work.data.images.find((image): image is WorkHeroImage => image.role === "hero");
 
 if (!hero) {
   throw new Error(`Published work ${work.data.slug} has no hero image.`);

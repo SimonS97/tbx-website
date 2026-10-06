@@ -1,7 +1,18 @@
 import { getCollection, type CollectionEntry } from "astro:content";
+import type { ImageMetadata } from "astro";
 
 export type Work = CollectionEntry<"works">;
 export type WorkType = Work["data"]["type"];
+type WorkImageBase = {
+  alt: string;
+  width?: number;
+  height?: number;
+  aspectRatio?: number;
+};
+export type WorkHeroImage = WorkImageBase & { src: ImageMetadata; role: "hero" };
+export type WorkImage =
+  | WorkHeroImage
+  | (WorkImageBase & { src: string; role: "gallery" | "vibe" | "evidence" });
 
 export const workTypeLabels: Record<WorkType, string> = {
   "one-shot": "One-shot",
@@ -17,14 +28,7 @@ export type PublishedWork = Work & {
     premise: string;
     hook: string;
     facts: Array<{ label: string; value: string }>;
-    images: Array<{
-      src: string;
-      alt: string;
-      role: "hero" | "gallery" | "vibe" | "evidence";
-      width?: number;
-      height?: number;
-      aspectRatio?: number;
-    }>;
+    images: WorkImage[];
     externalUrl: string;
     theMoment: string;
     tableUse: string;

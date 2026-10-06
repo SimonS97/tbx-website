@@ -8,10 +8,11 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && npm run test:works && npm run validate:works && npm run verify:static",
+    "build": "astro build && npm run test:works && npm run test:catalog && npm run validate:works && npm run verify:static",
     "preview": "astro preview",
     "lint": "eslint src scripts astro.config.mjs eslint.config.mjs",
     "test:works": "node scripts/test-validate-works.mjs",
+    "test:catalog": "node scripts/test-render-works-catalog.mjs",
     "validate:works": "node scripts/validate-works.mjs",
     "verify:static": "node scripts/verify-static-pages.mjs"
   },

@@ -1,0 +1,59 @@
+---
+import { workTypeLabels, type PublishedWork, type Work, type WorkHeroImage } from "../../lib/works";
+import WorkHero from "./WorkHero.astro";
+
+interface Props {
+  works: readonly Work[];
+}
+
+const { works } = Astro.props;
+const curatedWorkSlugs = ["abythera", "ephemera", "daggerheart-item-bundle"];
+const publishedWorks = works.filter((work): work is PublishedWork => work.data.status === "published");
+const curatedWorks = curatedWorkSlugs
+  .map((slug) => publishedWorks.find((work) => work.data.slug === slug))
+  .filter((work): work is PublishedWork => Boolean(work));
+const remainingWorks = publishedWorks.filter((work) => !curatedWorkSlugs.includes(work.data.slug));
+const catalogWorks = [...curatedWorks, ...remainingWorks];
+
+function getHero(work: PublishedWork): WorkHeroImage {
+  const hero = work.data.images.find((image): image is WorkHeroImage => image.role === "hero");
+
+  if (!hero) {
+    throw new Error(`Published work "${work.data.slug}" is missing its hero image.`);
+  }
+
+  return hero;
+}
+---
+
+{
+  catalogWorks.length > 0 ? (
+    <section class="works-catalog" aria-labelledby="works-title">
+      <header class="works-catalog-heading">
+        <h1 id="works-title">Works</h1>
+      </header>
+      <div class="works-catalog-grid">
+        {catalogWorks.map((work, index) => (
+          <article class="work-catalog-entry">
+            <a class="work-catalog-tile" href={`/works/${work.data.slug}`}>
+              <div class="work-catalog-media">
+                <WorkHero image={getHero(work)} eager={index === 0} />
+              </div>
+              <div class="work-catalog-copy">
+                <p class="work-type-label">{workTypeLabels[work.data.type]}</p>
+                <h2>{work.data.title}</h2>
+                <p class="work-catalog-premise">{work.data.premise}</p>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+    </section>
+  ) : (
+    <article class="works-empty-state">
+      <h1>Works</h1>
+      <p>No published works are available here.</p>
+      <p><a href="/">Return to Tales by Xero</a>.</p>
+    </article>
+  )
+}

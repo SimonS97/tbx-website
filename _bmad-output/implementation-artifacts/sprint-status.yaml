@@ -29,7 +29,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 # - Retrospective appends its action items to action_items; the status view surfaces open ones
 generated: 10-06-2026 12:00
-last_updated: 10-06-2026 12:05
+last_updated: 10-06-2026 16:00
 project: websiteDraft
 project_key: NOKEY
 tracking_system: file-system
@@ -44,7 +44,7 @@ development_status:
 
   epic-2: in-progress
   2-1-define-and-validate-the-published-works-collection: done
-  2-5-browse-the-curated-published-works-catalog: backlog
+  2-5-browse-the-curated-published-works-catalog: done
   2-4-present-decision-ready-work-detail-pages: done
   2-6-provide-accurate-purchase-handoff-and-next-work-guidance: backlog
   2-2-prepare-the-representative-minimum-catalog: done

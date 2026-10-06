@@ -1,10 +1,14 @@
 import { access, readFile, readdir } from "node:fs/promises";
-import { dirname, parse, resolve } from "node:path";
+import { createHash } from "node:crypto";
+import { dirname, parse, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { load } from "js-yaml";
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const worksDirectory = resolve(projectRoot, "src/content/works");
+const workAssetsDirectory = resolve(projectRoot, "src/assets/works");
+const worksCatalogPage = resolve(projectRoot, "src/pages/works/index.astro");
+const worksCatalogComponent = resolve(projectRoot, "src/components/works/WorksCatalog.astro");
 const pages = ["index.html", "works/index.html", "about/index.html"];
 const typeLabels = {
   "one-shot": "One-shot",
@@ -12,8 +16,31 @@ const typeLabels = {
   "item-bundle": "Item bundle"
 };
 const globalStyles = await readFile(resolve("src/styles/global.css"), "utf8");
+const worksCatalogSource = await readFile(worksCatalogPage, "utf8");
+const worksCatalogComponentSource = await readFile(worksCatalogComponent, "utf8");
+const worksContentConfig = await readFile(resolve("src/content.config.ts"), "utf8");
 const hasReducedMotionFallback = /@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*?animation-duration:\s*0\.01ms\s*!important;/iu.test(globalStyles);
 const hasContainedHero = /\.work-hero img\s*\{[\s\S]*?object-fit:\s*contain;/u.test(globalStyles);
+const hasCatalogHeroFrame =
+  /--primitive-catalog-hero-ratio:\s*2\s*\/\s*3;/u.test(globalStyles) &&
+  /\.work-catalog-media\s*\{[\s\S]*?aspect-ratio:\s*var\(--work-catalog-hero-ratio\);/u.test(globalStyles) &&
+  /\.work-catalog-media\s+\.work-hero\s*\{[\s\S]*?aspect-ratio:\s*auto;/u.test(globalStyles);
+const hasConditionalEmptyState =
+  /catalogWorks\.length\s*>\s*0\s*\?[\s\S]*?No published works are available here\./u.test(worksCatalogComponentSource);
+const hasHeroOnlyCatalogSource =
+  /work\.data\.images\.find\(\(image\)(?::[^=]+)?\s*=>\s*image\.role\s*===\s*"hero"\)/u.test(worksCatalogComponentSource) &&
+  /Published work "\$\{work\.data\.slug\}" is missing its hero image\./u.test(worksCatalogComponentSource);
+const workHeroSource = await readFile(resolve("src/components/works/WorkHero.astro"), "utf8");
+const hasPublishedHeroResolver =
+  /schema:\s*\(\{\s*image\s*\}\)\s*=>/u.test(worksContentConfig) &&
+  /src:\s*image\(\),\s*role:\s*z\.literal\("hero"\)/u.test(worksContentConfig) &&
+  /const src = image\.src\.src;/u.test(workHeroSource) &&
+  !/import\.meta\.glob/u.test(workHeroSource);
+const hasPublishedCatalogSource =
+  /const publishedWorks = await getPublishedWorks\(\);/u.test(worksCatalogSource) &&
+  /const publishedWorks = works\.filter\(/u.test(worksCatalogComponentSource) &&
+  /const catalogWorks = \[\.\.\.curatedWorks, \.\.\.remainingWorks\];/u.test(worksCatalogComponentSource);
+const curatedWorkSlugs = ["abythera", "ephemera", "daggerheart-item-bundle"];
 
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
 const escapeHtml = (value) => value
@@ -43,12 +70,35 @@ async function readWorks() {
   return entries;
 }
 
+async function readWorkAssets(directory = workAssetsDirectory) {
+  const entries = await readdir(directory, { withFileTypes: true });
+  const paths = await Promise.all(entries.map(async (entry) => {
+    const entryPath = resolve(directory, entry.name);
+
+    if (entry.isDirectory()) {
+      return readWorkAssets(entryPath);
+    }
+
+    return entry.isFile() ? [entryPath] : [];
+  }));
+
+  return paths.flat();
+}
+
+async function hashFile(filePath) {
+  return createHash("sha256").update(await readFile(filePath)).digest("hex");
+}
+
 const works = await readWorks();
 const publishedWorks = works.filter((work) => work.status === "published");
 const unpublishedSlugs = [...works.filter((work) => work.status !== "published").map((work) => work.slug), "unknown-work"];
 
-if (!hasReducedMotionFallback || !hasContainedHero) {
-  throw new Error("Reduced-motion fallback or contained work-hero styling is missing from the global styles.");
+if (!hasReducedMotionFallback || !hasContainedHero || !hasCatalogHeroFrame) {
+  throw new Error("Reduced-motion fallback, contained work-hero styling, or the 2:3 catalog hero frame is missing from the global styles.");
+}
+
+if (!hasConditionalEmptyState || !hasHeroOnlyCatalogSource || !hasPublishedHeroResolver || !hasPublishedCatalogSource) {
+  throw new Error("The Works catalog is missing its published-only query, conditional empty state, hero resolver, or hero-only work-specific error handling.");
 }
 
 for (const page of pages) {
@@ -104,6 +154,120 @@ for (const page of pages) {
   }
 }
 
+const worksCatalogHtml = await readFile(resolve("dist", "works/index.html"), "utf8");
+const worksCatalogMain = /<main\b[^>]*>([\s\S]*?)<\/main>/iu.exec(worksCatalogHtml)?.[1] ?? "";
+const catalogTiles = [...worksCatalogMain.matchAll(/<a(?=[^>]*\bclass="[^"]*\bwork-catalog-tile\b[^"]*")(?=[^>]*\bhref="\/works\/([^"]+)")[^>]*>([\s\S]*?)<\/a>/gu)];
+const catalogSlugs = catalogTiles.map(([, slug]) => slug);
+const builtAssets = await readdir(resolve("dist", "_astro"));
+const approvedHeroPaths = new Set(
+  publishedWorks.flatMap((work) =>
+    work.images
+      .filter((image) => image.role === "hero")
+      .map((image) => resolve(worksDirectory, image.src))
+  )
+);
+const workAssets = await Promise.all((await readWorkAssets()).map(async (assetPath) => ({
+  assetPath,
+  hash: await hashFile(assetPath)
+})));
+const sourcePathsByHash = new Map();
+for (const workAsset of workAssets) {
+  const paths = sourcePathsByHash.get(workAsset.hash) ?? [];
+  paths.push(workAsset.assetPath);
+  sourcePathsByHash.set(workAsset.hash, paths);
+}
+const workAssetExtensions = new Set(workAssets.map(({ assetPath }) => parse(assetPath).ext.toLowerCase()));
+const emittedWorkAssets = await Promise.all(
+  builtAssets
+    .filter((asset) => workAssetExtensions.has(parse(asset).ext.toLowerCase()))
+    .map(async (asset) => ({ asset, hash: await hashFile(resolve("dist", "_astro", asset)) }))
+);
+const emittedUnapprovedWorkAssets = [];
+const ambiguousEmittedWorkAssets = [];
+for (const emittedAsset of emittedWorkAssets) {
+  const sourcePaths = sourcePathsByHash.get(emittedAsset.hash);
+  if (!sourcePaths) {
+    continue;
+  }
+
+  const approvedPaths = sourcePaths.filter((assetPath) => approvedHeroPaths.has(assetPath));
+  if (approvedPaths.length === 0) {
+    emittedUnapprovedWorkAssets.push({
+      asset: emittedAsset.asset,
+      sourcePaths: sourcePaths.map((assetPath) => relative(workAssetsDirectory, assetPath).replace(/\\/gu, "/"))
+    });
+  } else if (approvedPaths.length !== sourcePaths.length) {
+    ambiguousEmittedWorkAssets.push({
+      asset: emittedAsset.asset,
+      sourcePaths: sourcePaths.map((assetPath) => relative(workAssetsDirectory, assetPath).replace(/\\/gu, "/"))
+    });
+  }
+}
+const orderedPublishedSlugs = [
+  ...curatedWorkSlugs.filter((slug) => publishedWorks.some((work) => work.slug === slug)),
+  ...publishedWorks
+    .map((work) => work.slug)
+    .filter((slug) => !curatedWorkSlugs.includes(slug))
+];
+const catalogDetails = publishedWorks.map((work) => {
+  const hero = work.images.find((image) => image.role === "hero");
+  const tile = catalogTiles.find(([, slug]) => slug === work.slug);
+  const tileMarkup = tile?.[2] ?? "";
+  const heroFilename = parse(hero.src);
+  const emittedHeroAsset = builtAssets.find((asset) => asset.startsWith(`${heroFilename.name}.`) && asset.endsWith(heroFilename.ext));
+  const heroPattern = new RegExp(
+    `<img(?=[^>]*\\bsrc="\\/_astro\\/${escapeRegExp(heroFilename.name)}\\.[^"]+${escapeRegExp(heroFilename.ext)}")(?=[^>]*\\balt="${escapeRegExp(escapeHtml(hero.alt))}")(?=[^>]*\\bloading="${catalogSlugs[0] === work.slug ? "eager" : "lazy"}")(?=[^>]*\\bfetchpriority="${catalogSlugs[0] === work.slug ? "high" : "auto"}")[^>]*>`,
+    "u"
+  );
+  const typePattern = new RegExp(
+    `<p(?=[^>]*\\bclass="[^"]*\\bwork-type-label\\b[^"]*")[^>]*>${escapeRegExp(typeLabels[work.type])}<\\/p>`,
+    "u"
+  );
+  const heroIndex = tileMarkup.indexOf("work-catalog-media");
+  const typeIndex = tileMarkup.search(typePattern);
+  const titleIndex = tileMarkup.indexOf(`<h2>${escapeHtml(work.title)}</h2>`);
+  const premiseIndex = tileMarkup.indexOf(`<p class="work-catalog-premise">${escapeHtml(work.premise)}</p>`);
+
+  return {
+    hasTile: Boolean(tile),
+    hasEmittedHeroAsset: Boolean(emittedHeroAsset),
+    hasHero: heroPattern.test(tileMarkup),
+    hasSingleHero: (tileMarkup.match(/<img(?:\s[^>]*)?>/giu) ?? []).length === 1,
+    hasSameTabLink: !/\btarget=/iu.test(tile?.[0] ?? ""),
+    hasOrderedTileContent:
+      heroIndex >= 0 &&
+      typeIndex >= heroIndex &&
+      titleIndex >= typeIndex &&
+      premiseIndex >= titleIndex
+  };
+});
+const hasUnpublishedCatalogContent = works
+  .filter((work) => work.status !== "published")
+  .some((work) =>
+    worksCatalogMain.includes(`/works/${work.slug}`) ||
+    (typeof work.title === "string" && worksCatalogMain.includes(escapeHtml(work.title)))
+  );
+
+if (
+  catalogTiles.length !== publishedWorks.length ||
+  catalogSlugs.join("|") !== orderedPublishedSlugs.join("|") ||
+  catalogDetails.some((details) => Object.values(details).some((value) => !value)) ||
+  hasUnpublishedCatalogContent ||
+  emittedUnapprovedWorkAssets.length > 0 ||
+  ambiguousEmittedWorkAssets.length > 0
+) {
+  throw new Error(
+    `Works catalog static HTML verification failed: ${JSON.stringify({
+      catalogSlugs,
+      orderedPublishedSlugs,
+      catalogDetails,
+      hasUnpublishedCatalogContent,
+      emittedUnapprovedWorkAssets,
+      ambiguousEmittedWorkAssets
+    })}.`
+  );
+}
+
 for (const work of publishedWorks) {
   const page = `works/${work.slug}/index.html`;
   const html = await readFile(resolve("dist", page), "utf8");
@@ -112,7 +276,7 @@ for (const work of publishedWorks) {
   const builtAssets = await readdir(resolve("dist", "_astro"));
   const emittedHeroAsset = builtAssets.find((asset) => asset.startsWith(`${heroFilename.name}.`) && asset.endsWith(heroFilename.ext));
   const heroSourcePattern = new RegExp(
-    `<img(?=[^>]*\\bsrc="\\/_astro\\/${escapeRegExp(heroFilename.name)}\\.[^"]+${escapeRegExp(heroFilename.ext)}")(?=[^>]*\\balt="${escapeRegExp(hero.alt)}")(?=[^>]*\\bloading="lazy")[^>]*>`,
+    `<img(?=[^>]*\\bsrc="\\/_astro\\/${escapeRegExp(heroFilename.name)}\\.[^"]+${escapeRegExp(heroFilename.ext)}")(?=[^>]*\\balt="${escapeRegExp(escapeHtml(hero.alt))}")(?=[^>]*\\bloading="lazy")[^>]*>`,
     "u"
   );
   const compatibilityPattern = new RegExp(
@@ -193,4 +357,4 @@ for (const unpublishedSlug of unpublishedSlugs) {
   }
 }
 
-console.log("Verified static routes, published work details, shared navigation, active routes, Ko-fi, and no client scripts.");
+console.log("Verified static routes, the published Works catalog, work details, shared navigation, active routes, Ko-fi, and no client scripts.");

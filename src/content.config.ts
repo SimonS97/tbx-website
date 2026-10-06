@@ -3,6 +3,12 @@ import { glob } from "astro/loaders";
 
 const slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Use a kebab-case slug.");
 const nonEmptyText = z.string().trim().min(1);
+const imageProperties = {
+  alt: nonEmptyText,
+  width: z.number().int().positive().optional(),
+  height: z.number().int().positive().optional(),
+  aspectRatio: z.number().positive().optional()
+};
 const discovery = z.discriminatedUnion("route", [
   z.object({
     route: z.literal("one-shot"),
@@ -23,7 +29,7 @@ const works = defineCollection({
     base: "./src/content/works",
     pattern: "*.md"
   }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     slug,
     status: z.enum(["draft", "published"]),
     title: nonEmptyText.optional(),
@@ -35,14 +41,14 @@ const works = defineCollection({
     images: z
       .array(
         z
-          .object({
-            src: nonEmptyText,
-            alt: nonEmptyText,
-            role: z.enum(["hero", "gallery", "vibe", "evidence"]),
-            width: z.number().int().positive().optional(),
-            height: z.number().int().positive().optional(),
-            aspectRatio: z.number().positive().optional()
-          })
+          .discriminatedUnion("role", [
+            z.object({ src: image(), role: z.literal("hero"), ...imageProperties }),
+            z.object({
+              src: nonEmptyText,
+              role: z.enum(["gallery", "vibe", "evidence"]),
+              ...imageProperties
+            })
+          ])
           .refine(
             (image) =>
               (image.width !== undefined && image.height !== undefined) || image.aspectRatio !== undefined,

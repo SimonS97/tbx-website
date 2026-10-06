@@ -1,28 +1,13 @@
 ---
-import abytheraHero from "../../assets/works/abythera/abythera-cover.png?url";
-import ephemeraHero from "../../assets/works/ephemera/Selfmade_Cover.png?url";
-import itemBundleHero from "../../assets/works/daggerheart-item-bundle/daggerheart-item-bundle-cover.jpg?url";
+import type { WorkHeroImage } from "../../lib/works";
 
 interface Props {
-  image: {
-    src: string;
-    alt: string;
-    aspectRatio?: number;
-  };
+  image: WorkHeroImage;
   eager?: boolean;
 }
 
 const { image, eager = false } = Astro.props;
-const workImages: Record<string, string> = {
-  "../../assets/works/abythera/abythera-cover.png": abytheraHero,
-  "../../assets/works/ephemera/Selfmade_Cover.png": ephemeraHero,
-  "../../assets/works/daggerheart-item-bundle/daggerheart-item-bundle-cover.jpg": itemBundleHero
-};
-const src = workImages[image.src];
-
-if (!src) {
-  throw new Error(`Could not resolve published work hero image: ${image.src}`);
-}
+const src = image.src.src;
 
 const aspectRatio = image.aspectRatio ?? 2 / 3;
 ---

@@ -1,15 +1,16 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import WorksCatalog from "../../components/works/WorksCatalog.astro";
+import { getPublishedWorks } from "../../lib/works";
+
+const publishedWorks = await getPublishedWorks();
 ---
 
 <BaseLayout
   title="Works"
   description="Published tabletop works by Tales by Xero."
   currentPath="/works"
+  mainClass="works-catalog-main"
 >
-  <article>
-    <h1>Works</h1>
-    <p>No published works are available here.</p>
-    <p><a href="/">Return to Tales by Xero</a>.</p>
-  </article>
+  <WorksCatalog works={publishedWorks} />
 </BaseLayout>
