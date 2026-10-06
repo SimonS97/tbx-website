@@ -19,15 +19,15 @@ images:
   - src: ../../assets/works/daggerheart-item-bundle/daggerheart-item-bundle-cover.jpg
     alt: "Dark tabletop scene with a sword, chest, parchment, potion bottles, and item cards beneath the Daggerheart Item Bundle title."
     role: hero
-    aspectRatio: 0.667
-  - src: ../../assets/works/daggerheart-item-bundle/item-preview-current-design.png
-    alt: "Parchment-toned preview page showing three dark-framed item cards and three light item-card variants."
+    aspectRatio: 0.707039
+  - src: ../../assets/works/daggerheart-item-bundle/NewDesign1.png
+    alt: "Daggerheart item card for Bastion's Crest, showing its armor bonus and visible draft correction marks."
     role: gallery
-    aspectRatio: 0.667
+    aspectRatio: 0.713333
   - src: ../../assets/works/daggerheart-item-bundle/daggerheart-items-volume-1-cover.jpg
     alt: "Parchment-toned Volume 1 cover showing a fan of item cards and three smaller card designs."
     role: gallery
-    aspectRatio: 0.667
+    aspectRatio: 0.707039
 externalUrl: https://www.drivethrurpg.com/en/product/571218/daggerheart-items-bundle
 theMoment: "Item Volumes 1-4 collect more than 120 items in one place, including seven evolving items shown across 21 cards."
 tableUse: "Choose items for the group, print the available variants, and bring them into a Daggerheart session without overcomplicating the game."

@@ -27,6 +27,7 @@
   --primitive-line-width: 0.125rem;
   --primitive-detail-title-size: 4.5rem;
   --primitive-detail-hero-max: 32rem;
+  --primitive-detail-metadata-size: 0.875rem;
   --primitive-font-display: "Source Serif 4", Georgia, serif;
   --primitive-font-body: "Atkinson Hyperlegible", Arial, sans-serif;
 
@@ -56,6 +57,7 @@
   --width-reading: var(--primitive-width-reading);
   --width-shell: var(--primitive-width-shell);
   --width-detail: var(--primitive-width-detail);
+  --font-size-detail-metadata: var(--primitive-detail-metadata-size);
 
   /* Component tokens allow each surface to inherit, not duplicate, semantics. */
   --site-header-background: var(--color-page);
@@ -78,6 +80,8 @@
   --work-detail-intro-gap: var(--space-heading);
   --work-detail-hero-max: var(--primitive-detail-hero-max);
   --work-detail-title-size: var(--primitive-detail-title-size);
+  --work-detail-compatibility-color: var(--work-detail-muted-copy);
+  --work-detail-compatibility-size: var(--font-size-detail-metadata);
   color: var(--site-content-text);
   background: var(--color-page);
   font-family: var(--font-body);
@@ -327,7 +331,7 @@ p { max-width: 65ch; }
   align-items: center;
   padding: var(--space-menu-inset) var(--space-inline);
   border: var(--work-detail-border-width) solid var(--work-detail-rule);
-  font-size: 0.875rem;
+  font-size: var(--font-size-detail-metadata);
   font-weight: 700;
 }
 
@@ -337,25 +341,11 @@ p { max-width: 65ch; }
 }
 
 .daggerheart-compatibility {
-  display: inline-grid;
-  place-items: center;
-  width: 2rem;
-  height: 2rem;
-}
-
-.daggerheart-compatibility-mark {
-  display: grid;
-  width: 2rem;
-  height: 2rem;
-  overflow: hidden;
-}
-
-.daggerheart-compatibility-mark img {
-  width: 16rem;
-  max-width: none;
-  height: 4rem;
-  object-fit: contain;
-  object-position: left center;
+  display: inline-flex;
+  align-items: center;
+  color: var(--work-detail-compatibility-color);
+  font-size: var(--work-detail-compatibility-size);
+  font-weight: 700;
 }
 
 .work-detail-introduction h1 {

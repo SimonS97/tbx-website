@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { resolve } from "node:path";
 import process from "node:process";
-import { getPublishedEntries, validateWorks } from "./validate-works.mjs";
+import { getPublishedEntries, validatePublishedImages, validateWorks } from "./validate-works.mjs";
 
 const root = process.cwd();
 
@@ -155,4 +155,56 @@ const nonRegularAsset = validateWorks([work("asset-work"), work("first-work", { 
 }).join("\n");
 assert.match(nonRegularAsset, /must be a regular file owned by src\/assets\/works\/asset-work\//u);
 
-console.log("Validated Works fixtures: draft gating, valid references, invalid publication, and recommendation cycles.");
+const validImageMetadata = work("image-metadata", {
+  images: [{
+    src: "../../assets/works/image-metadata/hero.jpg",
+    alt: "Context for image metadata.",
+    role: "hero",
+    width: 1600,
+    height: 900,
+    aspectRatio: 16 / 9
+  }]
+});
+const inspectedPaths = [];
+const decodedPaths = [];
+assert.deepEqual(
+  await validatePublishedImages([validImageMetadata], {
+    getImageMetadata: async (assetPath) => {
+      inspectedPaths.push(assetPath);
+      return { width: 1600, height: 900 };
+    },
+    decodeImage: async (assetPath) => {
+      decodedPaths.push(assetPath);
+    }
+  }),
+  [],
+  "matching declared dimensions and ratio pass image inspection"
+);
+assert.deepEqual(decodedPaths, inspectedPaths, "every inspected image is fully decoded");
+
+const aspectRatioMismatch = await validatePublishedImages([
+  work("ratio-mismatch", {
+    images: [{
+      src: "../../assets/works/ratio-mismatch/hero.jpg",
+      alt: "Context for a mismatched ratio.",
+      role: "hero",
+      aspectRatio: 1.5
+    }]
+  })
+], {
+  getImageMetadata: async () => ({ width: 1600, height: 900 }),
+  decodeImage: async () => undefined
+});
+assert.match(aspectRatioMismatch.join("\n"), /aspectRatio 1\.5 does not match intrinsic ratio/u);
+
+const unreadableImage = await validatePublishedImages([
+  work("unreadable-image")
+], {
+  getImageMetadata: async () => ({ width: 1600, height: 900 }),
+  decodeImage: async () => {
+    throw new Error("Unreadable fixture image.");
+  }
+});
+assert.match(unreadableImage.join("\n"), /could not be fully decoded/u);
+
+console.log("Validated Works fixtures: draft gating, valid references, image inspection, invalid publication, and recommendation cycles.");

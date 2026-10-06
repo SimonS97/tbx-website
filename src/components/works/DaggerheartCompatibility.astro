@@ -1,7 +1,9 @@
 ---
-import daggerheartMark from "../../assets/works/DH_CGL_logos_final_white_full_color.png?url";
+interface Props {
+  compatibility: string;
+}
+
+const { compatibility } = Astro.props;
 ---
 
-<span class="daggerheart-compatibility" aria-label="Compatible with Daggerheart">
-  <span class="daggerheart-compatibility-mark" aria-hidden="true"><img src={daggerheartMark} alt="" /></span>
-</span>
+<span class="daggerheart-compatibility">{compatibility}</span>

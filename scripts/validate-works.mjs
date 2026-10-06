@@ -4,12 +4,15 @@ import { dirname, relative, resolve, sep } from "node:path";
 import process from "node:process";
 import { URL, fileURLToPath } from "node:url";
 import { load } from "js-yaml";
+import sharp from "sharp";
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const worksDirectory = resolve(projectRoot, "src/content/works");
 const assetsDirectory = resolve(projectRoot, "src/assets/works");
 const validRoles = new Set(["hero", "gallery", "vibe", "evidence"]);
 const kebabCase = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
+// Allows ratios rounded to three decimal places while rejecting material metadata drift.
+const aspectRatioTolerance = 0.0005;
 
 function hasText(value) {
   return typeof value === "string" && value.trim().length > 0;
@@ -210,6 +213,70 @@ export function validateWorks(works, { assetInfo = getAssetInfo } = {}) {
   return errors;
 }
 
+async function getImageMetadata(assetPath) {
+  return sharp(assetPath, { failOn: "error" }).metadata();
+}
+
+async function decodeImage(assetPath) {
+  // Raw output requires sharp to decode the entire source rather than only read headers.
+  await sharp(assetPath, { failOn: "error" }).raw().toBuffer();
+}
+
+export async function validatePublishedImages(
+  works,
+  { getImageMetadata: inspectMetadata = getImageMetadata, decodeImage: fullyDecodeImage = decodeImage } = {}
+) {
+  const errors = [];
+
+  for (const work of getPublishedEntries(works)) {
+    const expectedAssetDirectory = resolve(projectRoot, "src/assets/works", work.data.slug);
+
+    if (!Array.isArray(work.data.images)) {
+      continue;
+    }
+
+    for (const image of work.data.images) {
+      const assetPath = image ? sourcePath(work, image) : null;
+      if (assetPath === null || !assetPath.startsWith(expectedAssetDirectory + sep)) {
+        continue;
+      }
+
+      try {
+        const metadata = await inspectMetadata(assetPath);
+        await fullyDecodeImage(assetPath);
+
+        if (!Number.isInteger(metadata.width) || metadata.width <= 0 || !Number.isInteger(metadata.height) || metadata.height <= 0) {
+          errors.push(`${work.label}: image ${image.src} has no valid intrinsic dimensions.`);
+          continue;
+        }
+
+        if (image.width !== undefined && image.width !== metadata.width) {
+          errors.push(`${work.label}: image ${image.src} width ${image.width} does not match intrinsic width ${metadata.width}.`);
+        }
+
+        if (image.height !== undefined && image.height !== metadata.height) {
+          errors.push(`${work.label}: image ${image.src} height ${image.height} does not match intrinsic height ${metadata.height}.`);
+        }
+
+        if (image.aspectRatio !== undefined) {
+          if (!Number.isFinite(image.aspectRatio)) {
+            errors.push(`${work.label}: image ${image.src} aspectRatio must be a finite number.`);
+          } else {
+            const intrinsicAspectRatio = metadata.width / metadata.height;
+            if (Math.abs(image.aspectRatio - intrinsicAspectRatio) > aspectRatioTolerance) {
+              errors.push(`${work.label}: image ${image.src} aspectRatio ${image.aspectRatio} does not match intrinsic ratio ${intrinsicAspectRatio.toFixed(6)} within tolerance ${aspectRatioTolerance}.`);
+            }
+          }
+        }
+      } catch {
+        errors.push(`${work.label}: image ${image?.src ?? "(missing)"} could not be fully decoded.`);
+      }
+    }
+  }
+
+  return errors;
+}
+
 async function findMarkdownFiles(directory) {
   if (!existsSync(directory)) {
     return [];
@@ -257,7 +324,8 @@ async function readWorks() {
 }
 
 async function main() {
-  const errors = validateWorks(await readWorks());
+  const works = await readWorks();
+  const errors = [...validateWorks(works), ...(await validatePublishedImages(works))];
 
   if (errors.length > 0) {
     throw new Error(`Works validation failed:\n- ${errors.join("\n- ")}`);

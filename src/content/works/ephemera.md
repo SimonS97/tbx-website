@@ -16,22 +16,22 @@ facts:
   - label: GM materials
     value: Three VTT battlemaps and two printer-friendly GM cheat sheets
 images:
-  - src: ../../assets/works/ephemera/hero-cover.png
-    alt: "Dark fantasy cover art for Ephemera, set beneath a mountain."
+  - src: ../../assets/works/ephemera/Selfmade_Cover.png
+    alt: "Ephemera cover art showing an underground prison city beneath a mountain with four figures in the foreground."
     role: hero
-    aspectRatio: 0.667
-  - src: ../../assets/works/ephemera/underground-city-scene.png
-    alt: "Dark fantasy scene of the improvised city beneath the mountain in Ephemera."
+    aspectRatio: 0.70714
+  - src: ../../assets/works/ephemera/OpeningScene_upscayl_2x_high-fidelity-4x.png
+    alt: "Dark view into Ephemera's underground city, with a river leading toward an illuminated estate."
     role: gallery
-    aspectRatio: 0.667
-  - src: ../../assets/works/ephemera/orion-npc-portrait.png
-    alt: "Portrait of Orion Starshard, the calm antagonist of Ephemera."
+    aspectRatio: 0.666667
+  - src: ../../assets/works/ephemera/ImgOfOrionNPc.png
+    alt: "Ephemera NPC page for Orion Starshard, with his portrait and an overview of his role."
     role: gallery
-    aspectRatio: 0.667
-  - src: ../../assets/works/ephemera/gm-cheat-sheet-1.png
-    alt: "GM cheat sheet included with Ephemera."
+    aspectRatio: 0.704036
+  - src: ../../assets/works/ephemera/CheatSheetImg1.png
+    alt: "Ephemera GM reference sheet with setup, session flow, locations, and an escape route."
     role: evidence
-    aspectRatio: 0.667
+    aspectRatio: 0.69939
 externalUrl: https://www.drivethrurpg.com/en/product/580789/ephemera-an-dark-fantasy-adventure-compatible-with-daggerheart
 theMoment: "The party enters an improvised city beneath the mountain, chooses which factions to trust, and decides what to do with the artefact at its centre."
 tableUse: "Run investigation, infiltration, and faction politics as players decide who to trust, how to enter the estate, and what to do with the central artefact."

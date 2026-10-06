@@ -115,28 +115,34 @@ for (const work of publishedWorks) {
     `<img(?=[^>]*\\bsrc="\\/_astro\\/${escapeRegExp(heroFilename.name)}\\.[^"]+${escapeRegExp(heroFilename.ext)}")(?=[^>]*\\balt="${escapeRegExp(hero.alt)}")(?=[^>]*\\bloading="lazy")[^>]*>`,
     "u"
   );
-  const headingCount = (html.match(/<h1(?:\s[^>]*)?>/giu) ?? []).length;
-  const typeIndex = html.indexOf(typeLabels[work.type]);
-  const compatibilityIndex = html.indexOf('aria-label="Compatible with Daggerheart"');
-  const titleIndex = html.indexOf(`<h1>${escapeHtml(work.title)}</h1>`);
-  const premiseIndex = html.indexOf(`<p class="work-premise">${escapeHtml(work.premise)}</p>`);
-  const hookIndex = html.indexOf(`<p class="work-hook">${escapeHtml(work.hook)}</p>`);
-  const factsIndex = html.indexOf("work-facts-strip");
-  const heroIndex = html.indexOf("work-hero");
-  const momentHeadingIndex = html.indexOf("Inside");
-  const momentIndex = html.indexOf(`<p>${escapeHtml(work.theMoment)}</p>`);
-  const tableUseHeadingIndex = html.indexOf("At the table");
-  const tableUseIndex = html.indexOf(`<p>${escapeHtml(work.tableUse)}</p>`);
-  const authorsNoteHeadingIndex = html.indexOf("A note from Xero");
-  const authorsNoteIndex = html.indexOf(`<p>${escapeHtml(work.authorsNote)}</p>`);
-  const facts = [...html.matchAll(/<div class="work-fact"><dt>([^<]+)<\/dt><dd>([^<]+)<\/dd><\/div>/giu)];
+  const compatibilityPattern = new RegExp(
+    `<span(?=[^>]*\\bclass="[^"]*\\bdaggerheart-compatibility\\b[^"]*")[^>]*>${escapeRegExp(escapeHtml(work.compatibility))}</span>`,
+    "u"
+  );
+  const mainMarkup = /<main\b[^>]*>([\s\S]*?)<\/main>/iu.exec(html)?.[1] ?? "";
+  const headingCount = (mainMarkup.match(/<h1(?:\s[^>]*)?>/giu) ?? []).length;
+  const workImageCount = (mainMarkup.match(/<img(?:\s[^>]*)?>/giu) ?? []).length;
+  const typeIndex = mainMarkup.indexOf(typeLabels[work.type]);
+  const compatibilityIndex = mainMarkup.search(compatibilityPattern);
+  const titleIndex = mainMarkup.indexOf(`<h1>${escapeHtml(work.title)}</h1>`);
+  const premiseIndex = mainMarkup.indexOf(`<p class="work-premise">${escapeHtml(work.premise)}</p>`);
+  const hookIndex = mainMarkup.indexOf(`<p class="work-hook">${escapeHtml(work.hook)}</p>`);
+  const factsIndex = mainMarkup.indexOf("work-facts-strip");
+  const heroIndex = mainMarkup.indexOf("work-hero");
+  const momentHeadingIndex = mainMarkup.indexOf("Inside");
+  const momentIndex = mainMarkup.indexOf(`<p>${escapeHtml(work.theMoment)}</p>`);
+  const tableUseHeadingIndex = mainMarkup.indexOf("At the table");
+  const tableUseIndex = mainMarkup.indexOf(`<p>${escapeHtml(work.tableUse)}</p>`);
+  const authorsNoteHeadingIndex = mainMarkup.indexOf("A note from Xero");
+  const authorsNoteIndex = mainMarkup.indexOf(`<p>${escapeHtml(work.authorsNote)}</p>`);
+  const facts = [...mainMarkup.matchAll(/<div class="work-fact"><dt>([^<]+)<\/dt><dd>([^<]+)<\/dd><\/div>/giu)];
   const hasCanonicalFacts = facts.length === work.facts.length && facts.every(([match], index) => match === `<div class="work-fact"><dt>${escapeHtml(work.facts[index].label)}</dt><dd>${escapeHtml(work.facts[index].value)}</dd></div>`);
   const hasDescription = html.includes(`<meta name="description" content="${escapeHtml(work.seo.description)}">`);
   const seoTitle = work.seo.title.endsWith(" | Tales by Xero") ? work.seo.title : `${work.seo.title} | Tales by Xero`;
   const hasSeoTitle = html.includes(`<title>${escapeHtml(seoTitle)}</title>`);
   const hasDesktopActiveWorksLink = /<div class="desktop-navigation">[\s\S]*?<a[^>]+class="[^"]*\bnavigation-link\b[^"]*\bis-current\b[^"]*"[^>]+href="\/works"[^>]+aria-current="page"[^>]*>Works<\/a>/iu.test(html);
   const hasMobileActiveWorksLink = /<details[^>]+class="mobile-navigation"[^>]*>[\s\S]*?<a[^>]+class="[^"]*\bnavigation-link\b[^"]*\bis-current\b[^"]*"[^>]+href="\/works"[^>]+aria-current="page"[^>]*>Works<\/a>/iu.test(html);
-  const hasHero = new RegExp(`<figure[^>]+class="work-hero"[^>]+style="--work-hero-aspect-ratio: ${escapeRegExp(String(hero.aspectRatio))}"[^>]*>[\\s\\S]*?${heroSourcePattern.source}`, "u").test(html);
+  const hasHero = new RegExp(`<figure[^>]+class="work-hero"[^>]+style="--work-hero-aspect-ratio: ${escapeRegExp(String(hero.aspectRatio))}"[^>]*>[\\s\\S]*?${heroSourcePattern.source}`, "u").test(mainMarkup);
   const hasClientScript = /<script(?:\s[^>]*)?>/iu.test(html);
 
   const checks = {
@@ -147,7 +153,9 @@ for (const work of publishedWorks) {
     hasMobileActiveWorksLink,
     hasHero,
     hasEmittedHeroAsset: Boolean(emittedHeroAsset),
+    hasCompatibility: compatibilityIndex >= 0,
     hasCanonicalFacts,
+    hasHeroOnlyMedia: workImageCount === 1,
     hasNoClientScript: !hasClientScript,
     hasOrderedContent:
       typeIndex >= 0 &&

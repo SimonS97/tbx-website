@@ -31,7 +31,7 @@ if (!hero) {
     <header class="work-detail-introduction">
       <div class="work-detail-metadata" aria-label="Work classification">
         <p class="work-type-label">{workTypeLabels[work.data.type]}</p>
-        <DaggerheartCompatibility />
+        <DaggerheartCompatibility compatibility={work.data.compatibility} />
       </div>
       <h1>{work.data.title}</h1>
       <p class="work-premise">{work.data.premise}</p>

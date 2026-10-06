@@ -1,6 +1,6 @@
 ---
 import abytheraHero from "../../assets/works/abythera/abythera-cover.png?url";
-import ephemeraHero from "../../assets/works/ephemera/hero-cover.png?url";
+import ephemeraHero from "../../assets/works/ephemera/Selfmade_Cover.png?url";
 import itemBundleHero from "../../assets/works/daggerheart-item-bundle/daggerheart-item-bundle-cover.jpg?url";
 
 interface Props {
@@ -15,7 +15,7 @@ interface Props {
 const { image, eager = false } = Astro.props;
 const workImages: Record<string, string> = {
   "../../assets/works/abythera/abythera-cover.png": abytheraHero,
-  "../../assets/works/ephemera/hero-cover.png": ephemeraHero,
+  "../../assets/works/ephemera/Selfmade_Cover.png": ephemeraHero,
   "../../assets/works/daggerheart-item-bundle/daggerheart-item-bundle-cover.jpg": itemBundleHero
 };
 const src = workImages[image.src];

@@ -19,15 +19,15 @@ images:
   - src: ../../assets/works/abythera/abythera-cover.png
     alt: "Abythera cover art showing a dark fantasy figure against a deep blue background."
     role: hero
-    aspectRatio: 0.667
+    aspectRatio: 0.666667
   - src: ../../assets/works/abythera/harmony-portrait.png
     alt: "Portrait of Harmony, a pale figure bound by chains beneath a bright circular light."
     role: gallery
-    aspectRatio: 0.667
-  - src: ../../assets/works/abythera/campaign-framework-overview.png
-    alt: "Artwork and layout introducing the Abythera campaign framework."
+    aspectRatio: 0.666667
+  - src: ../../assets/works/abythera/CampaignFramework.png
+    alt: "Dark document page headed Campaign Framework with prose and diagrams about a hub-based episodic campaign."
     role: gallery
-    aspectRatio: 0.667
+    aspectRatio: 0.70441
 externalUrl: https://www.drivethrurpg.com/en/product/551665/abythera-a-campaign-framework-compatible-with-daggerheart
 theMoment: "Harmony is a convergence of lost souls at the heart of the hub. Their conflicting fragments give the group leads to follow and reasons to doubt what they think they know."
 tableUse: "Use the hub to connect standalone adventures into a longer campaign without forcing every group through the same sequence."
