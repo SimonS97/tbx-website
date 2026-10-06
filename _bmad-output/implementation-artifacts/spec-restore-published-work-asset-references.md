@@ -2,7 +2,7 @@
 title: 'Published-Work-Asset-Referenzen nach Asset-Austausch wiederherstellen'
 type: 'bugfix'
 created: '2026-10-06'
-status: 'in-review'
+status: 'done'
 route: 'dispatch'
 review_loop_iteration: 0
 baseline_commit: 'a1d0b362c6536f13adb8d219c6e7a83f854e0bb0'
@@ -47,8 +47,10 @@ context:
 - `src/components/works/DaggerheartCompatibility.astro` -- importiert derzeit die ungeeignete breite Markenbitmap und wird den uebergebenen kanonischen Kompatibilitaetstext ausgeben.
 - `src/pages/works/[slug].astro` -- besitzt bereits den kanonischen Work-Datensatz und reicht dessen `compatibility` ohne Duplikat an die Komponente weiter.
 - `src/styles/global.css` -- ersetzt die Bild-Crop-Regeln durch eine dezente, tokenbasierte Textbehandlung neben dem Work-Type.
-- `scripts/validate-works.mjs` -- prueft reale Frontmatter-Pfade und Werkseigentum dynamisch; bleibt als Published-Work-Schranke unveraendert.
+- `scripts/validate-works.mjs` -- prueft reale Frontmatter-Pfade, Werkseigentum, vollstaendige Bilddekodierung und deklarierte Bildmetadaten dynamisch.
+- `scripts/test-validate-works.mjs` -- deckt die Published-Work-Schranke und die injizierbare Bildinspektion ohne Fixture-Bilddateien ab.
 - `scripts/verify-static-pages.mjs` -- prueft Hero-Emission, sichtbare kanonische Kompatibilitaet, Hero-only-Ausgabe und Inhaltsreihenfolge dynamisch.
+- `package.json`, `package-lock.json` -- deklarieren `sharp` als direkte Entwicklungsabhaengigkeit fuer die produktionsnahe Bildvalidierung.
 - `_bmad-output/implementation-artifacts/story-2-3-art-direction-release-readiness.md` -- erhaelt eine datierte Ergaenzung mit Ersatzpfaden, technischer Dekodierbarkeit und den offenen Galerie-/Evidence-Grenzen; fruehere Freigabehistorie bleibt nachvollziehbar.
 
 ## Tasks & Acceptance
@@ -59,6 +61,7 @@ context:
 - [x] `src/components/works/DaggerheartCompatibility.astro`, `src/pages/works/[slug].astro`, `src/styles/global.css` -- die geschnittene Markenbitmap bis zu einem neuen offiziellen Asset durch den kanonischen, dezenten sichtbaren Kompatibilitaetstext ersetzen und dessen bestehende Informationsreihenfolge bewahren -- die Detailseiten behaupten keine unfreigegebene Ersatzmarke.
 - [x] `_bmad-output/implementation-artifacts/story-2-3-art-direction-release-readiness.md` -- eine datierte Asset-Reconciliation mit Pfadzuordnungen und verbleibenden Galerie-/Evidence-Einschraenkungen anfuegen -- spaetere Arbeit verwechselt technische Referenzreparatur nicht mit visueller Freigabe.
 - [x] `scripts/verify-static-pages.mjs` -- den sichtbaren kanonischen Kompatibilitaetstext und die Hero-only-Ausgabe der Detailseiten pruefen -- der Text-Fallback und die Galerie-Grenze bleiben bei kuenftigen Aenderungen abgesichert.
+- [x] `scripts/validate-works.mjs`, `scripts/test-validate-works.mjs`, `package.json`, `package-lock.json` -- Published-Work-Bilder vollstaendig dekodieren und ihre deklarierten Dimensionen beziehungsweise Seitenverhaeltnisse gegen die Quelle pruefen -- defekte oder falsch reservierte Ersatzbilder blockieren den Build.
 - [x] `package.json`-Skriptkette -- `npm run test:works`, `npm run validate:works`, `npm run lint` und `npm run build` ausfuehren -- Collection, Astro-Build und statische Detailseiten sind wieder geschlossen validiert.
 
 **Acceptance Criteria:**
@@ -73,11 +76,27 @@ context:
 - Die sechs Ersatzdateien wurden in zwei Bildgruppen zu je hoechstens drei Dateien als browser-dekodierbar bestaetigt. Ihre gemessenen Seitenverhaeltnisse sind in den Published-Frontmatters hinterlegt.
 - Die drei Frontmatters referenzieren die vorhandenen Ersatzdateien; `WorkHero.astro` importiert und loest `Selfmade_Cover.png` fuer Ephemera statisch auf.
 - Die breite Daggerheart-Bitmap wird weder importiert noch zugeschnitten. `DaggerheartCompatibility.astro` gibt den kanonischen Textwert aus; die statische Pruefung sichert diesen sichtbaren Wert sowie die Hero-only-Grenze ab.
+- `validatePublishedImages()` nutzt `sharp` mit vollstaendiger Raw-Dekodierung. Die dokumentierte Toleranz von `0.0005` akzeptiert dreistellig gerundete Seitenverhaeltnisse, aber keine relevante Metadatenabweichung.
+- Die Review-Runde hat die aktuelle Readiness auf Ersatzpfade konsolidiert und die noch nicht freigegebenen Galerie-/Evidence-Dateien klar begrenzt. Zwei weitergehende Themen sind in `deferred-work.md` festgehalten.
 - Keine Datenmigration, Loeschung, externe Nebenwirkung oder Deployment wird durch diesen Fix ausgeloest. Der Footprint ist auf drei Frontmatters, drei Detailansichtsdateien, die Release-Readiness und bestehende Validierungsbefehle begrenzt.
 
 ## Spec Change Log
 
 ## Review Triage Log
+
+| Verdict | Evidence |
+|---|---|
+| low (defer) | Die Rollen `gallery` und `evidence` tragen noch keine maschinenlesbare oeffentliche Freigabe. Es existiert derzeit kein Renderer ausser dem Hero und `verify-static-pages.mjs` erzwingt eine Hero-only-Detailseite; vor einer Galerie- oder Evidence-Implementierung wird die Freigabe deshalb als getrennte Folgearbeit im kanonischen Datenmodell modelliert. |
+| patch | Die alten Assetpfade waren noch in den detaillierten Readiness-Tabellen sichtbar. Die aktuellen Tabellen verwenden jetzt die Ersatzpfade; die Reconciliation bewahrt die entfernten Pfade ausschliesslich als Historie. |
+| patch | `CampaignFramework.png` zeigt eine abweichende sichtbare Titelspur. Die Readiness schliesst die Datei bis zu einer separaten inhaltlichen Freigabe von oeffentlicher Galerie-Nutzung aus. |
+| patch | `ImgOfOrionNPc.png` enthaelt spoilerversprechende NPC-Inhalte. Die Readiness markiert die Datei als nicht freigegeben und fordert vor einer spaeteren Platzierung eine ausdrueckliche Spoilerentscheidung. |
+| patch | `CheatSheetImg1.png` ist ein englisches GM-Referenzblatt. Die Readiness verlangt fuer jede spaetere Evidence-Verwendung das sichtbare Label `GM reference excerpt: preparation material` und englischen HTML-Kontext. |
+| patch | Die vorherige Validierung pruefte Bildpfade, aber keine vollstaendige Dekodierung. `validatePublishedImages()` dekodiert jedes Published-Work-Bild mit `sharp`; Fixture-Tests decken den Decoder-Fehler ab. |
+| patch | Deklarierte Bildseitenverhaeltnisse wurden nur in die Ausgabe kopiert. Der Validator vergleicht sie jetzt mit intrinsischen Quellmassen und deckt Abweichungen mit einer Fixture ab. |
+| patch | Die statische Detailseitenpruefung suchte Inhaltswerte im gesamten Dokument. Sie prueft Detailanatomie, Fakten, Hero und Reihenfolge jetzt ausschliesslich innerhalb von `<main>`. |
+| false | `WorkHero.astro` verwendet bewusst eine statische Importtabelle. Jeder Published-Hero wird durch `getStaticPaths()` im verbindlichen Produktionsbuild gerendert; ein fehlender Lookup wirft den Resolver-Fehler und blockiert damit den Release. |
+| medium (defer) | Die bestehenden Detail-Heroes werden mit `?url` als Originaldateien ausgeliefert; `Selfmade_Cover.png` ist auch im Build 5.203.924 Bytes gross. Responsive Astro-Transformationen brauchen eine eigene Qualitaets- und Zielgroessenentscheidung und werden als Folgearbeit erfasst. |
+| false | `compatibility` bleibt im Content-Schema optional, wird aber durch `validateWorks()` fuer Published Works erzwungen. Der verbindliche `npm run build` ruft diesen Validator auf und blockiert einen veroeffentlichungsfaehigen Build mit fehlender Kompatibilitaet. |
 
 ## Design Notes
 
@@ -99,3 +118,6 @@ context:
 
 **Manual checks:**
 - `/works/abythera`, `/works/ephemera` und `/works/daggerheart-item-bundle` bei 375, 768, 1024 und 1440 CSS-Pixeln auf sichtbare Kompatibilitaet, vollstaendige Hero-Kunst, Lesereihenfolge und Fokus pruefen.
+
+**Nicht lokal ausgefuehrt:**
+- Die vier visuellen Breiten wurden nicht automatisiert geprueft, weil weder ein lokaler Browser noch Playwright oder Puppeteer im Projekt verfuegbar sind. Die statische HTML-Pruefung, der Produktionsbuild und die Bilddekodierungspruefung bestehen.
