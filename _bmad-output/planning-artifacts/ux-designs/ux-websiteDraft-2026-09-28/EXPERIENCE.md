@@ -1,136 +1,209 @@
 ---
 title: Tales by Xero Experience Specification
-status: draft
+status: final
 created: 2026-09-28
-updated: 2026-09-28
+updated: 2026-10-08
 sources:
   - ../../briefs/brief-websiteDraft-2026-09-28/brief.md
+  - ../../../brainstorming/brainstorm-tales-by-xero-art-directions-2026-09-28/direction-comparison.html
   - DESIGN.md
 ---
 
 # Foundation
 
-Tales by Xero is a responsive public web portfolio and promotional gallery. It has no commerce, account, subscription, or checkout behavior. `DESIGN.md` is the visual identity authority; this document defines information architecture, interactions, states, and accessibility behavior.
+Tales by Xero ist eine responsive, statisch ausgelieferte oeffentliche Portfolio- und Werbewebsite. Sie vermittelt Daggerheart-kompatible Werke, fuehrt bewusst zu DriveThruRPG und bietet einen externen Ko-fi-Link. Sie enthaelt weder Commerce, Konto, Abo, Warenkorb noch Checkout-Verhalten.
 
-The public website uses English. German source assets may appear when they document real play material, but their role must be clear through surrounding English context. Content architecture may later support localized product fields without changing the visual system.
+Die Oberflaeche ist Englisch. Deutsche Quellseiten duerfen als echte Produktbelege erscheinen, erhalten aber englischen Kontext. `DESIGN.md` ist die Autoritaet fuer die visuelle Identitaet; dieses Dokument definiert Informationsarchitektur, Verhalten, Zustaende und Zugaenglichkeit. Bei Widerspruch zwischen historischen Studien, importierten Materialien oder Mockups haben diese beiden Spines Vorrang.
 
 # Information Architecture
 
 ## Global destinations
 
-- **Startseite:** Brand promise, featured works, table-tested proof, product discovery, quiet Ko-fi invitation.
-- **Werke:** Filterable or grouped product gallery by product type, with no cart or pricing comparison behavior.
-- **Produktdetail:** A dedicated discovery page for each work, leading externally to DriveThruRPG.
-- **Über Tales by Xero:** A short creator and method statement: played with real groups, then polished for publication.
-- **Ko-fi:** External, clearly labeled route for spam-free release updates.
+| Ziel | Route | Zweck |
+|---|---|---|
+| Home | `/` | Zweiaktige Entdeckung: Astral Spread, Astral Rule und eingebetteter Work Index. |
+| Works | `/works` | Direkt verlinkbarer, vollstaendiger Katalog derselben veroeffentlichten Werke. |
+| Product detail | `/works/:slug` | Produktentscheidung, echte Belege und bewusste DriveThruRPG-Uebergabe. |
+| About Tales by Xero | `/about` | Kurze Aussage zu Creator und Arbeitsweise. |
+| Ko-fi | externe URL | Spamfreie Updates zu Veroeffentlichungen; keine On-site-Verkaufsflaeche. |
 
-## Startseite sections
+Home und `/works` sind beide absichtliche Wege in denselben Bestand. Home ist die gefuehrte Entdeckung mit eingebettetem Index; `/works` ist die kanonische, direkt erreichbare Katalogadresse. Beide verwenden dieselben veroeffentlichten Daten, dieselbe Reihenfolge und dieselbe Entscheidungsinformation.
 
-1. Compact scene header: a concise creator promise, one atmospheric image treatment, and immediate entry into product discovery. It must not consume the first viewport with empty stage space.
-2. **Find your next session:** up to three intent-led product routes, visible above the fold on desktop and beginning within the first viewport on mobile. The routes are "Run something tonight" for a One-Shot, "Build a campaign around it" for a Campaign Framework, and "Bring something to the table" for a released item-oriented product. A route is omitted when no strong released product represents it.
-3. Featured work depth: the selected route foregrounds its product type, premise, image, spoiler-safe hook, and an explicit DriveThruRPG handoff.
-4. At the table: visual proof of practical play support using a real cheat sheet or a compact explanation of playtested-first publication.
-5. Creator method: short text, not a biographical wall or founder story.
-6. Ko-fi epilogue: a low-pressure external update route.
+## Home and Work Index
+
+1. Navigation mit Home, Works, About und Ko-fi.
+2. Astral Threshold als ruhiger, produktneutraler Hintergrund fuer den Home-Opener.
+3. Astral Spread mit bis zu drei direkten Produktrouten: `Run something tonight`, `Build a campaign around it` und `Bring something to the table`. Eine Route erscheint nur, wenn ein starkes veroeffentlichtes Werk sie repraesentiert.
+4. Astral Rule mit `All published works` und `Continue through the portfolio`, die zum eingebetteten Work Index verankert.
+5. Work Index mit stabiler Reihenfolge: Artwork, Typ und Kompatibilitaet, Titel und Praemisse, verifizierte Fakten, Detailaktion.
+6. Kurzer Arbeitsweise-Ausklang mit Route zu About. Ko-fi bleibt eine globale externe Route, keine Abschlusskampagne.
+
+Der Work Index ist die vollstaendige Browse-Ansicht der ersten Version. Produkttypfilter sind aufgeschoben, bis ein spaeterer Inventarentscheid sichtbare Controls, URL-Verhalten, Leerzustand und Tastatursemantik festlegt.
 
 ## Product detail anatomy
 
-1. Product type and compatibility label.
-2. Title and one-sentence premise.
-3. Dominant product image or scene image.
-4. "The moment" hook: one spoiler-safe NPC, location, object, conflict, or question.
-5. What it brings to the table: concise practical value, such as flexible setup, GM support, or printable material.
-6. Optional selected detail blocks: lore, NPC, illustration, or a cheat sheet excerpt.
-7. Explicit outbound action to DriveThruRPG.
-8. Next work or return to works.
+1. Rueckroute zu Works.
+2. Produkttyp und Kompatibilitaet.
+3. Titel und Ein-Satz-Praemisse.
+4. Spoilerarmer Hook.
+5. Sichtbarer `Product evidence`-Hinweis, wenn kuratierte Belege vorhanden sind; er liegt im ersten praktischen Viewport und verankert zum Reader.
+6. Nur bereitgestellte Fakten sowie explizite DriveThruRPG-Uebergabe und optionale Rueckroute zu allen Werken.
+7. Vollstaendliches offizielles Produktcover ohne dekorativen Overlay-Rahmen.
+8. Evidence Reader bei zwei bis fuenf freigegebenen oeffentlichen Supporting Assets.
+9. Produktbezogenes `At the table` oder `A note from Xero` nur, wenn der Inhalt geliefert ist.
+10. Next-work- oder Rueckroute als Abschluss.
+
+Eine Detailseite darf direkt vom Hero in den Evidence Reader fuehren, wenn ein generisches Einleitungskapitel keine eigene Entscheidungsinformation liefert.
+
+## About Tales by Xero anatomy
+
+1. Kurze Creator- und Arbeitsweise-Aussage: erst mit echten Gruppen gespielt, dann fuer Veroeffentlichung ueberarbeitet.
+2. Konkrete Einordnung, dass Material Improvisation, Situationen und praktische Spielhilfe ueber starre Skripte stellt.
+3. Route zu `/works` fuer Besucher, die nach der Aussage direkt einen passenden Titel suchen.
+4. Sichtbarer, nicht aufdringlicher Ko-fi-Link fuer Updates.
+
+Freigegebene Kompositionsreferenzen: [Home und Work Index](mockups/home-astral-threshold-work-index.html) sowie [Abythera Product Detail](mockups/product-detail-abythera-evidence-reader.html). Spines haben Vorrang bei Konflikten.
 
 # Voice and Tone
 
-Microcopy is vivid, precise, and lightly dramatic. It speaks in concrete scenes and playable stakes, not generic fantasy superlatives. "Auf DriveThruRPG ansehen" is better than "Jetzt kaufen" because it describes the handoff truthfully. Product hooks invite rather than spoil.
+Die sichtbare Microcopy ist Englisch, konkret und leicht dramatisch. Sie benennt spielbare Szenen und praktische Folgen statt generischer Fantasy-Superlative. Zieltexte beschreiben die tatsaechliche Uebergabe: `View on DriveThruRPG`, nicht eine On-site-Kaufbehauptung.
 
-Avoid AI-sounding claims such as "epic", "unforgettable", "masterfully crafted", or fabricated precision. Avoid pressure copy, countdowns, pop-ups, and false scarcity. Keep creator language grounded: "am Spieltisch erprobt" is evidence, not a grandiose slogan.
+| Tun | Nicht tun |
+|---|---|
+| `Run something tonight` | `Begin an unforgettable journey` |
+| `Open the material before you commit to it.` | `Discover a world beyond imagination` |
+| `View on DriveThruRPG` | `Buy now` |
+| Eine belegbare Aussage zum Material | `Epic`, `masterfully crafted` oder erfundene Praezision |
+| Ruhige Einladung ohne Druck | Countdowns, Knappheit, Pop-ups oder wiederholte Kaufaufforderungen |
 
 # Component Patterns
 
-## Gallery navigation
+Die visuellen Spezifikationen stehen in `DESIGN.md` unter Components; diese Tabelle definiert das Verhalten.
 
-The gallery opens each product detail in the same tab. Product type controls, if included, filter the visible collection without a page reload and expose their selected state programmatically. [ANNAHME] Initial product count is small enough that filters can be omitted in favor of grouped sections; decide after product inventory is available.
+| Component | Einsatz | Verhaltensregeln |
+|---|---|---|
+| Navigation | Alle internen Seiten | Desktop zeigt die globale Route in einer Zeile. Bevor Links umbrechen, oeffnet `Menu` dieselben Ziele. Der aktive interne Weg ist programmatisch markiert; Ko-fi ist sichtbar als externes Ziel benannt. |
+| Classification | Work Index und Product Detail | Typ und Kompatibilitaet erscheinen vor Lore. Text traegt die Bedeutung; Farbe unterstuetzt nur. Fehlende Produktdaten werden nicht erfunden. |
+| Astral Spread | Home | Jede Karte ist eine direkte interne Produktroute. Hover und Fokus duerfen die Karte hervorheben; Label und Ziel bleiben immer sichtbar. Auf Touch oeffnet ein Tippen das Detail direkt. |
+| Astral Rule | Home | Ein einzelner Anker zwischen Spread und eingebettetem Index. Aktivierung springt zu `#works`; keine zweite breite Trennung folgt direkt darunter. |
+| Work Index | Home und `/works` | Jede Zeile verlinkt auf ein internes Detail und behaelt Artwork, Classification, Titel/Praemisse, Fakten und Aktion in derselben Reihenfolge. Kein Auto-Sortieren, Filter oder Carousel in v1. |
+| Product Detail Hero | Product Detail | Offizielles Cover bleibt vollstaendig. Der `Product evidence`-Hinweis fuehrt, wenn vorhanden, zum Reader. Detail-CTAs benennen DriveThruRPG sichtbar. |
+| Product Evidence Reader | Product Detail | Ein geordneter Button-Index waehlt ein Asset lokal aus. Auswahl aktualisiert Kategorie, Titel, Beschreibung, Callout, Caption, Originalroute und Bild, ohne Fokus zu stehlen oder die Seite zu verlassen. |
+| evidence-dialog | Product Detail | Vorschaubild oeffnet einen nativen Dialog. Escape oder Backdrop-Klick schliessen ihn; danach kehrt Fokus zum ausloesenden Vorschaubild zurueck. Die direkte Originalroute bleibt unabhaengig davon nutzbar. |
+| button-primary | DriveThruRPG-Uebergabe | Primaere Aktion bleibt klarer Link, hat sichtbaren Fokus und keine On-site-Checkout-Optik. |
+| button-secondary | Rueck- und Browse-Routen | Unterstuetzt die primaere Aktion, dupliziert aber nie deren Absicht. |
 
-## External links
+## Evidence content contract
 
-DriveThruRPG and Ko-fi links open in a new tab only if that behavior is retained consistently across the site. Every external action names its destination in visible copy or accessible text. External destinations must never resemble an internal checkout flow.
+Ein Evidence-Reader-Eintrag braucht: explizite Reihenfolge, sichtbares Label, Kategorie, Original-Asset-URL, kontextgerechten Alt-Text, praktischen Titel und Beschreibung, einen optionalen Callout, eine Caption und ein Label fuer die direkte Originalroute. Das initial gewaehlte Element ist pro Produkt explizit festgelegt.
 
-## Product compatibility
-
-Compatibility and product type appear before lore. They use text and iconography or text alone, never color alone. Do not invent system compatibility, playtime, group-size, or content-warning data; absent data stays absent until supplied.
+Der Reader erscheint nur bei zwei bis fuenf freigegebenen oeffentlichen Assets. Bei weniger Assets bleibt der normale Detailfluss bestehen; bei mehr als fuenf Assets braucht die Informationsarchitektur eine neue Entscheidung statt eines unendlichen Indexes.
 
 # State Patterns
 
-## Loading and media
-
-Images reserve their final aspect ratio and show a quiet tonal placeholder while loading. No animated shimmer is required. Lazy-load below-the-fold media; the hero image loads eagerly only when it is the primary largest-contentful paint element.
-
-## Empty and incomplete catalog
-
-If a product type has no released work, hide the category rather than showing an empty sales prompt. If the catalog contains fewer than three works, the start page presents those works as large spotlights and removes gallery density expectations.
-
-## Outbound handoff
-
-Outbound clicks are tracked as an intentional event only after the visitor activates the link. [ANNAHME] Tracking must work without collecting unnecessary personal data and must disclose analytics behavior in the eventual privacy information.
-
-## Error and unavailable destination
-
-If an external product URL is unavailable at build time, do not render a dead CTA. Show the product as "in Vorbereitung" only when the user explicitly chooses to present unreleased work; otherwise omit it from public discovery.
+| Zustand | Flaeche | Behandlung |
+|---|---|---|
+| Statischer Erstaufruf | Alle internen Inhaltsseiten | Inhalt ist als statische Seite vorhanden. Keine Ladeanimation; Medien reservieren ihre endgueltige Groesse. |
+| Bild laedt | Alle Produktflaechen | Tonaler, dimensionsgleicher Platzhalter ohne Shimmer. Hero-Medien laden priorisiert, darunterliegende Medien lazy. |
+| Medium nicht verfuegbar | Alle Produktflaechen | Reservierte Bildflaeche und zugehoeriger Produktkontext bleiben sichtbar. Zeige eine klare Textmeldung mit dem vorhandenen Alt- oder Caption-Kontext. Verberge Vollansicht und direkte Originalroute fuer das fehlgeschlagene Asset; erfinde kein Ersatzbild. |
+| Kein veroeffentlichtes Werk | Home, Works | Verstecke die betroffene Produktroute. Hat der gesamte Katalog keine Veroeffentlichung, erscheint eine ruhige Nachricht statt einer Verkaufsaufforderung. |
+| Fehlender Produkttyp | Home | Die zugehoerige Astral-Spread-Route erscheint nicht. Kein leeres Card-Slot. |
+| Evidence selection | Product Detail | Ausgewaehlter Indexbutton hat programmatischen Zustand. Kontext und Bild aktualisieren sofort; ein Live-Text bestaetigt den neuen Namen ohne Fokuswechsel. |
+| Full-size evidence | Product Detail | Aktivierung des Vorschaubilds oeffnet einen nativen Dialog. Escape oder Klick/Tap auf den Backdrop schliesst ihn. Die explizite Originalroute funktioniert auch ohne Dialog. |
+| Externe Produkt-URL fehlt | Product Detail | Kein toter CTA. Unveroeffentlichte Werke bleiben aus der oeffentlichen Entdeckung heraus, ausser der Creator kennzeichnet sie bewusst als Vorbereitung. |
+| Unbekanntes oder zurueckgezogenes Werk | `/works/:slug` | Statische 404-Antwort mit kurzer Einordnung und klaren Rueckrouten zu `/works` und Home. Kein Produktbild und kein externer CTA. |
+| Externer Aufruf | DriveThruRPG, Ko-fi | DriveThruRPG und Ko-fi verlassen die Seite im selben Tab. Eine direkte Original-Asset-Route aus dem Evidence Reader darf mit klarer Beschriftung einen neuen Tab nutzen. |
 
 # Interaction Primitives
 
 ## Motion
 
-Motion is used to reveal hierarchy, story sequence, or direct feedback. Hero and product blocks may enter with a small opacity and vertical transform reveal. A single scene spotlight may use a scrubbed reveal on desktop only if it remains understandable without the effect. All nonessential motion stops or renders its final state under `prefers-reduced-motion`.
+Motion zeigt Hierarchie, Erzaehlreihenfolge oder direkte Rueckmeldung. Astral-Spread-Karten duerfen auf Hover oder Fokus leicht hervorheben. Bilder im Evidence Reader duerfen minimal skalieren. Der Inhalt bleibt ohne diese Effekte vollstaendig lesbar.
 
-Hovering a gallery tile may shift image crop, border tone, or caption position. Touch and keyboard receive equivalent focus and active feedback. No continuous particles, auto-rotating carousel, infinite marquee, scroll hijacking, or animation on every card.
+Unter `prefers-reduced-motion` werden nicht essenzielle Uebergaenge sofort oder statisch gezeigt. Verboten sind Scroll-Hijacking, Scroll-Snap als Pflichtnavigation, automatische Karussells, Endlos-Marquees, kontinuierliche Partikel, autonome Kartenbewegung und Bewegung als alleiniger Informationstraeger.
 
-## Product exploration
+## Navigation and external handoff
 
-The "Find your next session" routes form a layered stage arrangement, not an equal-size card grid or auto-rotating carousel. Pointer hover and keyboard focus may bring one route's image crop and hook forward, but its label and destination are always visible. On touch, selecting a route opens its product detail page directly. The detail page starts at the title and premise, not at a decorative image fragment. Browser back returns to the prior route state where the platform supports it.
+Browser Back stellt die vorherige interne Route wieder her. Home-Links zu `#works` sind lokale Anker; `/works` bleibt die direkt adressierbare Katalogroute. Die Website simuliert keinen Kauf. DriveThruRPG und Ko-fi sind klar externe Ziele, nicht Teil eines On-site-Checkout-Flows.
+
+Ausgehende Produktklicks duerfen als bewusste, datensparsame Aktion gemessen werden. Anbieter, Consent-Grundlage, Aufbewahrung und Datenschutzhinweis sind Architektur- und Rechtsentscheidungen, keine UX-Annahme.
 
 # Accessibility Floor
 
-- Use semantic landmarks, a visible skip link, one `h1` per page, and logical heading order.
-- Maintain at least WCAG AA contrast for all text; `{colors.chalk}` and `{colors.mist-blue}` appear only on reliably dark fields, while `{colors.night-mineral}` text appears on `{colors.stage-saffron}`.
-- Every image has context-appropriate alt text. Decorative texture and repeated maker marks are hidden from assistive technology.
-- All interactive controls work with keyboard and use `:focus-visible` based on `{colors.focus-ring}`.
-- Touch targets are at least 44 by 44 CSS pixels where controls are compact.
-- No meaning depends only on color, hover, motion, or image content.
-- `prefers-reduced-motion` disables or completes nonessential movement; no information is hidden behind animation.
+- Semantische Landmarks, sichtbarer Skip Link, genau ein `h1` pro Seite und logische Ueberschriftenfolge.
+- Text erfuellt mindestens WCAG AA. `{colors.chalk}` und `{colors.mist-blue}` erscheinen nur auf verlaesslich dunklen Feldern; `{colors.void}` erscheint auf `{colors.stage-saffron}` fuer primaere Aktionen.
+- Jedes Bild hat kontextgerechten Alt-Text. Dekorative Texturen, Schwellengeometrie und wiederholte Maker-Siegel sind fuer Screenreader verborgen.
+- Alle Controls funktionieren per Tastatur und nutzen `:focus-visible` mit `{colors.focus-ring}`. Tab-Reihenfolge folgt der sichtbaren Lesereihenfolge.
+- `Menu` exponiert seinen Auf-/Zu-Zustand programmatisch. Escape schliesst das geoeffnete Menu und bringt den Fokus zum Trigger zurueck. Kein Ziel verschwindet allein wegen einer kleinen Breite.
+- Evidence-Reader-Controls sind native Buttons mit ausgewaehltem Zustand. Der Dialog schliesst mit Escape oder Backdrop-Klick; die direkte Originalroute bleibt ohne Dialog nutzbar.
+- Kompakte Controls haben mindestens 44 mal 44 CSS-Pixel Touch-Flaeche.
+- Keine Bedeutung haengt nur an Farbe, Hover, Bewegung oder Bildinhalt.
 
 # Responsive and Platform
 
-The site is desktop-first in composition but mobile-first in behavior. Test at 375px, 768px, 1024px, and 1440px widths. Desktop may use asymmetric side-by-side story and image staging. At small widths, the reading order is always product type, title, premise, image, hook, CTA.
+Die Website ist responsive Web: visuell desktop-first komponiert, im Verhalten mobile-first. Pruefen bei 375px, 768px, 1024px und 1440px Breite.
 
-Navigation collapses to a labeled menu before links wrap. Product grids become a single column before tile copy becomes cramped. Do not use fixed viewport height for content-critical hero regions; use dynamic viewport-aware minimum height only when the CTA remains visible.
+| Breite | Verhalten |
+|---|---|
+| 1440px und groesser | Astral Spread bleibt als grosse gefaecherte Dreikarten-Komposition sichtbar. Work Index nutzt seine vollstaendige Entscheidungsreihenfolge in einer Zeile. |
+| 1024px bis 1439px | Gleiche Informationsreihenfolge; Karten und Work-Index-Spalten verdichten sich ohne Fakten zu verstecken. |
+| 768px bis 1023px | Home-Opener und Reader wechseln zu vertikalerer Lesereihenfolge. Reader-Index darf zwei Spalten nutzen, solange jeder Beleg klar bleibt. |
+| Unter 768px | Navigation nutzt Menu. Astral Spread, Work Index und Product Detail werden einspaltig. Reader-Index wird vor dem gewaehlten Beleg direkt lesbar gestapelt. |
+
+Astral Threshold nutzt `tbxBg2.jpeg` als eigene Mobile-Rekomposition, nicht als destruktiven Desktop-Crop. Der Hero zeigt Navigation, erste Routenpraemisse, Spread und `Continue through the portfolio` in jeder praktischen ersten Viewporthoehe. Keine feste Viewporthoehe darf eine inhaltliche Aktion unzugaenglich machen.
+
+# Inspiration and Anti-patterns
+
+Die visuelle Richtung und ihre abgelehnten Alternativen stehen verbindlich in `DESIGN.md`, insbesondere in Brand & Style, Layout & Spacing sowie Do's and Don'ts. Dieses Dokument fuegt keine zweite visuelle Autoritaet hinzu.
 
 # Key Flows
 
-## Mara discovers a strange one-shot
+## Mara waehlt einen sofort spielbaren Abend
 
-1. Mara, a Daggerheart GM looking for something to run with her established group, arrives from a shared link or search result.
-2. She sees a strong product scene, understands that Tales by Xero is playtested before publication, and notices that the work is Daggerheart-compatible.
-3. She opens the featured product because the premise and one strange detail make her want context.
-4. On the product detail page, she sees product type, premise, a spoiler-safe hook, and a practical "what it brings to the table" explanation.
-5. **Climax:** Mara decides that the work will create a useful session for her group and activates "Auf DriveThruRPG ansehen".
-6. She arrives at DriveThruRPG with clear intent, not because she was pressured by an on-site purchase mechanic.
+1. Mara, eine erfahrene Daggerheart-Spielleiterin, landet ueber eine geteilte URL oder Suche auf Home.
+2. Astral Threshold vermittelt die gemeinsame Welt; die drei Karten benennen die Auswahl nach Spielabsicht statt nach Marketingkategorie.
+3. Sie waehlt `Run something tonight` und oeffnet Ephemera.
+4. Auf der Detailseite liest sie Typ, Kompatibilitaet, Praemisse, Hook und bereitgestellte Fakten vor der externen Aktion.
+5. **Klimax:** Die konkrete Spielsituation passt zu ihrer Gruppe, und sie aktiviert `View on DriveThruRPG` mit klarer Erwartung an das Ziel.
+6. Sie landet auf DriveThruRPG, ohne einen On-site-Kaufprozess oder falsche Knappheit erlebt zu haben.
 
-## Jonas explores Daggerheart third-party content
+Fehlerpfad: Ist ein passender One-Shot nicht veroeffentlicht, erscheint seine Route im Spread nicht; Mara kann den Work Index durchsuchen oder einen anderen veroeffentlichten Weg waehlen.
 
-1. Jonas knows Daggerheart but has not yet bought third-party material.
-2. He browses Works and learns the difference between a one-shot, campaign framework, and printable item from clear product labels.
-3. He opens a work whose visual scene and premise match his group's taste.
-4. He recognizes that the site is an authored portfolio, not a generic marketplace, and can follow Ko-fi if he wants future release updates.
-5. **Climax:** He chooses either a specific DriveThruRPG product or the low-pressure Ko-fi updates route.
+## Jonas prueft ein Kampagnen-Framework
+
+1. Jonas kennt Daggerheart und oeffnet die direkt geteilte Route `/works`.
+2. Der Work Index zeigt fuer jedes Werk dieselbe Faktenreihenfolge. Er oeffnet Abythera wegen Typ, Kompatibilitaet und Hub-Praemisse.
+3. Die Detailseite zeigt das vollstaendige Cover, Produktinformationen und den `Product evidence`-Hinweis.
+4. Im Evidence Reader waehlt Jonas Campaign Framework und Karrhold Reference. Die echten Originalseiten zeigen, wie Material und GM-Unterstuetzung aussehen.
+5. **Klimax:** Jonas erkennt, dass Karrhold nicht nur beworben, sondern als nutzbare GM-Referenz belegt ist, und wechselt bewusst zu DriveThruRPG.
+6. Er kann alternativ zu Ko-fi gehen, wenn er nur zukuenftige Veroeffentlichungen verfolgen will.
+
+Fehlerpfad: Ist die Vollansicht im Browser nicht verfuegbar oder geschlossen, bleibt `Open full page` als direkte Originalroute vorhanden.
+
+## Leila bringt Material an den Tisch
+
+1. Leila kennt Daggerheart erst seit kurzem und landet auf Home, weil ihre Gruppe nach sofort nutzbaren Tischmaterialien sucht.
+2. Sie sieht `Bring something to the table` und oeffnet das Daggerheart Item Bundle, ohne dass die Seite es als allgemeinen PnP-Einstiegskurs ausgibt.
+3. Typ und sichtbare `Daggerheart compatible`-Angabe machen die Voraussetzung klar; Premise und Fakten erklaeren druckbare Varianten und den Umfang.
+4. Sie vergleicht den Eintrag mit den anderen veroeffentlichten Werken ueber `/works`.
+5. **Klimax:** Leila erkennt, dass das Bundle zu der Daggerheart-Runde ihrer Gruppe passt, und aktiviert `View on DriveThruRPG` mit klarer Systemerwartung.
+6. Sie erreicht DriveThruRPG ohne On-site-Kaufprozess oder die implizite Behauptung, das Material passe zu jedem Rollenspielsystem.
+
+Fehlerpfad: Ist Daggerheart nicht das System ihrer Gruppe, bleibt sie auf `/works` und waehlt keinen unpassenden externen CTA.
+
+## Devon prueft die Arbeitsweise
+
+1. Devon entdeckt einen Work-Index-Eintrag ueber eine Suche, moechte aber vor dem externen Wechsel wissen, wie Tales by Xero arbeitet.
+2. Devon folgt `How Tales by Xero is made` nach `/about`.
+3. Die kurze Aussage erklaert die Table-tested-Arbeitsweise ohne gruenderhafte Selbstinszenierung oder Kaufdruck.
+4. Devon kehrt ueber die sichtbare Works-Route zum Katalog zurueck und oeffnet ein passendes Detail.
+5. **Klimax:** Die Arbeitsweise liefert genug Vertrauen, um eine konkrete Produktseite mit klarer Erwartung weiter zu pruefen.
+6. Devon entscheidet selbst zwischen einer Produktdetailroute und dem externen Ko-fi-Link fuer spaetere Updates.
+
+Fehlerpfad: Sucht Devon nur nach einer schnellen Uebersicht, fuehrt die Works-Route ohne Umweg wieder zum direkt verlinkbaren Katalog.
 
 # Content and Asset Rules
 
-Existing AI-generated product art is acceptable as product-specific visual material when it is clearly curated, consistently cropped, and paired with real product information. Do not use it as generic ambient wallpaper. Each public product requires at minimum: title, product type, compatibility statement, premise, one image, external URL, and one approved story or table hook.
+Jedes oeffentliche Produkt braucht mindestens Titel, Produkttyp, Kompatibilitaet, Praemisse, Hero-Bild, externe URL und einen freigegebenen Hook oder Table-Use-Beleg. Systemkompatibilitaet, Spielzeit, Gruppengroesse, Content Warnings und Fakten werden nur dargestellt, wenn sie geliefert sind.
 
-The supplied German cheat sheet is evidence of the table-focused method. Show it as a readable excerpt or detail image, never as illegible background texture.
+Bestehende KI-generierte Produktkunst darf als klar kuratiertes produktspezifisches Material dienen, nie als austauschbares Ambient Wallpaper. Der Astral-Threshold-Hintergrund ist dekorativ und fuer Assistenztechnik verborgen; Produktbilder und Dokumentseiten haben beschreibenden Kontext. Die bereitgestellte deutsche Cheat Sheet bleibt ein lesbarer Beleg, keine unleserliche Hintergrundtextur.

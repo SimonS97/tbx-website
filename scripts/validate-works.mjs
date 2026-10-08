@@ -98,8 +98,7 @@ export function validateWorks(works, { assetInfo = getAssetInfo } = {}) {
       "compatibility",
       "premise",
       "hook",
-      "theMoment",
-      "tableUse",
+       "tableUse",
       "authorsNote",
       "externalUrl",
       "nextWork"

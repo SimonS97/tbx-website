@@ -57,6 +57,12 @@ const withoutDiscovery = [
 ];
 assert.deepEqual(errorsFor(withoutDiscovery), [], "published works may omit optional discovery");
 
+const withoutMoment = [
+  work("moment-free", { theMoment: undefined, nextWork: "first-work" }),
+  work("first-work", { nextWork: "moment-free" })
+];
+assert.deepEqual(errorsFor(withoutMoment), [], "published works may omit an optional inside section");
+
 const draft = work("draft-work", {
   status: "draft",
   facts: [],

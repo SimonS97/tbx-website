@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tales by Xero UX Validation Report</title>
+  <style>
+    :root { --void: #050914; --night: #091126; --mineral: #142950; --chalk: #f3f3ee; --mist: #bdc9d6; --gold: #efc363; --line: rgba(228, 235, 240, .2); }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: var(--chalk); background: linear-gradient(180deg, var(--void), var(--mineral)); font: 16px/1.55 Arial, sans-serif; }
+    main { width: min(100% - 2rem, 66rem); margin: 0 auto; padding: 4rem 0 6rem; }
+    h1, h2 { font-family: Georgia, serif; font-weight: 400; letter-spacing: -.04em; }
+    h1 { max-width: 12ch; margin: 0; font-size: clamp(3rem, 7vw, 6rem); line-height: .88; }
+    h2 { margin-top: 3.5rem; font-size: clamp(1.8rem, 4vw, 3rem); }
+    .eyebrow { margin: 0 0 1rem; color: var(--gold); font-size: .72rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; }
+    .lede { max-width: 62ch; color: var(--mist); font-size: 1.1rem; }
+    .status { display: inline-block; margin-top: 1rem; padding: .35rem .6rem; border: 1px solid var(--gold); color: var(--gold); font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: .8rem 0; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { color: var(--gold); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; }
+    td:last-child { color: var(--mist); }
+    ul { padding-left: 1.2rem; color: var(--mist); }
+    code { color: var(--gold); }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="eyebrow">Tales by Xero / UX validation</p>
+    <h1>Ready for downstream implementation.</h1>
+    <p class="status">Reviewer gate passed after fixes</p>
+    <p class="lede">The final UX contracts now cover the approved Astral Threshold discovery journey, dual Home and Works routing, the Abythera Evidence Reader, responsive behavior, accessibility, and failure states without reintroducing rejected visual patterns.</p>
+
+    <h2>Category Verdicts</h2>
+    <table>
+      <thead><tr><th>Category</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr><td>Flow coverage</td><td>Strong</td></tr>
+        <tr><td>Token and component contract</td><td>Strong</td></tr>
+        <tr><td>States and accessibility</td><td>Strong after fixes</td></tr>
+        <tr><td>Visual references</td><td>Strong</td></tr>
+        <tr><td>Responsive behavior</td><td>Strong after fixes</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Resolved Findings</h2>
+    <ul>
+      <li>First-viewport Astral Rule and Product evidence cues now remain visible at contracted viewport widths.</li>
+      <li>Skip links, focus rings, 44px targets, route state, and mobile-menu reset behavior are specified and demonstrated.</li>
+      <li>Evidence media reserves space before lazy loading, keeps a direct original route, and supports backdrop or Escape dismissal.</li>
+      <li>The approved Source Serif 4 and Atkinson Hyperlegible roles are documented and loaded in final mockups.</li>
+      <li>v1 filtering remains deliberately absent; analytics remains an architecture and legal decision.</li>
+    </ul>
+
+    <h2>Final References</h2>
+    <ul>
+      <li><code>mockups/home-astral-threshold-work-index.html</code></li>
+      <li><code>mockups/product-detail-abythera-evidence-reader.html</code></li>
+      <li><code>DESIGN.md</code></li>
+      <li><code>EXPERIENCE.md</code></li>
+    </ul>
+  </main>
+</body>
+</html>

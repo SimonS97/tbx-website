@@ -29,7 +29,6 @@ images:
     role: gallery
     aspectRatio: 0.70441
 externalUrl: https://www.drivethrurpg.com/en/product/551665/abythera-a-campaign-framework-compatible-with-daggerheart
-theMoment: "Harmony is a convergence of lost souls at the heart of the hub. Their conflicting fragments give the group leads to follow and reasons to doubt what they think they know."
 tableUse: "Use the hub to connect standalone adventures into a longer campaign without forcing every group through the same sequence."
 authorsNote: "Abythera gives you the framework and its opening mission, Karrhold. Add further missions as your campaign grows."
 nextWork: ephemera

@@ -293,8 +293,9 @@ for (const work of publishedWorks) {
   const hookIndex = mainMarkup.indexOf(`<p class="work-hook">${escapeHtml(work.hook)}</p>`);
   const factsIndex = mainMarkup.indexOf("work-facts-strip");
   const heroIndex = mainMarkup.indexOf("work-hero");
-  const momentHeadingIndex = mainMarkup.indexOf("Inside");
-  const momentIndex = mainMarkup.indexOf(`<p>${escapeHtml(work.theMoment)}</p>`);
+  const hasMoment = typeof work.theMoment === "string" && work.theMoment.trim().length > 0;
+  const momentHeadingIndex = hasMoment ? mainMarkup.indexOf("Inside") : -1;
+  const momentIndex = hasMoment ? mainMarkup.indexOf(`<p>${escapeHtml(work.theMoment)}</p>`) : -1;
   const tableUseHeadingIndex = mainMarkup.indexOf("At the table");
   const tableUseIndex = mainMarkup.indexOf(`<p>${escapeHtml(work.tableUse)}</p>`);
   const authorsNoteHeadingIndex = mainMarkup.indexOf("A note from Xero");
@@ -328,10 +329,9 @@ for (const work of publishedWorks) {
       premiseIndex >= titleIndex &&
       hookIndex >= premiseIndex &&
       factsIndex >= hookIndex &&
-      heroIndex >= factsIndex &&
-      momentHeadingIndex >= heroIndex &&
-      momentIndex >= momentHeadingIndex &&
-      tableUseHeadingIndex >= momentIndex &&
+       heroIndex >= factsIndex &&
+       (!hasMoment || (momentHeadingIndex >= heroIndex && momentIndex >= momentHeadingIndex)) &&
+       tableUseHeadingIndex >= (hasMoment ? momentIndex : heroIndex) &&
       tableUseIndex >= tableUseHeadingIndex &&
       authorsNoteHeadingIndex >= tableUseIndex &&
       authorsNoteIndex >= authorsNoteHeadingIndex

@@ -1,40 +1,87 @@
 ---
 name: Tales by Xero
 description: A vivid mythic portfolio for table-tested Daggerheart adventures, staged as invitations into playable scenes.
-status: draft
+status: final
 created: 2026-09-28
-updated: 2026-09-28
+updated: 2026-10-08
 sources:
   - ../../briefs/brief-websiteDraft-2026-09-28/brief.md
   - ../../../brainstorming/brainstorm-tales-by-xero-art-directions-2026-09-28/direction-comparison.html
 colors:
-  night-mineral: '#132952'
-  night-deep: '#0B1732'
-  stage-saffron: '#F0C65E'
+  primary: '#142950'
+  void: '#050914'
+  night-deep: '#091126'
+  night-mineral: '#142950'
+  stage-saffron: '#EFC363'
+  stage-saffron-light: '#F7D98A'
   danger-coral: '#E87067'
-  chalk: '#F6F3EB'
-  mist-blue: '#D8E0E8'
-  slate-ink: '#182542'
-  focus-ring: '#F6F3EB'
+  chalk: '#F3F3EE'
+  mist-blue: '#BDC9D6'
+  muted-blue: '#8293A8'
+  line: '#647189'
+  line-faint: '#313D53'
+  focus-ring: '#F7D98A'
 typography:
   display:
-    fontFamily: 'editorial display serif, fallback serif'
-    fontSize: 'clamp(3rem, 8vw, 8.5rem)'
+    fontFamily: '"Source Serif 4", Georgia, serif'
+    fontSize: '4.5rem'
     fontWeight: '400'
     lineHeight: '0.82'
     letterSpacing: '-0.065em'
   title:
-    fontFamily: 'editorial display serif, fallback serif'
-    fontSize: 'clamp(2.4rem, 5vw, 5.5rem)'
+    fontFamily: '"Source Serif 4", Georgia, serif'
+    fontSize: '3rem'
     fontWeight: '400'
     lineHeight: '0.9'
+  home-display:
+    fontFamily: '"Source Serif 4", Georgia, serif'
+    fontSize: '7.55rem'
+    fontWeight: '400'
+    lineHeight: '0.81'
+    letterSpacing: '-0.08em'
+  home-display-mobile:
+    fontFamily: '"Source Serif 4", Georgia, serif'
+    fontSize: '4.8rem'
+    fontWeight: '400'
+    lineHeight: '0.81'
+    letterSpacing: '-0.08em'
+  home-display-min:
+    fontFamily: '"Source Serif 4", Georgia, serif'
+    fontSize: '3.2rem'
+    fontWeight: '400'
+    lineHeight: '0.81'
+    letterSpacing: '-0.08em'
+  detail-display:
+    fontFamily: '"Source Serif 4", Georgia, serif'
+    fontSize: '10rem'
+    fontWeight: '400'
+    lineHeight: '0.74'
+    letterSpacing: '-0.09em'
+  detail-display-mobile:
+    fontFamily: '"Source Serif 4", Georgia, serif'
+    fontSize: '6rem'
+    fontWeight: '400'
+    lineHeight: '0.74'
+    letterSpacing: '-0.09em'
+  detail-display-min:
+    fontFamily: '"Source Serif 4", Georgia, serif'
+    fontSize: '4.6rem'
+    fontWeight: '400'
+    lineHeight: '0.74'
+    letterSpacing: '-0.09em'
+  detail-display-mobile-min:
+    fontFamily: '"Source Serif 4", Georgia, serif'
+    fontSize: '4rem'
+    fontWeight: '400'
+    lineHeight: '0.74'
+    letterSpacing: '-0.09em'
   body:
-    fontFamily: 'humanist sans-serif, fallback sans-serif'
+    fontFamily: '"Atkinson Hyperlegible", Arial, sans-serif'
     fontSize: '1rem'
     fontWeight: '400'
     lineHeight: '1.55'
   label:
-    fontFamily: 'humanist sans-serif, fallback sans-serif'
+    fontFamily: '"Atkinson Hyperlegible", Arial, sans-serif'
     fontSize: '0.75rem'
     fontWeight: '700'
     lineHeight: '1.2'
@@ -53,87 +100,143 @@ spacing:
   '6': '3.5rem'
   '7': '5.5rem'
   '8': '8rem'
-  gutter: 'clamp(1.25rem, 5vw, 5rem)'
+  gutter: '5rem'
   gutter-mobile: '1.25rem'
 components:
   button-primary:
-    background: '{colors.stage-saffron}'
-    foreground: '{colors.night-mineral}'
-    border: '{colors.stage-saffron}'
-    radius: '{rounded.sm}'
+    backgroundColor: '{colors.stage-saffron}'
+    textColor: '{colors.void}'
+    rounded: '{rounded.sm}'
   button-secondary:
-    background: 'transparent'
-    foreground: '{colors.chalk}'
-    border: '{colors.mist-blue}'
-    radius: '{rounded.sm}'
-  product-type-label:
-    foreground: '{colors.stage-saffron}'
-    font: '{typography.label}'
-  product-card:
-    border: '{colors.mist-blue}'
-    radius: '{rounded.sm}'
-  spotlight-caption:
-    background: '{colors.night-deep}'
-    foreground: '{colors.mist-blue}'
-    accent: '{colors.stage-saffron}'
+    backgroundColor: 'transparent'
+    textColor: '{colors.chalk}'
+    rounded: '{rounded.sm}'
+  navigation:
+    backgroundColor: '{colors.night-mineral}'
+    textColor: '{colors.mist-blue}'
+    rounded: '{rounded.sm}'
+  classification:
+    textColor: '{colors.mist-blue}'
+    typography: '{typography.label}'
+    rounded: '{rounded.sm}'
+  astral-spread:
+    backgroundColor: '{colors.night-mineral}'
+    textColor: '{colors.chalk}'
+    rounded: '{rounded.sm}'
+  astral-rule:
+    backgroundColor: '{colors.void}'
+    textColor: '{colors.stage-saffron}'
+    rounded: '{rounded.sm}'
+  work-index:
+    backgroundColor: '{colors.night-mineral}'
+    textColor: '{colors.chalk}'
+    rounded: '{rounded.sm}'
+  product-detail-hero:
+    backgroundColor: '{colors.night-mineral}'
+    textColor: '{colors.chalk}'
+    rounded: '{rounded.sm}'
+  evidence-reader:
+    backgroundColor: '{colors.night-mineral}'
+    textColor: '{colors.chalk}'
+    rounded: '{rounded.sm}'
+  evidence-dialog:
+    backgroundColor: '{colors.night-deep}'
+    textColor: '{colors.chalk}'
+    rounded: '{rounded.sm}'
 ---
 
-# Brand & Style
+# Tales by Xero Design Specification
 
-Tales by Xero is a mythic stage, not a fantasy storefront. Each work is introduced as the moment a group steps into a dangerous, strange, or promising scene. The visual language is cinematic and composed, but never ornamental for its own sake: images, titles, and color changes direct attention toward a playable premise.
+Visueller Vertrag fuer die responsive oeffentliche Portfolio- und Werbewebsite. Verhalten, Zustaende und Zugaenglichkeit stehen in `EXPERIENCE.md`.
 
-The system inherits the discovery instinct of the Wayfinder's Field Guide. Different products may carry different moods, but they all enter through the same dramatic frame: product type, premise, a vivid hook, and a clear route to DriveThruRPG. The brand mark appears as a rare maker's seal, not as persistent decoration.
+## Brand & Style
 
-# Colors
+Tales by Xero ist eine mythische Buehne, kein Fantasy-Shop. Jedes Werk beginnt als spielbare Einladung: eine gefaehrliche Praemisse, ein seltsames Detail oder ein praktisches Werkzeug erscheint vor den Informationen, die eine Gruppe fuer ihre Entscheidung braucht. Die Bildsprache ist filmisch und komponiert, aber nie reine Dekoration.
 
-{colors.night-mineral} is the dominant stage night and default page field. {colors.night-deep} holds captions, navigation states, and visual recesses. {colors.stage-saffron} is literal stage light: it identifies the primary action, selected moments, and product type labels. It is never used as a broad background or a glow.
+Saffron Myth Theatre ist das dauerhafte Markensystem. Astral Threshold ist seine freigegebene Auspraegung auf der Startseite: eine mineralblaue kosmische Schwelle, die Auswahl rahmt, ohne ein Genre festzulegen. Die Entdeckungslogik des Wayfinder's Field Guide bleibt nachrangig. Einzelne Werke duerfen ihre Stimmung wechseln, doch Typ, Praemisse, Kompatibilitaet, Belege und der Weg zu DriveThruRPG bleiben verlaesslich lesbar.
 
-{colors.danger-coral} is scarce. It marks danger, a pivotal story reveal, or a single high-energy image treatment; it never labels normal UI states. {colors.chalk} and {colors.mist-blue} carry reading. Text remains on opaque or reliably dark surfaces, never directly over uncontrolled imagery.
+Oeffentliche UI-Texte sind Englisch. Deutsch erscheint nur in bereitgestelltem Quellmaterial oder ausdruecklich gelieferten Inhalten. Die Maker-Marke ist ein seltenes Siegel, keine dauerhafte Dekoration.
 
-# Typography
+## Colors
 
-{typography.display} and {typography.title} make story and product names feel staged and authored. The final serif selection must retain clear italics, tabular numerals where required, and German-language support. {typography.body} stays plain, modern, and highly legible so the page never becomes a faux-manuscript.
+{colors.void}, {colors.night-deep} und {colors.night-mineral} bilden eine zusammenhaengende Buehnenwelt. {colors.night-mineral} ist das dominante Feld, {colors.void} traegt die tiefsten Nischen und {colors.night-deep} kann kontrollierte Vollansichten tragen. {colors.chalk} ist die primaere Lesefarbe; {colors.mist-blue} und {colors.muted-blue} ordnen sekundare Informationen. Diese Kombinationen erscheinen nur auf verlaesslich dunklen Flaechen und halten WCAG AA ein.
 
-Use {typography.label} for product types, scene markers, and small navigational metadata. Labels are selective: no repeating eyebrow above every section. Body copy remains at or above {typography.body.fontSize}; long lore is never set as decorative display text.
+{colors.stage-saffron} ist buchstaebliches Buehnenlicht: primaere externe Aktionen, ausgewaehlte Belege, Produkttypen, die Astral Rule und fokussierte Routen. Es ist nie ein grossflaechiger Seitenhintergrund. Ein begrenztes, transparentes Safranlicht ist nur an Astral Threshold, fokussierten Routenkarten und deren Auswahlstatus erlaubt. {colors.danger-coral} bleibt selten und markiert echte Gefahr oder einen entscheidenden Story-Moment, nie einen gewoehnlichen UI-Status.
 
-# Layout & Spacing
+## Typography
 
-Desktop layouts use generous gutters {spacing.gutter}, asymmetric two-column hero compositions, and a limited number of deliberate full-bleed image moments. Product galleries vary image ratio and span according to story importance, while their metadata remains aligned to a stable reading edge.
+{typography.display} und {typography.title} verwenden Source Serif 4 fuer Werknamen und grosse Entscheidungen. Display-Typografie bleibt verdichtet: enge Laufweite und kurze Zeilen bilden einen entschiedenen Block. Home-H1 interpoliert auf grossen Breiten zwischen {typography.home-display-min} und {typography.home-display}; unter 768px ist {typography.home-display-mobile} die Obergrenze. Product-Detail-H1 interpoliert auf grossen Breiten zwischen {typography.detail-display-min} und {typography.detail-display}; unter 768px zwischen {typography.detail-display-mobile-min} und {typography.detail-display-mobile}. {typography.body} verwendet Atkinson Hyperlegible fuer praktisches Lesen, Produktfakten und Handlungszusammenhaenge. {typography.label} ist Produkttypen, Szenenmarkern, Belegkategorien und Metadaten vorbehalten.
 
-Mobile collapses every composition to a direct vertical reading order: product type, title, premise, image, hook, CTA. Spacing uses {spacing.gutter-mobile}; image art may bleed to the screen edge only when text retains its own safe, opaque field. No content relies on hover, horizontal drag, or a pinned-scroll effect.
+Kursiv gesetzte Display-Zeilen duerfen einen kurzen Pull-Line-Moment tragen, aber nie entscheidende Angaben zu Eignung, Kompatibilitaet oder Ziel. Labels bleiben selektiv, ohne Eyebrow ueber jeder Sektion. Fliesstext bleibt mindestens so gross wie {typography.body.fontSize}; lange Lore wird nie als Dekor-Display gesetzt.
 
-# Elevation & Depth
+## Layout & Spacing
 
-Depth comes from tonal stage layers, hard framing lines, image crop, and occasional overlap. Use no floating glass panels, diffuse card shadows, or generic blur. A spotlight caption may overlap an image edge when its text stays on {colors.night-deep}. Separators are thin and purposeful, similar to theatre blocking marks.
+Desktop-Layouts nutzen grosszuegige {spacing.gutter}-Raender, die responsiv bis {spacing.gutter-mobile} verdichten, bewusste asymmetrische Hero-Kompositionen und wenige gezielte Full-Bleed-Bildmomente. Home beginnt in der freigegebenen Astral-Threshold-Welt: `tbxBg3.jpeg` auf Desktop und `tbxBg2.jpeg` auf kleinen Breiten. Drei grosse, gefaecherte Work Cards liegen in diesem Feld. Eine zentrierte Astral Rule statt einer Nebelnaht oder Bildkappe fuehrt in den Work Index. Danach bleibt der Katalog ein zusammenhaengendes mineralisches Feld ohne weitere breite visuelle Trennung. `tbxBg1.jpeg` ist ausgeschlossen; `tbxBg4.jpeg` darf nicht wieder als diffuse Uebergangskappe eingesetzt werden.
 
-# Shapes
+Der Work Index ist die visuelle Katalogform fuer Home und `/works`: Artwork, Classification, Titel/Praemisse, Fakten und Detailaktion bleiben entlang stabiler Kanten ausgerichtet. Beide Flaechen greifen sichtbar auf denselben mineralblauen Buehnenrahmen zurueck.
 
-All structural corners use {rounded.sm}. Primary and secondary CTAs remain rectangular. Pills are reserved for compact, nonessential status markers only; no pill-heavy interface. This system should feel cut, framed, and staged rather than soft or app-like.
+Im Evidence Reader steht ein vollstaendliches Original in lesbarer Groesse direkt auf dem gemeinsamen Buehnenfeld, nie als dekorativer Thumbnail oder auf einer zweiten Hintergrundflaeche.
 
-# Components
+Auf kleinen Breiten verdichten sich Hero, Work Index und Evidence Reader zu einer direkten einspaltigen Leseflaeche. Der sichtbare `Product evidence`-Hinweis bleibt im ersten Viewport, ohne einen zweiten grossen Trenner zu bilden.
 
-## Navigation
+Freigegebene Referenz fuer Home und Work Index: [mockups/home-astral-threshold-work-index.html](mockups/home-astral-threshold-work-index.html). Bei Widerspruch hat dieser Spine Vorrang.
 
-Navigation is quiet and one line on desktop: maker mark, Works, About, Ko-fi. The active destination receives a saffron rule or underline, not a filled tab. On mobile, a plainly labeled menu exposes the same destinations and retains the visible focus treatment {colors.focus-ring}.
+## Elevation & Depth
 
-## Product spotlight
+Tiefe entsteht durch tonale Buehnenlagen, harte Rahmenlinien, Bildgroesse und gelegentliche kontrollierte Ueberlappung. Keine schwebenden Glass-Flaechen, keine generische Unschraerfe und kein diffuser Schatten als Hierarchie. Die originale Kante eines Produkt-Assets und seine feine Caption-Linie schaffen Trennung. Hinter Evidence-Reader-Artwork oder Dokumentseiten stehen weder Karte, Leseflaeche noch Schlagschatten.
 
-A spotlight contains a product type label {components.product-type-label}, title, premise, one spoiler-safe hook, image, and one primary external action {components.button-primary}. The image can own scale, but the type, premise, and CTA must remain readable without it.
+## Shapes
 
-## Product gallery tile
+Alle strukturellen Ecken verwenden {rounded.sm}. Primaere und sekundaere Aktionen bleiben rechteckig. Pills sind nur fuer kompakte, nicht essenzielle Statusmarker erlaubt; eine pill-lastige Oberflaeche ist ausgeschlossen. Das System soll geschnitten, gerahmt und inszeniert wirken, nicht weich oder app-artig.
 
-{components.product-card} uses image first, then product type, title, and a short premise. It is a linkable editorial object, not a generic rounded card. Tile sizes vary, but tile information order never does.
+## Components
 
-## External CTA
+### Navigation
 
-{components.button-primary} says "Auf DriveThruRPG ansehen" or a similarly explicit destination. It includes an external-link icon with accessible text. Hover darkens by tonal shift; keyboard focus uses a clearly visible {colors.focus-ring} outline.
+{components.navigation} bleibt auf Desktop ruhig: Maker-Mark, Works, About und Ko-fi stehen in einer Zeile. Das aktive Ziel bekommt eine Safranlinie, keinen gefuellten Tab. Fokus verwendet {colors.focus-ring}; kein Ziel darf allein wegen der Viewportbreite verschwinden.
 
-## Lore hook
+### Classification
 
-The lore hook is a short, spoiler-safe invitation, not a paragraph of synopsis. It appears as a caption or marginal stage note and uses {components.spotlight-caption}. Never hide essential product eligibility or CTA information inside a reveal.
+{components.classification} stellt Produkttyp und Kompatibilitaet vor Lore oder Stimmung dar. Der Produkttyp nutzt {colors.stage-saffron}; Kompatibilitaet nutzt {colors.mist-blue}; beide folgen {typography.label}. Farbe allein traegt nie die Bedeutung.
 
-# Do's and Don'ts
+### Astral Spread
 
-Do stage one compelling product detail at a time. Do let content tone change per work inside the fixed mineral-blue and saffron system. Do use existing product art as the primary visual evidence. Do keep product type and destination clearer than the mood effect.
+{components.astral-spread} ist der erste Akt von Home. Bis zu drei reale Produktrouten erscheinen als physische, gefaecherte Karten. Das Cover darf gross sein, Label und Ziel bleiben visuell stabil. Eine fokussierte Karte darf leicht aufsteigen oder heller werden.
 
-Do not use AI-purple gradients, generic parchment, candles-and-runes decoration, full-page particle fields, or an equal-size card grid. Do not make every section dark red or horror-coded. Do not use unbounded animation, fake testimonials, fake metrics, or pressure-oriented sales UI. Do not rely on an image alone to communicate product purpose.
+### Astral Rule
+
+{components.astral-rule} ist die einzige explizite Schwelle zwischen Home und Katalog: gespiegelte Safranlinien, Schwellenmarke, `All published works` und `Continue through the portfolio`. Sie bleibt in der ersten praktischen Viewporthoehe sichtbar. Unterhalb der Katalogueberschrift darf sie nicht als zweite grosse Trennung wiederholt werden.
+
+### Work Index
+
+{components.work-index} ist das entscheidungsorientierte Katalogmuster. Es wird weder ein gleichgrosses Marketplace-Grid noch eine gestaffelte Komposition, die Fakten verdeckt.
+
+### Product Detail Hero
+
+{components.product-detail-hero} behaelt das offizielle Produktcover vollstaendig und frei von dekorativen Overlay-Rahmen. {components.classification}, Titel, Praemisse, Hook, bereitgestellte Fakten und `View on DriveThruRPG` bleiben vom Bild getrennt lesbar. Der `Product evidence`-Hinweis wiederholt weder die Astral Rule noch fuegt er ein generisches Einleitungskapitel ein.
+
+### Product Evidence Reader
+
+{components.evidence-reader} ist das Standardmuster fuer kuratierte Supporting Assets. Der Index und der gewaehlte Beleg bleiben als ein klares visuelles Paar lesbar. Das Original erscheint vollstaendig in brauchbarer Groesse.
+
+Artwork und Dokumentseiten behalten ihre originalen Kanten und ungestoerten Captions. {colors.stage-saffron} kennzeichnet Auswahl zusammen mit Text und programmatischem Zustand, nie allein. Die Vollansicht ist ein begrenzter Dialogmoment, keine dekorierte Galerieoberflaeche.
+
+Freigegebene Produktdetailreferenz: [mockups/product-detail-abythera-evidence-reader.html](mockups/product-detail-abythera-evidence-reader.html). Bei Widerspruch hat dieser Spine Vorrang.
+
+### Evidence Dialog
+
+{components.evidence-dialog} zeigt ein einzelnes gewaehltes Original in voller Groesse auf {components.evidence-dialog.backgroundColor}. Es bleibt ein funktionaler Dialog ohne dekorative Karte oder sichtbaren Schliessen-Button.
+
+### Button Primary
+
+{components.button-primary} benennt sein Ziel klar: `View on DriveThruRPG`. Es nutzt {colors.void} auf {colors.stage-saffron}. Ein External-Link-Zeichen darf die Uebergabe unterstuetzen, ersetzt aber nie den sichtbaren Zieltext. Hover verschiebt den Ton; Tastaturfokus bleibt mit {colors.focus-ring} sichtbar.
+
+### Button Secondary
+
+{components.button-secondary} dient Rueck- und Browse-Routen. Es bleibt transparent mit sichtbarer Linie und darf nie dieselbe Absicht wie {components.button-primary} doppeln.
+
+## Do's and Don'ts
+
+Eine starke Entscheidung nach der anderen inszenieren. Unterschiedliche Tonlagen pro Werk innerhalb des mineralblauen und safrangelben Systems zulassen. Reale Produktkunst und lesbare Quellseiten als Belege nutzen. Den Evidence Reader einsetzen, sobald mehrere freigegebene Assets nuetzlich bleiben sollen, ohne die Seite in wiederholte bildlange Kapitel zu verwandeln.
+
+Keine AI-lila Verlaeufe, kein generisches Pergament, keine Kerzen-und-Runen-Dekoration, keine Vollseiten-Partikelfelder, kein gleichgrosses Card Grid und keine dekorierte Bildrueckwand. Nicht jede Sektion dunkelrot oder horrorcodiert machen. Keine ungebundene Animation, keine erfundenen Testimonials, Metriken oder Kaufdruck-UI. Ein Bild allein kommuniziert niemals den Produktzweck.

@@ -44,10 +44,12 @@ if (!hero) {
     <WorkHero image={hero} />
 
     <div class="work-detail-content">
-      <section aria-labelledby="moment-heading">
-        <h2 id="moment-heading">Inside</h2>
-        <p>{work.data.theMoment}</p>
-      </section>
+      {work.data.theMoment && (
+        <section aria-labelledby="moment-heading">
+          <h2 id="moment-heading">Inside</h2>
+          <p>{work.data.theMoment}</p>
+        </section>
+      )}
       <section aria-labelledby="table-use-heading">
         <h2 id="table-use-heading">At the table</h2>
         <p>{work.data.tableUse}</p>

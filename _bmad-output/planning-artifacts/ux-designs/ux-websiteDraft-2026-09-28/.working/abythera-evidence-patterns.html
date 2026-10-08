@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Abythera Evidence Patterns - Tales by Xero</title>
+  <style>
+    :root {
+      --void: #050914;
+      --night: #091126;
+      --mineral: #102447;
+      --recess: #071225;
+      --chalk: #f3f3ee;
+      --mist: #bdc9d6;
+      --muted: #8293a8;
+      --gold: #efc363;
+      --gold-light: #f7d98a;
+      --line: rgba(228, 235, 240, 0.23);
+      --line-faint: rgba(228, 235, 240, 0.1);
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * { box-sizing: border-box; }
+    html { background: var(--void); scroll-behavior: smooth; }
+    body { min-width: 20rem; margin: 0; color: var(--chalk); background: var(--void); font-family: Arial, sans-serif; }
+    button, a { font: inherit; }
+    a { color: inherit; }
+
+    .page {
+      position: relative;
+      min-height: 100dvh;
+      overflow: clip;
+      isolation: isolate;
+      background:
+        radial-gradient(ellipse at 80% 10%, rgba(92, 130, 200, 0.16), transparent 26rem),
+        radial-gradient(ellipse at 26% 60%, rgba(45, 82, 144, 0.12), transparent 35rem),
+        linear-gradient(180deg, var(--void), #08142c 66%, #071125);
+    }
+
+    .page::before {
+      position: absolute;
+      z-index: -1;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: min(100dvh, 56rem);
+      content: "";
+      opacity: .18;
+      background: linear-gradient(90deg, rgba(5, 9, 20, .8), rgba(5, 9, 20, .18) 65%, rgba(5, 9, 20, .66)), url("../../../../../tbxBg3.jpeg") center top / cover no-repeat;
+      mask-image: linear-gradient(180deg, #000 0 58%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .shell { width: min(100% - 3rem, 90rem); margin-inline: auto; }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      min-height: 4.6rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand { display: inline-flex; align-items: center; gap: .75rem; color: var(--chalk); font-size: .71rem; font-weight: 700; letter-spacing: .16em; text-decoration: none; text-transform: uppercase; }
+    .brand img { width: 2rem; height: 2rem; object-fit: contain; }
+    .nav-links { display: flex; gap: 1.4rem; margin: 0; padding: 0; list-style: none; color: var(--mist); font-size: .69rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+    .nav-links a { text-decoration: none; }
+    .nav-links a:hover, .nav-links a:focus-visible { color: var(--gold); }
+
+    .comparison-intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(7rem, .12fr); gap: clamp(1.5rem, 5vw, 5rem); align-items: end; padding: clamp(2.2rem, 3.5vw, 3.25rem) 0 clamp(1.25rem, 2vw, 1.7rem); }
+    .comparison-intro > * { min-width: 0; }
+    .intro-kicker, .study-kicker { margin: 0; color: var(--gold); font-size: .65rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+    h1, h2, h3 { font-family: Georgia, serif; font-weight: 400; }
+    h1 { max-width: 19ch; margin: .55rem 0 0; color: var(--chalk); font-size: clamp(3rem, 4.25vw, 4.9rem); letter-spacing: -.08em; line-height: .82; overflow-wrap: anywhere; }
+    .intro-copy { max-width: 63ch; margin: .8rem 0 0; color: var(--mist); font-size: clamp(.95rem, 1.08vw, 1.04rem); line-height: 1.55; }
+    .product-mark { display: grid; justify-self: end; width: min(100%, 6.5rem); margin: 0; }
+    .product-mark img { display: block; width: 100%; height: auto; box-shadow: 0 1.8rem 3.4rem rgba(0, 0, 0, .4); }
+    .product-mark figcaption { margin-top: .7rem; padding-top: .7rem; border-top: 1px solid var(--line); color: var(--mist); font-size: .59rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+
+    .direction-switcher { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .direction-switcher a { display: grid; gap: .35rem; min-height: 5.4rem; padding: .9rem 1.2rem; border-right: 1px solid var(--line-faint); color: var(--mist); text-decoration: none; transition: color 240ms ease, background-color 240ms ease; }
+    .direction-switcher a:last-child { border-right: 0; }
+    .direction-switcher a span:first-child { color: var(--gold); font-size: .62rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+    .direction-switcher a strong { color: var(--chalk); font-family: Georgia, serif; font-size: clamp(1.15rem, 1.6vw, 1.45rem); font-weight: 400; letter-spacing: -.02em; }
+    .direction-switcher a small { max-width: 38ch; color: inherit; font-size: .78rem; line-height: 1.35; }
+    .direction-switcher a:hover, .direction-switcher a:focus-visible, .direction-switcher a[aria-current="page"] { color: var(--chalk); background: rgba(239, 195, 99, .06); outline: none; }
+    .direction-switcher a[aria-current="page"] { box-shadow: inset 0 .17rem 0 var(--gold); }
+    .direction-switcher a:focus-visible { outline: .18rem solid var(--gold-light); outline-offset: -.18rem; }
+
+    .study { padding: clamp(2.1rem, 4vw, 3.6rem) 0 clamp(5rem, 10vw, 10rem); }
+    .study-intro { display: grid; grid-template-columns: minmax(0, .68fr) minmax(15rem, .32fr); gap: clamp(1.5rem, 7vw, 7rem); align-items: end; margin-bottom: clamp(2.8rem, 6vw, 5rem); }
+    .study-intro h2 { max-width: 13ch; margin: .75rem 0 0; color: var(--chalk); font-size: clamp(2.8rem, 5vw, 5.5rem); letter-spacing: -.075em; line-height: .83; }
+    .study-intro > p:last-child { max-width: 34ch; margin: 0; color: var(--mist); font-size: 1rem; line-height: 1.6; }
+    .direction-summary { display: grid; grid-template-columns: minmax(0, 1fr) minmax(15rem, .3fr); gap: 2rem; margin-top: clamp(3rem, 7vw, 6rem); padding-top: 1.2rem; border-top: 1px solid var(--line); }
+    .direction-summary p { max-width: 53ch; margin: 0; color: var(--mist); line-height: 1.55; }
+    .direction-summary strong { color: var(--gold); font-size: .66rem; letter-spacing: .14em; text-transform: uppercase; }
+
+    /* Direction 01: one selected proof remains legible while the index preserves orientation. */
+    .reader-layout { display: grid; grid-template-columns: minmax(13rem, .28fr) minmax(0, .72fr); gap: clamp(2rem, 7vw, 8rem); align-items: start; }
+    .reader-index { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+    .reader-choice { width: 100%; display: grid; grid-template-columns: 2.1rem minmax(0, 1fr); gap: .8rem; padding: 1rem 0; border: 0; border-bottom: 1px solid var(--line-faint); color: var(--mist); background: transparent; text-align: left; cursor: pointer; transition: color 220ms ease, padding-left 220ms var(--ease); }
+    .reader-choice:hover, .reader-choice:focus-visible, .reader-choice[aria-pressed="true"] { padding-left: .55rem; color: var(--chalk); outline: none; }
+    .reader-choice:focus-visible { outline: .18rem solid var(--gold-light); outline-offset: .2rem; }
+    .reader-choice[aria-pressed="true"] { box-shadow: inset .16rem 0 0 var(--gold); }
+    .reader-number { color: var(--gold); font-size: .63rem; font-weight: 700; letter-spacing: .1em; }
+    .reader-choice strong { display: block; color: inherit; font-size: .86rem; letter-spacing: .02em; }
+    .reader-choice small { display: block; margin-top: .22rem; color: var(--muted); font-size: .72rem; line-height: 1.35; }
+    .reader-focus { display: grid; grid-template-columns: minmax(13rem, .36fr) minmax(20rem, .64fr); gap: clamp(1.5rem, 5vw, 5rem); min-width: 0; align-items: start; }
+    .reader-copy { padding-top: clamp(.2rem, 1vw, 1.1rem); }
+    .reader-copy p { max-width: 29ch; margin: 0; color: var(--mist); line-height: 1.58; }
+    .reader-copy .reader-category { color: var(--gold); font-size: .65rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+    .reader-copy h3 { max-width: 9ch; margin: .65rem 0 1.1rem; color: var(--chalk); font-size: clamp(2.25rem, 4vw, 4.6rem); letter-spacing: -.07em; line-height: .84; }
+    .reader-callout { margin-top: 1.2rem !important; padding-top: 1rem; border-top: 1px solid var(--line); color: var(--chalk) !important; font-family: Georgia, serif; font-size: 1.08rem; font-style: italic; line-height: 1.42 !important; }
+    .reader-sheet { min-width: 0; margin: 0; }
+    .reader-sheet a { display: block; width: fit-content; max-width: 100%; margin-inline: auto; color: var(--chalk); background: transparent; text-decoration: none; }
+    .reader-sheet img { display: block; width: auto; max-width: 100%; max-height: min(61vh, 42rem); object-fit: contain; transition: transform 300ms var(--ease); }
+    .reader-sheet a:hover img, .reader-sheet a:focus-visible img { transform: scale(1.012); }
+    .reader-sheet a:focus-visible { outline: .2rem solid var(--gold-light); outline-offset: .35rem; }
+    .reader-sheet figcaption { display: flex; justify-content: space-between; gap: 1rem; margin-top: .8rem; padding-top: .8rem; border-top: 1px solid var(--line); color: var(--mist); font-size: .63rem; font-weight: 700; letter-spacing: .11em; text-transform: uppercase; }
+    .reader-sheet figcaption span:last-child { color: var(--gold); }
+
+    /* Direction 02: each asset becomes a deliberate narrative beat. */
+    .storyline { display: grid; gap: clamp(4rem, 10vw, 10rem); }
+    .story-beat { display: grid; grid-template-columns: minmax(16rem, .38fr) minmax(20rem, .62fr); gap: clamp(2rem, 8vw, 9rem); align-items: center; min-width: 0; }
+    .story-beat--reverse { grid-template-columns: minmax(20rem, .62fr) minmax(16rem, .38fr); }
+    .story-beat-copy { max-width: 31rem; }
+    .story-beat-copy .story-count { margin: 0; color: var(--gold); font-size: .66rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; }
+    .story-beat-copy h3 { max-width: 10ch; margin: .7rem 0 1.05rem; color: var(--chalk); font-size: clamp(2.35rem, 4.2vw, 4.7rem); letter-spacing: -.075em; line-height: .84; }
+    .story-beat-copy p:not(.story-count) { max-width: 33ch; margin: 0; color: var(--mist); line-height: 1.62; }
+    .story-beat-copy .story-link { display: inline-flex; margin-top: 1.35rem; color: var(--gold); font-size: .66rem; font-weight: 700; letter-spacing: .13em; text-decoration: none; text-transform: uppercase; }
+    .story-beat-copy .story-link:hover, .story-beat-copy .story-link:focus-visible { color: var(--gold-light); }
+    .story-beat-art { min-width: 0; margin: 0; }
+    .story-beat-art a { display: block; width: fit-content; max-width: 100%; margin-inline: auto; color: var(--chalk); text-decoration: none; }
+    .story-beat-art img { display: block; width: auto; max-width: 100%; max-height: min(62vh, 38rem); object-fit: contain; transition: transform 300ms var(--ease); }
+    .story-beat-art a:hover img, .story-beat-art a:focus-visible img { transform: scale(1.012); }
+    .story-beat-art a:focus-visible { outline: .2rem solid var(--gold-light); outline-offset: .35rem; }
+    .story-beat-art figcaption { display: flex; justify-content: space-between; gap: 1rem; margin-top: .8rem; padding-top: .8rem; border-top: 1px solid var(--line); color: var(--mist); font-size: .63rem; font-weight: 700; letter-spacing: .11em; text-transform: uppercase; }
+    .story-beat-art figcaption span:last-child { color: var(--gold); }
+    .story-beat--reverse .story-beat-copy { grid-column: 2; grid-row: 1; justify-self: end; }
+    .story-beat--reverse .story-beat-art { grid-column: 1; grid-row: 1; }
+
+    /* Direction 03: scan all evidence first, then inspect a chosen sheet in a native dialog. */
+    .folio-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: clamp(1.5rem, 4vw, 4rem); align-items: start; }
+    .folio-entry { display: block; min-width: 0; color: var(--chalk); text-decoration: none; }
+    .folio-entry--harmony { margin-top: clamp(2rem, 8vw, 8rem); }
+    .folio-entry--framework { margin-top: 0; }
+    .folio-entry--karrhold { margin-top: clamp(2rem, 6vw, 6rem); }
+    .folio-entry--about { margin-top: clamp(5rem, 12vw, 12rem); }
+    .folio-entry figure { margin: 0; }
+    .folio-entry .folio-image { display: block; }
+    .folio-entry img { display: block; width: 100%; max-height: 31rem; object-fit: contain; transition: transform 330ms var(--ease); }
+    .folio-entry:hover img, .folio-entry:focus-visible img { transform: scale(1.018); }
+    .folio-entry:focus-visible { outline: .2rem solid var(--gold-light); outline-offset: .35rem; }
+    .folio-entry figcaption { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: .8rem; align-items: baseline; margin-top: .8rem; padding-top: .8rem; border-top: 1px solid var(--line); }
+    .folio-entry figcaption span:first-child { color: var(--gold); font-size: .64rem; font-weight: 700; letter-spacing: .1em; }
+    .folio-entry figcaption strong { font-family: Georgia, serif; font-size: clamp(1.25rem, 2vw, 1.8rem); font-weight: 400; letter-spacing: -.025em; }
+    .folio-entry figcaption span:last-child { color: var(--muted); font-size: .63rem; font-weight: 700; letter-spacing: .1em; text-align: right; text-transform: uppercase; }
+
+    .lightbox { width: min(100% - 2rem, 77rem); max-height: 94dvh; margin: auto; padding: clamp(1rem, 2vw, 1.5rem); border: 1px solid rgba(239, 195, 99, .48); color: var(--chalk); background: var(--night); box-shadow: 0 2rem 6rem rgba(0, 0, 0, .72); }
+    .lightbox::backdrop { background: rgba(5, 9, 20, .82); backdrop-filter: blur(.25rem); }
+    .lightbox-bar { display: flex; align-items: start; justify-content: space-between; gap: 1rem; margin-bottom: .9rem; padding-bottom: .85rem; border-bottom: 1px solid var(--line); }
+    .lightbox-bar p { margin: 0; color: var(--gold); font-size: .66rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+    .lightbox-bar h2 { margin: .35rem 0 0; color: var(--chalk); font-size: clamp(1.3rem, 2.2vw, 2.1rem); letter-spacing: -.03em; }
+    .lightbox-close { min-width: 2.8rem; min-height: 2.8rem; border: 1px solid var(--line); color: var(--mist); background: transparent; cursor: pointer; }
+    .lightbox-close:hover, .lightbox-close:focus-visible { color: var(--void); border-color: var(--gold); background: var(--gold); outline: none; }
+    .lightbox-image { display: block; width: auto; max-width: 100%; max-height: calc(94dvh - 8rem); margin-inline: auto; object-fit: contain; }
+
+    @media (max-width: 62rem) {
+      .comparison-intro { grid-template-columns: minmax(0, 1fr) minmax(8rem, .18fr); gap: 2rem; }
+      .study-intro { grid-template-columns: 1fr; gap: 1.2rem; }
+      .reader-layout { grid-template-columns: 1fr; gap: 2rem; }
+      .reader-index { grid-template-columns: repeat(2, minmax(0, 1fr)); border-bottom: 1px solid var(--line-faint); }
+      .reader-choice { min-height: 6.3rem; padding: .9rem; border-right: 1px solid var(--line-faint); }
+      .reader-choice:nth-child(even) { border-right: 0; }
+      .reader-focus { grid-template-columns: minmax(13rem, .34fr) minmax(18rem, .66fr); }
+      .story-beat, .story-beat--reverse { grid-template-columns: minmax(14rem, .36fr) minmax(18rem, .64fr); gap: 2.5rem; }
+    }
+
+    @media (max-width: 48rem) {
+      .shell { width: min(100% - 2rem, 48rem); }
+      .nav-links li:last-child { display: none; }
+      .comparison-intro { grid-template-columns: minmax(0, 1fr); padding-top: 2.7rem; }
+      .product-mark { justify-self: start; width: 6.5rem; }
+      .direction-switcher a { min-height: 7.4rem; padding: .9rem; }
+      .direction-switcher a small { font-size: .7rem; }
+      .reader-focus { grid-template-columns: 1fr; gap: 1.5rem; }
+      .storyline { gap: 5rem; }
+      .story-beat, .story-beat--reverse { grid-template-columns: 1fr; gap: 1.5rem; }
+      .story-beat--reverse .story-beat-copy, .story-beat--reverse .story-beat-art { grid-column: auto; grid-row: auto; justify-self: auto; }
+      .story-beat-art { order: 2; }
+      .folio-grid { gap: 2.5rem; }
+      .direction-summary { grid-template-columns: 1fr; gap: .8rem; }
+    }
+
+    @media (max-width: 38rem) {
+      .nav-links { gap: .8rem; font-size: .61rem; }
+      .brand { font-size: .64rem; }
+      .comparison-intro { padding-top: 2.4rem; }
+      h1 { max-inline-size: 100%; font-size: clamp(2.75rem, 14vw, 3.75rem); letter-spacing: -.07em; }
+      .intro-copy { max-inline-size: 100%; }
+      .direction-switcher { grid-template-columns: 1fr; }
+      .direction-switcher a { min-height: auto; border-right: 0; border-bottom: 1px solid var(--line-faint); }
+      .direction-switcher a:last-child { border-bottom: 0; }
+      .direction-switcher a small { display: none; }
+      .reader-index { grid-template-columns: 1fr; }
+      .reader-choice, .reader-choice:nth-child(even) { border-right: 0; }
+      .reader-sheet img, .story-beat-art img { max-height: 31rem; }
+      .folio-grid { grid-template-columns: 1fr; }
+      .folio-entry--harmony, .folio-entry--framework, .folio-entry--karrhold, .folio-entry--about { margin-top: 0; }
+      .folio-entry figcaption { grid-template-columns: auto minmax(0, 1fr); }
+      .folio-entry figcaption span:last-child { grid-column: 2; text-align: left; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="shell">
+      <nav class="nav" aria-label="Primary navigation">
+        <a class="brand" href="/"><img src="../../../../../src/assets/brand/TbX_logo.png" alt=""><span>Tales by Xero</span></a>
+        <ul class="nav-links"><li><a href="/works">Works</a></li><li><a href="/about">About</a></li><li><a href="#">Ko-fi</a></li></ul>
+      </nav>
+
+      <header class="comparison-intro">
+        <div>
+          <p class="intro-kicker">Abythera / evidence pattern study</p>
+          <h1>How should product proof live on the page?</h1>
+          <p class="intro-copy">Each direction uses the same four Abythera assets. The question is only how a visitor finds, scans, and opens them when a product has several real things worth showing.</p>
+        </div>
+        <figure class="product-mark">
+          <img src="../../../../../src/assets/works/abythera/abythera-cover.png" alt="Abythera cover art showing a dark fantasy figure against a deep blue background.">
+          <figcaption>Unframed product cover</figcaption>
+        </figure>
+      </header>
+
+      <nav class="direction-switcher" aria-label="Evidence pattern directions">
+        <a href="?direction=reader" data-direction-control="reader"><span>Direction 01</span><strong>Evidence Reader</strong><small>One selected proof, a clear index, and a full inspection route.</small></a>
+        <a href="?direction=storyline" data-direction-control="storyline"><span>Direction 02</span><strong>Storyline</strong><small>Each image has a full editorial beat in a deliberate sequence.</small></a>
+        <a href="?direction=index" data-direction-control="index"><span>Direction 03</span><strong>Proof Index</strong><small>See everything quickly, then open the item that earns attention.</small></a>
+      </nav>
+
+      <section class="study" data-study="reader" id="reader" aria-labelledby="reader-title">
+        <header class="study-intro">
+          <div>
+            <p class="study-kicker">Direction 01 / Recommended</p>
+            <h2 id="reader-title">One usable proof, always in focus.</h2>
+          </div>
+          <p>The page keeps moving vertically, but the supporting material does not become four or five repeated screen-length chapters. Choose a proof, inspect it, then continue reading.</p>
+        </header>
+
+        <div class="reader-layout">
+          <ol class="reader-index" aria-label="Abythera evidence index">
+            <li><button class="reader-choice" type="button" aria-pressed="false" data-evidence data-asset="../../../../../src/assets/works/abythera/harmony-portrait.png" data-alt="Winged frog-like creature holding a mushroom in a mountainous landscape." data-category="World detail" data-title="Harmony keeps the mystery close." data-description="A strange public-facing detail that tells a visitor this campaign has a distinct world, without asking the image to carry the whole explanation." data-callout="A visual hook, not a backdrop for product copy." data-caption="Harmony / full artwork"><span class="reader-number">01</span><span><strong>Harmony</strong><small>World detail</small></span></button></li>
+            <li><button class="reader-choice" type="button" aria-pressed="true" data-evidence data-asset="../../../../../src/assets/works/abythera/CampaignFramework.png" data-alt="Abythera campaign framework document page with diagrams and text." data-category="Product document" data-title="Read the campaign logic before you commit to it." data-description="An actual product page that shows the campaign premise, the hub model, and practical support for a changing group in one working view." data-callout="A complete, uncropped page rather than a decorative screenshot." data-caption="Campaign Framework / interior page"><span class="reader-number">02</span><span><strong>Campaign Framework</strong><small>Interior page</small></span></button></li>
+            <li><button class="reader-choice" type="button" aria-pressed="false" data-evidence data-asset="../../../../../src/assets/works/abythera/KarrholdCheatSheet.png" data-alt="Karrhold DM reference quick guide with setup, clues, phases, locations, and adventure flow." data-category="Included mission" data-title="The opening mission has a usable reference." data-description="Karrhold keeps setup, locations, clues, threats, and adventure flow together, so the first session is not just promised in copy." data-callout="Included with Abythera: a GM-ready reference for the opening mission." data-caption="Karrhold DM Reference / quick guide"><span class="reader-number">03</span><span><strong>Karrhold Reference</strong><small>GM quick guide</small></span></button></li>
+            <li><button class="reader-choice" type="button" aria-pressed="false" data-evidence data-asset="../../../../../src/assets/works/abythera/AboutThisProduct.png" data-alt="Abythera product overview page explaining its campaign framework and included Karrhold opening experience." data-category="Product overview" data-title="See the product promise in its own words." data-description="The overview demonstrates how Abythera frames its campaign structure, intended table use, and the included opening experience." data-callout="A clear product claim is stronger when the visitor can see its source." data-caption="About this product / overview page"><span class="reader-number">04</span><span><strong>Product Overview</strong><small>Overview page</small></span></button></li>
+          </ol>
+
+          <div class="reader-focus" aria-live="polite">
+            <div class="reader-copy">
+              <p class="reader-category" id="reader-category">Product document</p>
+              <h3 id="reader-proof-title">Read the campaign logic before you commit to it.</h3>
+              <p id="reader-proof-description">An actual product page that shows the campaign premise, the hub model, and practical support for a changing group in one working view.</p>
+              <p class="reader-callout" id="reader-proof-callout">A complete, uncropped page rather than a decorative screenshot.</p>
+            </div>
+            <figure class="reader-sheet">
+              <a id="reader-open" href="../../../../../src/assets/works/abythera/CampaignFramework.png" data-lightbox data-lightbox-category="Product document" data-lightbox-title="Campaign Framework" aria-label="Inspect Campaign Framework at full size">
+                <img id="reader-image" src="../../../../../src/assets/works/abythera/CampaignFramework.png" alt="Abythera campaign framework document page with diagrams and text.">
+              </a>
+              <figcaption><span id="reader-caption">Campaign Framework / interior page</span><span>Inspect full page</span></figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <footer class="direction-summary"><strong>Best when product evidence grows</strong><p>Four or five assets remain a controlled part of the detail page. The visitor sees an index, a useful selected proof, and a single full-size inspection route without being sent through an endless wall of images.</p></footer>
+      </section>
+
+      <section class="study" data-study="storyline" id="storyline" aria-labelledby="storyline-title">
+        <header class="study-intro">
+          <div>
+            <p class="study-kicker">Direction 02 / Editorial sequence</p>
+            <h2 id="storyline-title">Let each piece change the visitor's understanding.</h2>
+          </div>
+          <p>This is the high-impact route: every asset earns a dedicated narrative beat. It is cinematic and clear, but it deliberately makes the detail page longer as proof grows.</p>
+        </header>
+
+        <div class="storyline">
+          <article class="story-beat">
+            <div class="story-beat-copy"><p class="story-count">01 / World detail</p><h3>First, give the campaign a strange center.</h3><p>Harmony makes the setting memorable before the visitor ever reaches the mechanics. The text clarifies why this detail matters to play.</p><a class="story-link" href="../../../../../src/assets/works/abythera/harmony-portrait.png" data-lightbox data-lightbox-category="World detail" data-lightbox-title="Harmony">Inspect full artwork</a></div>
+            <figure class="story-beat-art"><a href="../../../../../src/assets/works/abythera/harmony-portrait.png" data-lightbox data-lightbox-category="World detail" data-lightbox-title="Harmony"><img src="../../../../../src/assets/works/abythera/harmony-portrait.png" alt="Winged frog-like creature holding a mushroom in a mountainous landscape."></a><figcaption><span>Harmony / world detail</span><span>Full artwork</span></figcaption></figure>
+          </article>
+
+          <article class="story-beat story-beat--reverse">
+            <div class="story-beat-copy"><p class="story-count">02 / Framework</p><h3>Then, show that the campaign has working bones.</h3><p>The first document is a direct answer to a practical question: what does the framework actually give a group between one session and the next?</p><a class="story-link" href="../../../../../src/assets/works/abythera/CampaignFramework.png" data-lightbox data-lightbox-category="Product document" data-lightbox-title="Campaign Framework">Inspect full page</a></div>
+            <figure class="story-beat-art"><a href="../../../../../src/assets/works/abythera/CampaignFramework.png" data-lightbox data-lightbox-category="Product document" data-lightbox-title="Campaign Framework"><img src="../../../../../src/assets/works/abythera/CampaignFramework.png" alt="Abythera campaign framework document page with diagrams and text."></a><figcaption><span>Campaign Framework / interior page</span><span>Full page</span></figcaption></figure>
+          </article>
+
+          <article class="story-beat">
+            <div class="story-beat-copy"><p class="story-count">03 / Included mission</p><h3>Then make the opening session tangible.</h3><p>Karrhold becomes more than a line in the product description. Its quick guide demonstrates the useful material a GM can keep nearby at the table.</p><a class="story-link" href="../../../../../src/assets/works/abythera/KarrholdCheatSheet.png" data-lightbox data-lightbox-category="Included mission" data-lightbox-title="Karrhold DM Reference">Inspect full page</a></div>
+            <figure class="story-beat-art"><a href="../../../../../src/assets/works/abythera/KarrholdCheatSheet.png" data-lightbox data-lightbox-category="Included mission" data-lightbox-title="Karrhold DM Reference"><img src="../../../../../src/assets/works/abythera/KarrholdCheatSheet.png" alt="Karrhold DM reference quick guide with setup, clues, phases, locations, and adventure flow."></a><figcaption><span>Karrhold DM Reference / quick guide</span><span>Full page</span></figcaption></figure>
+          </article>
+
+          <article class="story-beat story-beat--reverse">
+            <div class="story-beat-copy"><p class="story-count">04 / Product promise</p><h3>Finally, let the product speak for itself.</h3><p>The overview page closes the sequence with the scope, the flexible campaign premise, and the direct statement that Karrhold is included.</p><a class="story-link" href="../../../../../src/assets/works/abythera/AboutThisProduct.png" data-lightbox data-lightbox-category="Product overview" data-lightbox-title="About this product">Inspect full page</a></div>
+            <figure class="story-beat-art"><a href="../../../../../src/assets/works/abythera/AboutThisProduct.png" data-lightbox data-lightbox-category="Product overview" data-lightbox-title="About this product"><img src="../../../../../src/assets/works/abythera/AboutThisProduct.png" alt="Abythera product overview page explaining its campaign framework and included Karrhold opening experience."></a><figcaption><span>About this product / overview</span><span>Full page</span></figcaption></figure>
+          </article>
+        </div>
+
+        <footer class="direction-summary"><strong>Best when the proof itself is the story</strong><p>This makes a small, carefully chosen set of assets feel authored and premium. With four or five assets it is substantially longer, so it works best when every image genuinely changes the buying decision.</p></footer>
+      </section>
+
+      <section class="study" data-study="index" id="index" aria-labelledby="index-title">
+        <header class="study-intro">
+          <div>
+            <p class="study-kicker">Direction 03 / Compact proof index</p>
+            <h2 id="index-title">See the whole evidence set before choosing a page.</h2>
+          </div>
+          <p>This is the shortest route through the material. The grid makes breadth immediately visible, while a full-size dialog handles the detail that a smaller document preview cannot carry.</p>
+        </header>
+
+        <div class="folio-grid">
+          <a class="folio-entry folio-entry--harmony" href="../../../../../src/assets/works/abythera/harmony-portrait.png" data-lightbox data-lightbox-category="World detail" data-lightbox-title="Harmony">
+            <figure><span class="folio-image"><img src="../../../../../src/assets/works/abythera/harmony-portrait.png" alt="Winged frog-like creature holding a mushroom in a mountainous landscape."></span><figcaption><span>01</span><strong>Harmony</strong><span>World detail</span></figcaption></figure>
+          </a>
+          <a class="folio-entry folio-entry--framework" href="../../../../../src/assets/works/abythera/CampaignFramework.png" data-lightbox data-lightbox-category="Product document" data-lightbox-title="Campaign Framework">
+            <figure><span class="folio-image"><img src="../../../../../src/assets/works/abythera/CampaignFramework.png" alt="Abythera campaign framework document page with diagrams and text."></span><figcaption><span>02</span><strong>Campaign Framework</strong><span>Interior page</span></figcaption></figure>
+          </a>
+          <a class="folio-entry folio-entry--karrhold" href="../../../../../src/assets/works/abythera/KarrholdCheatSheet.png" data-lightbox data-lightbox-category="Included mission" data-lightbox-title="Karrhold DM Reference">
+            <figure><span class="folio-image"><img src="../../../../../src/assets/works/abythera/KarrholdCheatSheet.png" alt="Karrhold DM reference quick guide with setup, clues, phases, locations, and adventure flow."></span><figcaption><span>03</span><strong>Karrhold Reference</strong><span>GM quick guide</span></figcaption></figure>
+          </a>
+          <a class="folio-entry folio-entry--about" href="../../../../../src/assets/works/abythera/AboutThisProduct.png" data-lightbox data-lightbox-category="Product overview" data-lightbox-title="About this product">
+            <figure><span class="folio-image"><img src="../../../../../src/assets/works/abythera/AboutThisProduct.png" alt="Abythera product overview page explaining its campaign framework and included Karrhold opening experience."></span><figcaption><span>04</span><strong>Product Overview</strong><span>Scope and promise</span></figcaption></figure>
+          </a>
+        </div>
+
+        <footer class="direction-summary"><strong>Best when page length is the priority</strong><p>It is fast to scan and easy to extend. The tradeoff is intentional: document pages become only recognisable at a glance, so the dialog must do real work for visitors who need to judge the details.</p></footer>
+      </section>
+    </div>
+  </main>
+
+  <dialog class="lightbox" id="evidence-lightbox" aria-labelledby="lightbox-title">
+    <div class="lightbox-bar">
+      <div><p id="lightbox-category">Product evidence</p><h2 id="lightbox-title">Evidence page</h2></div>
+      <form method="dialog"><button class="lightbox-close" type="submit" aria-label="Close full-size evidence">Close</button></form>
+    </div>
+    <img class="lightbox-image" id="lightbox-image" src="" alt="">
+  </dialog>
+
+  <script>
+    const directions = ["reader", "storyline", "index"];
+    const studies = [...document.querySelectorAll("[data-study]")];
+    const directionControls = [...document.querySelectorAll("[data-direction-control]")];
+
+    function renderDirection(direction) {
+      const activeDirection = directions.includes(direction) ? direction : "reader";
+      studies.forEach((study) => {
+        study.hidden = study.dataset.study !== activeDirection;
+      });
+      directionControls.forEach((control) => {
+        const isActive = control.dataset.directionControl === activeDirection;
+        control.setAttribute("aria-current", isActive ? "page" : "false");
+      });
+    }
+
+    function activeDirectionFromUrl() {
+      return new URLSearchParams(window.location.search).get("direction");
+    }
+
+    directionControls.forEach((control) => {
+      control.addEventListener("click", (event) => {
+        event.preventDefault();
+        const direction = control.dataset.directionControl;
+        const url = new URL(window.location.href);
+        url.searchParams.set("direction", direction);
+        history.replaceState(null, "", url);
+        renderDirection(direction);
+        control.closest(".direction-switcher").scrollIntoView({ block: "start" });
+      });
+    });
+
+    window.addEventListener("popstate", () => renderDirection(activeDirectionFromUrl()));
+    renderDirection(activeDirectionFromUrl());
+
+    const readerChoices = [...document.querySelectorAll("[data-evidence]")];
+    const readerImage = document.querySelector("#reader-image");
+    const readerOpen = document.querySelector("#reader-open");
+    const readerCategory = document.querySelector("#reader-category");
+    const readerTitle = document.querySelector("#reader-proof-title");
+    const readerDescription = document.querySelector("#reader-proof-description");
+    const readerCallout = document.querySelector("#reader-proof-callout");
+    const readerCaption = document.querySelector("#reader-caption");
+
+    function selectEvidence(choice) {
+      readerChoices.forEach((item) => item.setAttribute("aria-pressed", item === choice ? "true" : "false"));
+      readerImage.src = choice.dataset.asset;
+      readerImage.alt = choice.dataset.alt;
+      readerOpen.href = choice.dataset.asset;
+      readerOpen.dataset.lightboxCategory = choice.dataset.category;
+      readerOpen.dataset.lightboxTitle = choice.querySelector("strong").textContent;
+      readerOpen.setAttribute("aria-label", `Inspect ${choice.querySelector("strong").textContent} at full size`);
+      readerCategory.textContent = choice.dataset.category;
+      readerTitle.textContent = choice.dataset.title;
+      readerDescription.textContent = choice.dataset.description;
+      readerCallout.textContent = choice.dataset.callout;
+      readerCaption.textContent = choice.dataset.caption;
+    }
+
+    readerChoices.forEach((choice) => choice.addEventListener("click", () => selectEvidence(choice)));
+
+    const lightbox = document.querySelector("#evidence-lightbox");
+    const lightboxImage = document.querySelector("#lightbox-image");
+    const lightboxTitle = document.querySelector("#lightbox-title");
+    const lightboxCategory = document.querySelector("#lightbox-category");
+
+    document.querySelectorAll("[data-lightbox]").forEach((link) => {
+      link.addEventListener("click", (event) => {
+        if (typeof lightbox.showModal !== "function") return;
+        event.preventDefault();
+        const image = link.querySelector("img");
+        lightboxImage.src = link.href;
+        lightboxImage.alt = image ? image.alt : link.dataset.lightboxTitle;
+        lightboxTitle.textContent = link.dataset.lightboxTitle;
+        lightboxCategory.textContent = link.dataset.lightboxCategory;
+        lightbox.showModal();
+      });
+    });
+  </script>
+</body>
+</html>

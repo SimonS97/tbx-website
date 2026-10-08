@@ -6,10 +6,14 @@
   <title>Tales by Xero - Astral Continuum Catalog Study</title>
   <style>
     /*
-      UX correction study.
+      Approved UX key-screen reference.
       - No visible section break between the Astral Spread and the collection.
       - Catalog uses one repeatable, decision-first reading order for every work.
     */
+    @font-face { font-family: "Source Serif 4"; src: url("../../../../../node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-400-normal.woff2") format("woff2"); font-display: swap; }
+    @font-face { font-family: "Atkinson Hyperlegible"; src: url("../../../../../node_modules/@fontsource/atkinson-hyperlegible/files/atkinson-hyperlegible-latin-400-normal.woff2") format("woff2"); font-display: swap; }
+    @font-face { font-family: "Atkinson Hyperlegible"; src: url("../../../../../node_modules/@fontsource/atkinson-hyperlegible/files/atkinson-hyperlegible-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+
     :root {
       --void: #050914;
       --night: #091126;
@@ -29,8 +33,11 @@
 
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; background: var(--void); }
-    body { min-width: 20rem; margin: 0; color: var(--chalk); background: var(--void); font-family: Arial, sans-serif; }
+    body { min-width: 20rem; margin: 0; color: var(--chalk); background: var(--void); font-family: "Atkinson Hyperlegible", Arial, sans-serif; }
+    button, a { font: inherit; }
     a { color: inherit; }
+    .skip-link { position: fixed; z-index: 20; top: 1rem; left: 1rem; padding: .75rem 1rem; color: var(--void); background: var(--gold-light); text-decoration: none; transform: translateY(-180%); }
+    .skip-link:focus { transform: translateY(0); }
 
     .cosmos {
       position: relative;
@@ -62,6 +69,7 @@
     .shell { width: min(100% - 3rem, 108rem); margin-inline: auto; }
 
     .nav {
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -70,11 +78,20 @@
       border-bottom: 1px solid var(--line);
     }
 
-    .brand { display: inline-flex; align-items: center; gap: .75rem; color: var(--chalk); font-size: .71rem; font-weight: 700; letter-spacing: .16em; text-decoration: none; text-transform: uppercase; }
+    .brand { display: inline-flex; min-height: 2.75rem; align-items: center; gap: .75rem; color: var(--chalk); font-size: .71rem; font-weight: 700; letter-spacing: .16em; text-decoration: none; text-transform: uppercase; }
     .brand img { width: 2rem; height: 2rem; object-fit: contain; }
     .nav-links { display: flex; gap: 1.4rem; margin: 0; padding: 0; list-style: none; color: var(--mist); font-size: .69rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
-    .nav-links a { text-decoration: none; }
-    .nav-links a:hover, .nav-links a:focus-visible { color: var(--gold); }
+    .nav-links a { display: inline-flex; min-width: 2.75rem; min-height: 2.75rem; align-items: center; justify-content: center; padding-inline: .45rem; color: inherit; text-decoration: none; }
+    .nav-links a:hover, .nav-links a:focus-visible, .nav-links a[aria-current="page"] { color: var(--gold); }
+    .nav-links a[aria-current="page"] { box-shadow: inset 0 -.14rem 0 var(--gold); }
+    .nav-links a:focus-visible, .brand:focus-visible, .catalog-tail a:focus-visible, .portfolio-threshold:focus-visible, .choice-card:focus-visible, .work-link:focus-visible { outline: .18rem solid var(--gold-light); outline-offset: .22rem; }
+    .menu-trigger { display: none; min-height: 2.75rem; align-items: center; justify-content: center; padding-inline: .9rem; border: 1px solid var(--line); color: var(--chalk); background: transparent; font-size: .65rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; cursor: pointer; }
+    .menu-trigger:hover, .menu-trigger:focus-visible { color: var(--void); border-color: var(--gold); background: var(--gold); }
+    .mobile-menu { position: absolute; z-index: 10; top: calc(100% + .5rem); right: 0; display: grid; min-width: min(100%, 17rem); margin: 0; padding: .45rem; border: 1px solid var(--line); background: var(--night); list-style: none; }
+    .mobile-menu[hidden] { display: none; }
+    .mobile-menu a { display: block; min-height: 2.75rem; padding: .8rem .9rem; color: var(--mist); font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-decoration: none; text-transform: uppercase; }
+    .mobile-menu a:hover, .mobile-menu a:focus-visible { color: var(--void); background: var(--gold); }
+    .menu-trigger:focus-visible, .mobile-menu a:focus-visible { outline: .18rem solid var(--gold-light); outline-offset: .22rem; }
 
     .opening {
       position: relative;
@@ -82,14 +99,14 @@
       grid-template-columns: minmax(18rem,.66fr) minmax(47rem,1.34fr);
       gap: clamp(2rem, 4vw, 6rem);
       min-height: calc(100dvh - 4.6rem);
-      padding: clamp(2rem,4vw,5rem) 0 clamp(8.5rem,15dvh,11rem);
+      padding: clamp(2rem,4vw,5rem) 0 clamp(4.5rem,8dvh,6rem);
     }
 
     .opening-copy { z-index: 4; align-self: center; max-width: 35rem; padding-bottom: clamp(4rem, 9vw, 8rem); }
     .eyebrow, .label, .work-type, .fact-label, .entry-number { font-size: .67rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; }
     .eyebrow { display: flex; align-items: center; gap: .7rem; margin: 0 0 1.1rem; color: var(--gold); }
     .eyebrow::before { width: 2.5rem; height: 1px; content:""; background: currentColor; }
-    h1, h2, h3 { font-family: Georgia, serif; }
+    h1, h2, h3 { font-family: "Source Serif 4", Georgia, serif; }
     h1 { max-width: 7.8ch; margin: 0; color: #f7f8f6; font-size: clamp(3.2rem, min(6.7vw, 10dvh), 7.55rem); font-weight: 400; letter-spacing: -.08em; line-height: .81; }
     .opening-lede { max-width: 34ch; margin: 1.5rem 0 0; color: var(--mist); font-size: clamp(1rem,1.25vw,1.12rem); line-height: 1.55; }
     .opening-note { display: grid; grid-template-columns: auto 1fr; gap: .7rem; max-width: 31rem; margin: 2rem 0 0; padding-top: 1rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .74rem; line-height: 1.45; }
@@ -116,23 +133,22 @@
     .choice-b { z-index:3; transform:translate(-50%,-59%) rotate(-1deg) translateZ(2.5rem); }
     .choice-c { z-index:1; transform:translate(-1%,-47%) rotate(17deg) translateZ(0); }
     .spread:has(.choice-card:hover) .choice-card:not(:hover) { filter:brightness(.61) saturate(.64); }
-    .choice-card:hover,.choice-card:focus-visible { z-index:5; border-color:var(--gold-light); outline:none; box-shadow:0 3rem 5.8rem rgba(0,0,0,.67),0 0 3.3rem rgba(239,195,99,.26),inset 0 0 0 .25rem rgba(239,195,99,.17); filter:brightness(1.08) saturate(1.06)!important; }
+    .choice-card:hover,.choice-card:focus-visible { z-index:5; border-color:var(--gold-light); box-shadow:0 3rem 5.8rem rgba(0,0,0,.67),0 0 3.3rem rgba(239,195,99,.26),inset 0 0 0 .25rem rgba(239,195,99,.17); filter:brightness(1.08) saturate(1.06)!important; }
     .choice-card:hover img,.choice-card:focus-visible img { filter:brightness(1.06) saturate(1.07); }
     .choice-a:hover,.choice-a:focus-visible { transform:translate(-108%,-66%) rotate(-9deg) translateZ(7rem); }
     .choice-b:hover,.choice-b:focus-visible { transform:translate(-50%,-72%) rotate(0deg) translateZ(8rem) scale(1.035); }
     .choice-c:hover,.choice-c:focus-visible { transform:translate(8%,-65%) rotate(9deg) translateZ(7rem); }
 
     /* The intentional Astral Rule replaces a blurry image seam with a clear threshold. */
-    .portfolio-threshold { position:absolute; z-index:5; right:0; bottom:clamp(1rem,2.2dvh,2rem); left:0; display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); grid-template-rows:auto auto auto auto; column-gap:1rem; justify-items:center; width:min(100%,56rem); margin-inline:auto; color:var(--mist); text-align:center; text-decoration:none; }
+    .portfolio-threshold { position:absolute; z-index:5; right:0; bottom:clamp(1rem,2.2dvh,2rem); left:0; display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); grid-template-rows:auto auto auto auto; column-gap:1rem; justify-items:center; width:min(100%,56rem); min-height:2.75rem; margin-inline:auto; color:var(--mist); text-align:center; text-decoration:none; }
     .portfolio-threshold::before,.portfolio-threshold::after { width:100%; height:1px; content:""; background:linear-gradient(90deg,transparent,rgba(239,195,99,.78)); }
     .portfolio-threshold::before { grid-column:1; grid-row:1; }
     .portfolio-threshold::after { grid-column:3; grid-row:1; background:linear-gradient(90deg,rgba(239,195,99,.78),transparent); }
-    .threshold-mark { display:grid; grid-column:2; grid-row:1; width:1.85rem; aspect-ratio:1; place-items:center; border:1px solid rgba(239,195,99,.78); color:var(--gold); background:rgba(5,9,20,.68); box-shadow:0 0 1.6rem rgba(239,195,99,.16); font-family:Georgia,serif; font-size:1rem; }
+    .threshold-mark { display:grid; grid-column:2; grid-row:1; width:1.85rem; aspect-ratio:1; place-items:center; border:1px solid rgba(239,195,99,.78); color:var(--gold); background:rgba(5,9,20,.68); box-shadow:0 0 1.6rem rgba(239,195,99,.16); font-family:"Source Serif 4", Georgia, serif; font-size:1rem; }
     .threshold-label { grid-column:1 / -1; grid-row:2; margin-top:.75rem; color:var(--gold); font-size:.64rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; }
-    .portfolio-threshold strong { grid-column:1 / -1; grid-row:3; margin-top:.32rem; color:var(--chalk); font-family:Georgia,serif; font-size:clamp(1.2rem,1.7vw,1.55rem); font-weight:400; letter-spacing:-.02em; }
-    .threshold-arrow { display:grid; grid-column:1 / -1; grid-row:4; width:2.3rem; aspect-ratio:1; place-items:center; margin-top:.72rem; border:1px solid rgba(239,195,99,.68); color:var(--gold); font-family:Georgia,serif; font-size:1.3rem; transition:transform 300ms var(--ease),color 300ms ease,background-color 300ms ease; }
+    .portfolio-threshold strong { grid-column:1 / -1; grid-row:3; margin-top:.32rem; color:var(--chalk); font-family:"Source Serif 4", Georgia, serif; font-size:clamp(1.2rem,1.7vw,1.55rem); font-weight:400; letter-spacing:-.02em; }
+    .threshold-arrow { display:grid; grid-column:1 / -1; grid-row:4; width:2.3rem; aspect-ratio:1; place-items:center; margin-top:.72rem; border:1px solid rgba(239,195,99,.68); color:var(--gold); font-family:"Source Serif 4", Georgia, serif; font-size:1.3rem; transition:transform 300ms var(--ease),color 300ms ease,background-color 300ms ease; }
     .portfolio-threshold:hover .threshold-arrow,.portfolio-threshold:focus-visible .threshold-arrow { color:var(--void); background:var(--gold); transform:translateY(.38rem); }
-    .portfolio-threshold:focus-visible { outline:0; }
     .portfolio-threshold:focus-visible .threshold-mark { outline:.18rem solid var(--gold-light); outline-offset:.3rem; }
 
     /* The catalog continues the same night field after the Astral Rule. */
@@ -144,10 +160,7 @@
     .catalog-head h2 { max-width:10ch; margin:.75rem 0 0; color:#f7f8f6; font-size:clamp(3.1rem,5.9vw,6.7rem); font-weight:400; letter-spacing:-.075em; line-height:.83; }
     .catalog-head > p { max-width:34ch; color:var(--mist); font-size:1rem; line-height:1.55; }
 
-    .catalog-controls { display:flex; align-items:center; justify-content:space-between; gap:1.5rem; padding-block:1.1rem; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
-    .filters { display:flex; flex-wrap:wrap; gap:.4rem; margin:0; padding:0; list-style:none; }
-    .filter { display:inline-flex; min-height:2.5rem; align-items:center; padding-inline:.9rem; border:1px solid var(--line); color:var(--mist); font-size:.63rem; font-weight:700; letter-spacing:.13em; text-decoration:none; text-transform:uppercase; transition:color 220ms ease,background-color 220ms ease,border-color 220ms ease; }
-    .filter[aria-current="page"],.filter:hover,.filter:focus-visible { border-color:var(--gold); color:var(--void); background:var(--gold); outline:none; }
+    .catalog-controls { display:flex; align-items:center; justify-content:flex-end; gap:1.5rem; padding-block:1.1rem; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
     .catalog-controls p { margin:0; color:var(--muted); font-size:.66rem; font-weight:700; letter-spacing:.13em; text-transform:uppercase; }
     .catalog-controls p strong { color:var(--gold); }
 
@@ -173,7 +186,7 @@
     .work-facts div:last-child { padding-bottom:0; border-bottom:0; }
     .work-facts dt { color:var(--muted); font-size:.66rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
     .work-facts dd { margin:.28rem 0 0; color:var(--chalk); font-size:clamp(.88rem,.98vw,1.02rem); line-height:1.35; }
-    .work-action { display:grid; width:2.75rem; aspect-ratio:1; place-items:center; border:1px solid rgba(239,195,99,.65); color:var(--gold); font-family:Georgia,serif; font-size:1.45rem; transition:transform 300ms var(--ease),color 300ms ease,background-color 300ms ease; }
+    .work-action { display:grid; width:2.75rem; aspect-ratio:1; place-items:center; border:1px solid rgba(239,195,99,.65); color:var(--gold); font-family:"Source Serif 4", Georgia, serif; font-size:1.45rem; transition:transform 300ms var(--ease),color 300ms ease,background-color 300ms ease; }
     .work-link:hover .work-cover,.work-link:focus-visible .work-cover { border-color:var(--gold); box-shadow:0 1.7rem 3.3rem rgba(0,0,0,.47),0 0 2.1rem rgba(239,195,99,.12); }
     .work-link:hover .work-cover::before,.work-link:focus-visible .work-cover::before { inset:.66rem; border-color:rgba(239,195,99,.78); }
     .work-link:hover .work-cover img,.work-link:focus-visible .work-cover img { filter:saturate(1.05) contrast(1.04); transform:scale(1.035); }
@@ -182,7 +195,7 @@
 
     .catalog-tail { display:grid; grid-template-columns:minmax(0,.72fr) minmax(13rem,.28fr); gap:2rem; align-items:end; padding-top:clamp(4rem,8vw,8rem); }
     .catalog-tail p { max-width:43ch; margin:0; color:var(--mist); font-size:.9rem; line-height:1.55; }
-    .catalog-tail a { color:var(--gold); font-size:.68rem; font-weight:700; letter-spacing:.14em; text-decoration:none; text-transform:uppercase; }
+    .catalog-tail a { display:inline-flex; min-height:2.75rem; align-items:center; color:var(--gold); font-size:.68rem; font-weight:700; letter-spacing:.14em; text-decoration:none; text-transform:uppercase; }
 
     @media (max-width: 78rem) {
       .opening { grid-template-columns:minmax(16rem,.7fr) minmax(37rem,1.3fr); }
@@ -190,11 +203,11 @@
       .work-link { grid-template-columns:var(--cover) minmax(17rem,1.2fr) minmax(12rem,.75fr) auto; gap:clamp(1rem,2vw,2rem); }
     }
 
-    @media (max-width: 61rem) {
-      .opening { grid-template-columns:1fr; gap:0; min-height:auto; }
-      .opening-copy { padding-top:2.5rem; padding-bottom:0; }
-      .spread { min-height:min(47rem, calc(100dvh - 17rem)); margin-inline:-1.5rem; }
-      .portfolio-threshold { bottom:1.25rem; width:min(100%,40rem); }
+    @media (max-width: 63.99rem) {
+      .opening { grid-template-columns:1fr; grid-template-rows:auto minmax(0,1fr) auto; gap:0; height:calc(100dvh - 4.6rem); min-height:0; padding:1.5rem 0 .85rem; }
+      .opening-copy { grid-row:1; padding-top:0; padding-bottom:0; }
+      .spread { grid-row:2; min-height:0; height:100%; margin-inline:-1.5rem; }
+      .portfolio-threshold { position:relative; bottom:auto; grid-row:3; width:min(100%,40rem); margin-top:.6rem; }
       .catalog-head { grid-template-columns:1fr; gap:1.5rem; }
       .work-link { grid-template-columns:var(--cover) minmax(0,1fr) auto; gap:1.5rem; }
       .work-main { grid-column:2; }
@@ -206,26 +219,24 @@
       .cosmos::before { height:min(100dvh, 61rem); background-image:linear-gradient(180deg, rgba(5,9,20,.12), transparent 42%), url("../../../../../tbxBg2.jpeg"); background-position:center top; background-size:cover; mask-image:linear-gradient(180deg, #000 0 70%, rgba(0,0,0,.78) 81%, transparent 100%); }
     }
 
-    @media (max-width: 42rem) {
+    @media (max-width: 47.99rem) {
       .shell,.catalog-shell { width:min(100% - 2rem,38rem); }
-      .nav-links li:last-child { display:none; }
-      .nav-links { gap:.8rem; font-size:.62rem; }
+      .nav-links { display:none; }
+      .menu-trigger { display:inline-flex; }
       .brand { font-size:.64rem; }
       h1 { font-size:clamp(3.2rem,16vw,4.8rem); }
-      .spread { min-height:min(42rem, calc(100dvh - 20rem)); margin-inline:-1rem; }
+      .spread { margin-inline:-1rem; }
       .choice-card { --card:10.85rem; }
       .choice-a { transform:translate(-93%,-49%) rotate(-20deg); }
       .choice-b { transform:translate(-50%,-58%) rotate(-1deg) translateZ(1rem); }
       .choice-c { transform:translate(-7%,-47%) rotate(18deg); }
       .choice-copy { padding:.74rem .82rem .9rem; }
       .choice-copy p { display:none; }
-      .portfolio-threshold { bottom:.85rem; width:calc(100% - 2rem); column-gap:.6rem; }
+      .portfolio-threshold { width:calc(100% - 2rem); column-gap:.6rem; }
       .threshold-label { margin-top:.58rem; }
       .portfolio-threshold strong { font-size:1.16rem; }
       .threshold-arrow { width:2.1rem; margin-top:.56rem; }
-      .catalog-controls { align-items:flex-start; flex-direction:column; }
-      .filters { width:100%; }
-      .filter { flex:1 1 auto; justify-content:center; min-height:2.5rem; padding-inline:.55rem; font-size:.56rem; }
+      .catalog-controls { justify-content:flex-start; }
       .work-link { grid-template-columns:clamp(7.5rem,34vw,10rem) minmax(0,1fr); gap:1rem; min-height:auto; padding-block:1.4rem; }
       .work-cover { grid-row:1 / span 3; }
       .work-main { grid-column:2; gap:.7rem; }
@@ -240,16 +251,39 @@
       .catalog-tail { grid-template-columns:1fr; }
     }
 
+    @media (max-width: 47.99rem) and (max-height: 56rem) {
+      .opening { height:calc(100dvh - 4.6rem); padding-top:1rem; padding-bottom:.65rem; }
+      .opening-copy { padding-top:1rem; }
+      .eyebrow { margin-bottom:.55rem; }
+      h1 { font-size:clamp(2.75rem,13vw,4rem); }
+      .opening-lede { margin-top:.8rem; font-size:.92rem; }
+      .opening-note { display:none; }
+      .spread { margin-top:-.4rem; }
+      .choice-card { --card:8.9rem; }
+      .choice-copy { padding:.52rem .62rem .7rem; }
+      .choice-copy h2 { font-size:1.2rem; }
+      .portfolio-threshold { margin-top:.35rem; }
+      .threshold-label { margin-top:.35rem; font-size:.55rem; }
+      .portfolio-threshold strong { font-size:1rem; }
+      .threshold-arrow { display:none; }
+    }
+
     @media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation:none!important; transition:none!important; scroll-behavior:auto!important; } }
   </style>
 </head>
-<body>
-  <main class="cosmos">
+  <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <div class="cosmos">
     <div class="shell">
       <nav class="nav" aria-label="Primary navigation">
-        <a class="brand" href="#start"><img src="../../../../../src/assets/brand/TbX_logo.png" alt=""><span>Tales by Xero</span></a>
-        <ul class="nav-links"><li><a href="#works">Works</a></li><li><a href="#about">About</a></li><li><a href="#">Ko-fi</a></li></ul>
+        <a class="brand" href="/" aria-current="page"><img src="../../../../../src/assets/brand/TbX_logo.png" alt=""><span>Tales by Xero</span></a>
+        <ul class="nav-links"><li><a href="/works">Works</a></li><li><a href="/about">About</a></li><li><a href="https://ko-fi.com/talesbyxero">Ko-fi <span>(external)</span></a></li></ul>
+        <button class="menu-trigger" type="button" aria-expanded="false" aria-controls="mobile-menu">Menu</button>
+        <ul class="mobile-menu" id="mobile-menu" hidden><li><a href="/" aria-current="page">Home</a></li><li><a href="/works">Works</a></li><li><a href="/about">About</a></li><li><a href="https://ko-fi.com/talesbyxero">Ko-fi <span>(external)</span></a></li></ul>
       </nav>
+    </div>
+    <main id="main-content" tabindex="-1">
+    <div class="shell">
 
       <section class="opening" id="start" aria-labelledby="opening-title">
         <div class="opening-copy">
@@ -281,13 +315,10 @@
           <p>The opening spread makes one quick choice. The index below is deliberately quieter: every work exposes the same essential decision information in the same place.</p>
         </header>
 
-        <div class="catalog-controls">
-          <nav aria-label="Browse work types"><ul class="filters"><li><a class="filter" aria-current="page" href="#all">All works</a></li><li><a class="filter" href="#one-shots">One-shots</a></li><li><a class="filter" href="#campaigns">Campaigns</a></li><li><a class="filter" href="#resources">Table resources</a></li></ul></nav>
-          <p><strong>03</strong> released works</p>
-        </div>
+        <div class="catalog-controls"><p><strong>03</strong> released works</p></div>
 
-        <ol class="work-index" id="all">
-          <li class="work-item" id="campaigns">
+        <ol class="work-index">
+          <li class="work-item">
             <a class="work-link" href="/works/abythera">
               <span class="work-cover"><img src="../../../../../src/assets/works/abythera/abythera-cover.png" alt="Abythera cover art showing a dark fantasy figure against a deep blue background."></span>
               <div class="work-main"><div class="work-classification"><span class="work-number">01</span><span class="work-type">Campaign framework</span><span class="work-compatible">Daggerheart compatible</span></div><div class="work-summary"><h3>Abythera</h3><p>A modular Daggerheart campaign framework built around a central hub, an opening mission, and room to add the adventures that suit your group.</p></div></div>
@@ -296,7 +327,7 @@
             </a>
           </li>
 
-          <li class="work-item" id="one-shots">
+          <li class="work-item">
             <a class="work-link" href="/works/ephemera">
               <span class="work-cover"><img src="../../../../../src/assets/works/ephemera/Selfmade_Cover.png" alt="Ephemera cover art showing an underground prison city beneath a mountain with four figures in the foreground."></span>
               <div class="work-main"><div class="work-classification"><span class="work-number">02</span><span class="work-type">One-shot adventure</span><span class="work-compatible">Daggerheart compatible</span></div><div class="work-summary"><h3>Ephemera</h3><p>A standalone Daggerheart adventure of investigation, infiltration, and faction choices in a prison city beneath a mountain.</p></div></div>
@@ -305,7 +336,7 @@
             </a>
           </li>
 
-          <li class="work-item" id="resources">
+          <li class="work-item">
             <a class="work-link" href="/works/daggerheart-item-bundle">
               <span class="work-cover"><img src="../../../../../src/assets/works/daggerheart-item-bundle/daggerheart-item-bundle-cover.jpg" alt="Daggerheart Item Bundle cover art showing a sword, chest, parchment, potion bottles, and printable item cards."></span>
               <div class="work-main"><div class="work-classification"><span class="work-number">03</span><span class="work-type">Table resource</span><span class="work-compatible">Daggerheart compatible</span></div><div class="work-summary"><h3>Daggerheart Item Bundle</h3><p>More than 120 Daggerheart items across Item Volumes 1-4, with printable variants for physical use at the table.</p></div></div>
@@ -315,9 +346,38 @@
           </li>
         </ol>
 
-        <footer class="catalog-tail" id="about"><p>Each release starts in play, then becomes material another game master can make their own. This collection stays a portfolio, never a storefront.</p><a href="/about">How Tales by Xero is made ↗</a></footer>
+        <footer class="catalog-tail"><p>Each release starts in play, then becomes material another game master can make their own. This collection stays a portfolio, never a storefront.</p><a href="/about">How Tales by Xero is made ↗</a></footer>
       </div>
     </section>
-  </main>
+    </div>
+    </main>
+    </div>
+  <script>
+    const menuTrigger = document.querySelector(".menu-trigger");
+    const mobileMenu = document.querySelector("#mobile-menu");
+
+    function closeMenu() {
+      mobileMenu.hidden = true;
+      menuTrigger.setAttribute("aria-expanded", "false");
+    }
+
+    menuTrigger.addEventListener("click", () => {
+      const willOpen = mobileMenu.hidden;
+      mobileMenu.hidden = !willOpen;
+      menuTrigger.setAttribute("aria-expanded", String(willOpen));
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !mobileMenu.hidden) {
+        closeMenu();
+        menuTrigger.focus();
+      }
+    });
+
+    const desktopMenuQuery = window.matchMedia("(min-width: 48rem)");
+    desktopMenuQuery.addEventListener("change", (event) => {
+      if (event.matches) closeMenu();
+    });
+  </script>
 </body>
 </html>

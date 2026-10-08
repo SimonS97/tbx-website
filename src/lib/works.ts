@@ -30,7 +30,7 @@ export type PublishedWork = Work & {
     facts: Array<{ label: string; value: string }>;
     images: WorkImage[];
     externalUrl: string;
-    theMoment: string;
+    theMoment?: string;
     tableUse: string;
     authorsNote: string;
     nextWork: string;
