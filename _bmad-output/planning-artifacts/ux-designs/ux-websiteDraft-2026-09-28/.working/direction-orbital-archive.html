@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tales by Xero - Direction 02: The Orbital Archive</title>
+  <style>
+    /* Direction 02: The Orbital Archive. Museum-like celestial index with three art objects in orbit. */
+    :root {
+      --black: #07080d;
+      --obsidian: #11121b;
+      --slate: #252a3a;
+      --paper: #edf0ea;
+      --quiet: #a3a9b6;
+      --gold: #d7b75f;
+      --blue: #7894be;
+      --line: rgba(237, 240, 234, 0.18);
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { min-height: 100%; background: var(--black); }
+    body { margin: 0; color: var(--paper); font-family: Arial, sans-serif; }
+    a { color: inherit; }
+
+    .page {
+      position: relative;
+      min-height: 100dvh;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 52% 43%, rgba(120, 148, 190, 0.15), transparent 24rem),
+        radial-gradient(circle at 78% 19%, rgba(215, 183, 95, 0.09), transparent 18rem),
+        var(--black);
+      isolation: isolate;
+    }
+
+    .grain {
+      position: fixed;
+      z-index: 5;
+      inset: 0;
+      opacity: 0.16;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.9'/%3E%3C/svg%3E");
+      mix-blend-mode: screen;
+    }
+
+    .grid {
+      position: absolute;
+      z-index: -1;
+      inset: 0;
+      opacity: 0.38;
+      background-image:
+        linear-gradient(rgba(237, 240, 234, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(237, 240, 234, 0.045) 1px, transparent 1px);
+      background-size: 7.5rem 7.5rem;
+      mask-image: radial-gradient(ellipse at 50% 43%, #000, transparent 74%);
+    }
+
+    .mast {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      width: min(100% - 3rem, 100rem);
+      min-height: 4.4rem;
+      margin-inline: auto;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .wordmark, .mast-meta {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .wordmark { display: inline-flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+    .wordmark img { width: 1.9rem; height: 1.9rem; object-fit: contain; }
+    .mast-meta { color: var(--quiet); }
+    .mast-meta b { color: var(--gold); font-weight: inherit; }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(13rem, 0.62fr) minmax(35rem, 1.38fr);
+      width: min(100% - 3rem, 100rem);
+      min-height: calc(100dvh - 4.4rem);
+      margin-inline: auto;
+    }
+
+    .copy {
+      z-index: 2;
+      align-self: center;
+      padding-bottom: 7rem;
+    }
+
+    .number, .index, .caption-label {
+      color: var(--gold);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .number { display: block; margin-bottom: 1.2rem; }
+
+    h1 {
+      max-width: 7ch;
+      margin: 0;
+      font-family: Georgia, serif;
+      font-size: clamp(3.3rem, 6.1vw, 7.2rem);
+      font-weight: 400;
+      letter-spacing: -0.07em;
+      line-height: 0.84;
+    }
+
+    .copy p:not(.number) {
+      max-width: 28ch;
+      margin: 1.45rem 0 0;
+      color: var(--quiet);
+      font-size: 1rem;
+      line-height: 1.55;
+    }
+
+    .fine-print {
+      display: flex;
+      gap: 0.55rem;
+      align-items: baseline;
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--line);
+      color: var(--quiet);
+      font-size: 0.72rem;
+      line-height: 1.4;
+    }
+
+    .fine-print strong { color: var(--paper); }
+
+    .orbit-zone {
+      position: relative;
+      min-height: 40rem;
+      perspective: 1300px;
+    }
+
+    .orbit, .orbit::before, .orbit::after {
+      position: absolute;
+      border: 1px solid rgba(215, 183, 95, 0.26);
+      border-radius: 50%;
+      content: "";
+      pointer-events: none;
+    }
+
+    .orbit {
+      top: 50%;
+      left: 53%;
+      width: min(54vw, 44rem);
+      height: min(23vw, 18.5rem);
+      transform: translate(-50%, -52%) rotate(-19deg);
+    }
+
+    .orbit::before {
+      inset: -3.9rem -2.8rem;
+      border-color: rgba(120, 148, 190, 0.28);
+    }
+
+    .orbit::after {
+      inset: 3.3rem 5.2rem;
+      border-color: rgba(237, 240, 234, 0.18);
+    }
+
+    .orbit-core {
+      position: absolute;
+      top: 50%;
+      left: 53%;
+      width: 6.6rem;
+      aspect-ratio: 1;
+      border: 1px solid rgba(215, 183, 95, 0.75);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(237, 240, 234, 0.85) 0 0.12rem, rgba(215, 183, 95, 0.55) 0.14rem 0.22rem, transparent 0.24rem), radial-gradient(circle, rgba(215, 183, 95, 0.16), transparent 68%);
+      box-shadow: 0 0 4rem rgba(215, 183, 95, 0.28);
+      transform: translate(-50%, -50%);
+    }
+
+    .orbit-core::before, .orbit-core::after {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 145%;
+      height: 1px;
+      content: "";
+      background: linear-gradient(90deg, transparent, rgba(215, 183, 95, 0.86), transparent);
+      transform: translate(-50%, -50%);
+    }
+
+    .orbit-core::after { transform: translate(-50%, -50%) rotate(90deg); }
+
+    .artifact {
+      position: absolute;
+      display: grid;
+      width: clamp(10.5rem, 15.5vw, 14.5rem);
+      margin: 0;
+      color: var(--paper);
+      text-decoration: none;
+      transform-style: preserve-3d;
+      transition: transform 600ms var(--ease), filter 400ms var(--ease);
+      will-change: transform;
+    }
+
+    .artifact figure {
+      position: relative;
+      display: grid;
+      aspect-ratio: 0.7;
+      margin: 0;
+      padding: 0.42rem;
+      border: 1px solid rgba(237, 240, 234, 0.46);
+      background: linear-gradient(145deg, rgba(37, 42, 58, 0.92), rgba(7, 8, 13, 0.98));
+      box-shadow: 0 1.6rem 3rem rgba(0, 0, 0, 0.55);
+    }
+
+    .artifact figure::before {
+      position: absolute;
+      inset: 0.7rem;
+      content: "";
+      border: 1px solid rgba(215, 183, 95, 0.43);
+      pointer-events: none;
+    }
+
+    .artifact img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: brightness(0.89) saturate(0.85);
+      transition: filter 400ms var(--ease);
+    }
+
+    .artifact figcaption {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.6rem;
+      margin-top: 0.75rem;
+      color: var(--quiet);
+      font-size: 0.7rem;
+      line-height: 1.35;
+    }
+
+    .artifact figcaption strong { display: block; color: var(--paper); font-family: Georgia, serif; font-size: 1.15rem; font-weight: 400; line-height: 1; }
+    .artifact-one { top: 18%; left: 5%; transform: rotate(-13deg) translateZ(0); }
+    .artifact-two { top: 40%; left: 39%; z-index: 2; transform: rotate(4deg) translateZ(3rem); }
+    .artifact-three { top: 14%; right: 2%; transform: rotate(14deg) translateZ(0); }
+
+    .orbit-zone:has(.artifact:hover) .artifact:not(:hover) { filter: brightness(0.52) saturate(0.55); }
+    .artifact:hover, .artifact:focus-visible { z-index: 4; outline: none; filter: brightness(1.12) !important; }
+    .artifact:hover figure, .artifact:focus-visible figure { border-color: var(--gold); box-shadow: 0 2.2rem 4rem rgba(0, 0, 0, 0.68), 0 0 2rem rgba(215, 183, 95, 0.22); }
+    .artifact:hover img, .artifact:focus-visible img { filter: brightness(1.06) saturate(1.03); }
+    .artifact-one:hover, .artifact-one:focus-visible { transform: translate(-1.2rem, -2rem) rotate(-4deg) translateZ(6rem); }
+    .artifact-two:hover, .artifact-two:focus-visible { transform: translate(0, -2rem) rotate(0deg) translateZ(7rem) scale(1.05); }
+    .artifact-three:hover, .artifact-three:focus-visible { transform: translate(1.2rem, -2rem) rotate(5deg) translateZ(6rem); }
+
+    .orbit-caption {
+      position: absolute;
+      bottom: 2rem;
+      left: 0;
+      display: flex;
+      gap: 0.75rem;
+      align-items: baseline;
+      color: var(--quiet);
+      font-size: 0.72rem;
+      line-height: 1.4;
+    }
+
+    .orbit-caption span { color: var(--gold); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+
+    @media (max-width: 65rem) {
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .copy { padding: 4rem 0 0; }
+      .orbit-zone { min-height: 43rem; }
+      .artifact-one { left: 5%; }
+      .artifact-three { right: 5%; }
+    }
+
+    @media (max-width: 37rem) {
+      .mast, .hero { width: min(100% - 2rem, 35rem); }
+      .mast-meta { display: none; }
+      .copy { padding-top: 2.5rem; }
+      .orbit-zone { min-height: 37rem; margin-inline: -1rem; }
+      .artifact { width: 9.75rem; }
+      .artifact-one { top: 21%; left: 1%; }
+      .artifact-two { top: 40%; left: 32%; }
+      .artifact-three { top: 18%; right: 0; }
+      .artifact figcaption { grid-template-columns: 1fr; gap: 0.25rem; }
+      .orbit-caption { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="grid" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
+    <nav class="mast" aria-label="Study navigation">
+      <a class="wordmark" href="#archive"><img src="../../../../../src/assets/brand/TbX_logo.png" alt=""> Tales by Xero</a>
+      <span class="mast-meta"><b>Archive 01</b> / Select a playable direction</span>
+    </nav>
+
+    <section class="hero" id="archive" aria-labelledby="archive-title">
+      <div class="copy">
+        <span class="number">Direction 02 / The Orbital Archive</span>
+        <h1 id="archive-title">What do you want to put into motion?</h1>
+        <p>Each object is a different kind of table night. The layout feels collected and precise, more observatory than fantasy shop.</p>
+        <div class="fine-print"><strong>Interaction</strong><span>On hover, one artifact enters the foreground. On activation, it moves directly into its work page.</span></div>
+      </div>
+
+      <div class="orbit-zone" aria-label="Three work routes in orbit">
+        <div class="orbit" aria-hidden="true"></div>
+        <div class="orbit-core" aria-hidden="true"></div>
+
+        <a class="artifact artifact-one" href="/works/ephemera">
+          <figure>
+            <img src="../../../../../src/assets/works/ephemera/Selfmade_Cover.png" alt="Ephemera cover art showing an underground prison city beneath a mountain.">
+          </figure>
+          <figcaption><span class="index">01</span><span><strong>Ephemera</strong>Run something tonight</span></figcaption>
+        </a>
+
+        <a class="artifact artifact-two" href="/works/abythera">
+          <figure>
+            <img src="../../../../../src/assets/works/abythera/abythera-cover.png" alt="Abythera cover art showing a dark fantasy figure against a deep blue background.">
+          </figure>
+          <figcaption><span class="index">02</span><span><strong>Abythera</strong>Build a campaign around it</span></figcaption>
+        </a>
+
+        <a class="artifact artifact-three" href="/works/daggerheart-item-bundle">
+          <figure>
+            <img src="../../../../../src/assets/works/daggerheart-item-bundle/daggerheart-item-bundle-cover.jpg" alt="Daggerheart Item Bundle cover art showing items and printable cards.">
+          </figure>
+          <figcaption><span class="index">03</span><span><strong>Item Bundle</strong>Bring something to the table</span></figcaption>
+        </a>
+
+        <p class="orbit-caption"><span>Archive behavior</span> The works circle a shared question rather than appearing as a marketplace grid.</p>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

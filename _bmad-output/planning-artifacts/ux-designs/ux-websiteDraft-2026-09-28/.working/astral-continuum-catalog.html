@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tales by Xero - Astral Continuum Catalog Study</title>
+  <style>
+    /*
+      UX correction study.
+      - No visible section break between the Astral Spread and the collection.
+      - Catalog uses one repeatable, decision-first reading order for every work.
+    */
+    :root {
+      --void: #050914;
+      --night: #091126;
+      --mineral: #142950;
+      --chalk: #f3f3ee;
+      --mist: #bdc9d6;
+      --muted: #8293a8;
+      --gold: #efc363;
+      --gold-light: #f7d98a;
+      --line: rgba(228, 235, 240, 0.23);
+      --line-faint: rgba(228, 235, 240, 0.1);
+      --card: clamp(13.5rem, min(22vw, 43dvh), 23rem);
+      --cover: clamp(10rem, 13vw, 13.5rem);
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--void); }
+    body { min-width: 20rem; margin: 0; color: var(--chalk); background: var(--void); font-family: Arial, sans-serif; }
+    a { color: inherit; }
+
+    .cosmos {
+      position: relative;
+      overflow: clip;
+      isolation: isolate;
+      background:
+        radial-gradient(ellipse at 48% 58%, rgba(62, 96, 153, 0.1), transparent 37rem),
+        linear-gradient(180deg, var(--void), #08142c 58%, #071125 100%);
+    }
+
+    .cosmos::before, .cosmos::after { position: absolute; z-index: -2; inset: 0; content: ""; pointer-events: none; }
+
+    /* The approved Astral Threshold master supplies the desktop hero world. */
+    .cosmos::before {
+      height: min(100dvh, 70rem);
+      opacity: 0.94;
+      background: linear-gradient(90deg, rgba(5, 9, 20, 0.14), transparent 52%), url("../../../../../tbxBg3.jpeg") center top / cover no-repeat;
+      mask-image: linear-gradient(180deg, #000 0 73%, rgba(0, 0, 0, 0.82) 82%, transparent 100%);
+    }
+
+    .cosmos::after {
+      z-index: -1;
+      opacity: 0.25;
+      background-image: linear-gradient(rgba(228, 235, 240, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(228, 235, 240, 0.035) 1px, transparent 1px);
+      background-size: 8rem 8rem;
+      mask-image: linear-gradient(180deg, transparent, #000 25%, #000 73%, transparent);
+    }
+
+    .shell { width: min(100% - 3rem, 108rem); margin-inline: auto; }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      min-height: 4.6rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand { display: inline-flex; align-items: center; gap: .75rem; color: var(--chalk); font-size: .71rem; font-weight: 700; letter-spacing: .16em; text-decoration: none; text-transform: uppercase; }
+    .brand img { width: 2rem; height: 2rem; object-fit: contain; }
+    .nav-links { display: flex; gap: 1.4rem; margin: 0; padding: 0; list-style: none; color: var(--mist); font-size: .69rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+    .nav-links a { text-decoration: none; }
+    .nav-links a:hover, .nav-links a:focus-visible { color: var(--gold); }
+
+    .opening {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(18rem,.66fr) minmax(47rem,1.34fr);
+      gap: clamp(2rem, 4vw, 6rem);
+      min-height: calc(100dvh - 4.6rem);
+      padding: clamp(2rem,4vw,5rem) 0 clamp(8.5rem,15dvh,11rem);
+    }
+
+    .opening-copy { z-index: 4; align-self: center; max-width: 35rem; padding-bottom: clamp(4rem, 9vw, 8rem); }
+    .eyebrow, .label, .work-type, .fact-label, .entry-number { font-size: .67rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; }
+    .eyebrow { display: flex; align-items: center; gap: .7rem; margin: 0 0 1.1rem; color: var(--gold); }
+    .eyebrow::before { width: 2.5rem; height: 1px; content:""; background: currentColor; }
+    h1, h2, h3 { font-family: Georgia, serif; }
+    h1 { max-width: 7.8ch; margin: 0; color: #f7f8f6; font-size: clamp(3.2rem, min(6.7vw, 10dvh), 7.55rem); font-weight: 400; letter-spacing: -.08em; line-height: .81; }
+    .opening-lede { max-width: 34ch; margin: 1.5rem 0 0; color: var(--mist); font-size: clamp(1rem,1.25vw,1.12rem); line-height: 1.55; }
+    .opening-note { display: grid; grid-template-columns: auto 1fr; gap: .7rem; max-width: 31rem; margin: 2rem 0 0; padding-top: 1rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .74rem; line-height: 1.45; }
+    .opening-note strong { color: var(--gold); font-size: .65rem; letter-spacing: .14em; text-transform: uppercase; }
+
+    .spread { position: relative; min-height: min(50rem, 67vw, calc(100dvh - 13rem)); perspective: 1700px; isolation: isolate; }
+    .spread::before, .spread::after { position:absolute; z-index:-1; content:""; pointer-events:none; }
+    .spread::before { top:47%; left:50%; width:min(54vw,47rem); aspect-ratio:1; border: 1px solid rgba(239,195,99,.24); border-radius:50%; box-shadow: 0 0 0 1.6rem rgba(239,195,99,.035), 0 0 7rem rgba(137,167,229,.13); transform:translate(-50%,-50%); }
+    .spread::after { top:47%; left:50%; width:min(77vw,60rem); height:1px; background:linear-gradient(90deg,transparent,rgba(239,195,99,.75),transparent); transform:translateX(-50%) rotate(-8deg); }
+    .constellation { position:absolute; z-index:-1; top:47%; left:50%; width:min(47vw,40rem); aspect-ratio:1; border:1px dashed rgba(228,235,240,.24); border-radius:50%; transform:translate(-50%,-50%) rotate(19deg); }
+    .constellation::before,.constellation::after { position:absolute; top:50%; left:50%; height:1px; content:""; background:rgba(228,235,240,.35); transform-origin:left center; }
+    .constellation::before { width:59%; transform:rotate(36deg); }
+    .constellation::after { width:42%; transform:rotate(154deg); }
+
+    .choice-card { position:absolute; top:47%; left:50%; display:grid; grid-template-rows:1fr auto; width:var(--card); aspect-ratio:.7; overflow:hidden; border:1px solid rgba(239,195,99,.74); color:var(--chalk); background:linear-gradient(150deg,#18243f,#050914 68%); box-shadow:0 2.3rem 4.5rem rgba(0,0,0,.52),inset 0 0 0 .25rem rgba(239,195,99,.07); text-decoration:none; transform-origin:center 125%; transition:transform 660ms var(--ease-soft),border-color 280ms ease,box-shadow 660ms var(--ease-soft),filter 440ms var(--ease-soft); will-change:transform; }
+    .choice-card::before { position:absolute; z-index:2; inset:.55rem; content:""; border:1px solid rgba(239,195,99,.36); pointer-events:none; }
+    .choice-card::after { position:absolute; z-index:1; right:0; bottom:0; left:0; height:45%; content:""; background:linear-gradient(transparent,rgba(5,9,20,.97)); pointer-events:none; }
+    .choice-card img { width:100%; height:100%; grid-column:1; grid-row:1/-1; padding:.72rem; object-fit:contain; filter:saturate(.94) contrast(1.05); transition:filter 440ms var(--ease-soft); }
+    .choice-copy { position:relative; z-index:3; grid-column:1; grid-row:2; padding:1.15rem 1.15rem 1.34rem; }
+    .choice-copy .label { color:var(--gold); }
+    .choice-copy h2 { margin:.42rem 0 0; color:#f8f8f6; font-size:clamp(1.42rem,2vw,1.95rem); font-weight:400; letter-spacing:-.045em; line-height:.93; }
+    .choice-copy p { margin:.45rem 0 0; color:#c8d2dc; font-size:.76rem; line-height:1.38; }
+    .choice-a { z-index:2; transform:translate(-99%,-49%) rotate(-18deg) translateZ(0); }
+    .choice-b { z-index:3; transform:translate(-50%,-59%) rotate(-1deg) translateZ(2.5rem); }
+    .choice-c { z-index:1; transform:translate(-1%,-47%) rotate(17deg) translateZ(0); }
+    .spread:has(.choice-card:hover) .choice-card:not(:hover) { filter:brightness(.61) saturate(.64); }
+    .choice-card:hover,.choice-card:focus-visible { z-index:5; border-color:var(--gold-light); outline:none; box-shadow:0 3rem 5.8rem rgba(0,0,0,.67),0 0 3.3rem rgba(239,195,99,.26),inset 0 0 0 .25rem rgba(239,195,99,.17); filter:brightness(1.08) saturate(1.06)!important; }
+    .choice-card:hover img,.choice-card:focus-visible img { filter:brightness(1.06) saturate(1.07); }
+    .choice-a:hover,.choice-a:focus-visible { transform:translate(-108%,-66%) rotate(-9deg) translateZ(7rem); }
+    .choice-b:hover,.choice-b:focus-visible { transform:translate(-50%,-72%) rotate(0deg) translateZ(8rem) scale(1.035); }
+    .choice-c:hover,.choice-c:focus-visible { transform:translate(8%,-65%) rotate(9deg) translateZ(7rem); }
+
+    /* The intentional Astral Rule replaces a blurry image seam with a clear threshold. */
+    .portfolio-threshold { position:absolute; z-index:5; right:0; bottom:clamp(1rem,2.2dvh,2rem); left:0; display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); grid-template-rows:auto auto auto auto; column-gap:1rem; justify-items:center; width:min(100%,56rem); margin-inline:auto; color:var(--mist); text-align:center; text-decoration:none; }
+    .portfolio-threshold::before,.portfolio-threshold::after { width:100%; height:1px; content:""; background:linear-gradient(90deg,transparent,rgba(239,195,99,.78)); }
+    .portfolio-threshold::before { grid-column:1; grid-row:1; }
+    .portfolio-threshold::after { grid-column:3; grid-row:1; background:linear-gradient(90deg,rgba(239,195,99,.78),transparent); }
+    .threshold-mark { display:grid; grid-column:2; grid-row:1; width:1.85rem; aspect-ratio:1; place-items:center; border:1px solid rgba(239,195,99,.78); color:var(--gold); background:rgba(5,9,20,.68); box-shadow:0 0 1.6rem rgba(239,195,99,.16); font-family:Georgia,serif; font-size:1rem; }
+    .threshold-label { grid-column:1 / -1; grid-row:2; margin-top:.75rem; color:var(--gold); font-size:.64rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; }
+    .portfolio-threshold strong { grid-column:1 / -1; grid-row:3; margin-top:.32rem; color:var(--chalk); font-family:Georgia,serif; font-size:clamp(1.2rem,1.7vw,1.55rem); font-weight:400; letter-spacing:-.02em; }
+    .threshold-arrow { display:grid; grid-column:1 / -1; grid-row:4; width:2.3rem; aspect-ratio:1; place-items:center; margin-top:.72rem; border:1px solid rgba(239,195,99,.68); color:var(--gold); font-family:Georgia,serif; font-size:1.3rem; transition:transform 300ms var(--ease),color 300ms ease,background-color 300ms ease; }
+    .portfolio-threshold:hover .threshold-arrow,.portfolio-threshold:focus-visible .threshold-arrow { color:var(--void); background:var(--gold); transform:translateY(.38rem); }
+    .portfolio-threshold:focus-visible { outline:0; }
+    .portfolio-threshold:focus-visible .threshold-mark { outline:.18rem solid var(--gold-light); outline-offset:.3rem; }
+
+    /* The catalog continues the same night field after the Astral Rule. */
+    .catalog { position:relative; z-index:2; padding-bottom:clamp(6rem,12vw,12rem); }
+    .catalog-shell { width:min(100% - 3rem, 108rem); margin-inline:auto; }
+    .catalog-head { display:grid; grid-template-columns:minmax(12rem,.65fr) minmax(25rem,1.35fr); gap:clamp(2rem,7vw,9rem); align-items:end; padding-bottom:2.2rem; }
+    .catalog-head p { margin:0; }
+    .catalog-head .entry-number { color:var(--gold); }
+    .catalog-head h2 { max-width:10ch; margin:.75rem 0 0; color:#f7f8f6; font-size:clamp(3.1rem,5.9vw,6.7rem); font-weight:400; letter-spacing:-.075em; line-height:.83; }
+    .catalog-head > p { max-width:34ch; color:var(--mist); font-size:1rem; line-height:1.55; }
+
+    .catalog-controls { display:flex; align-items:center; justify-content:space-between; gap:1.5rem; padding-block:1.1rem; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+    .filters { display:flex; flex-wrap:wrap; gap:.4rem; margin:0; padding:0; list-style:none; }
+    .filter { display:inline-flex; min-height:2.5rem; align-items:center; padding-inline:.9rem; border:1px solid var(--line); color:var(--mist); font-size:.63rem; font-weight:700; letter-spacing:.13em; text-decoration:none; text-transform:uppercase; transition:color 220ms ease,background-color 220ms ease,border-color 220ms ease; }
+    .filter[aria-current="page"],.filter:hover,.filter:focus-visible { border-color:var(--gold); color:var(--void); background:var(--gold); outline:none; }
+    .catalog-controls p { margin:0; color:var(--muted); font-size:.66rem; font-weight:700; letter-spacing:.13em; text-transform:uppercase; }
+    .catalog-controls p strong { color:var(--gold); }
+
+    /* Every work row repeats one stable scan order: artwork -> type/title/premise -> facts -> action. */
+    .work-index { margin:0; padding:0; list-style:none; }
+    .work-item { border-bottom:1px solid var(--line); }
+    .work-link { display:grid; grid-template-columns:var(--cover) minmax(24rem,1.35fr) minmax(14rem,.75fr) auto; gap:clamp(1.25rem,2.8vw,3.5rem); align-items:center; min-height:clamp(18rem,26vw,24rem); padding-block:clamp(1.5rem,3vw,3rem); color:var(--chalk); text-decoration:none; }
+    .work-cover { position:relative; display:grid; overflow:hidden; aspect-ratio:.7; border:1px solid rgba(228,235,240,.5); background:#080e1d; box-shadow:0 1.2rem 2.5rem rgba(0,0,0,.28); }
+    .work-cover::before { position:absolute; z-index:2; inset:.38rem; content:""; border:1px solid rgba(239,195,99,.3); pointer-events:none; transition:inset 440ms var(--ease-soft),border-color 300ms ease; }
+    .work-cover img { width:100%; height:100%; object-fit:contain; filter:saturate(.87) contrast(1.02); transition:transform 600ms var(--ease-soft),filter 430ms var(--ease-soft); }
+    .work-main { display:grid; gap:1rem; align-self:center; }
+    .work-classification { display:flex; flex-wrap:wrap; gap:.45rem 1rem; align-items:baseline; }
+    .work-number { color:var(--gold); font-size:.72rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; }
+    .work-type { color:var(--chalk); font-size:.78rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+    .work-compatible { color:var(--mist); font-size:.76rem; font-weight:700; letter-spacing:.06em; line-height:1.4; }
+    .work-summary { display:grid; gap:1rem; }
+    .work-summary h3 { max-width:11ch; margin:0; color:#f8f8f5; font-size:clamp(2.25rem,3.7vw,4.3rem); font-weight:400; letter-spacing:-.065em; line-height:.85; }
+    .work-summary p { max-width:40ch; margin:0; color:var(--mist); font-size:clamp(.96rem,1.05vw,1.08rem); line-height:1.52; }
+    .work-at-a-glance { display:grid; gap:.82rem; align-self:center; padding-left:clamp(.9rem,1.7vw,1.55rem); border-left:1px solid var(--line); }
+    .facts-heading { margin:0; color:var(--gold); font-size:.7rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; }
+    .work-facts { display:grid; gap:.76rem; margin:0; }
+    .work-facts div { padding-bottom:.76rem; border-bottom:1px solid var(--line-faint); }
+    .work-facts div:last-child { padding-bottom:0; border-bottom:0; }
+    .work-facts dt { color:var(--muted); font-size:.66rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+    .work-facts dd { margin:.28rem 0 0; color:var(--chalk); font-size:clamp(.88rem,.98vw,1.02rem); line-height:1.35; }
+    .work-action { display:grid; width:2.75rem; aspect-ratio:1; place-items:center; border:1px solid rgba(239,195,99,.65); color:var(--gold); font-family:Georgia,serif; font-size:1.45rem; transition:transform 300ms var(--ease),color 300ms ease,background-color 300ms ease; }
+    .work-link:hover .work-cover,.work-link:focus-visible .work-cover { border-color:var(--gold); box-shadow:0 1.7rem 3.3rem rgba(0,0,0,.47),0 0 2.1rem rgba(239,195,99,.12); }
+    .work-link:hover .work-cover::before,.work-link:focus-visible .work-cover::before { inset:.66rem; border-color:rgba(239,195,99,.78); }
+    .work-link:hover .work-cover img,.work-link:focus-visible .work-cover img { filter:saturate(1.05) contrast(1.04); transform:scale(1.035); }
+    .work-link:hover .work-action,.work-link:focus-visible .work-action { color:var(--void); background:var(--gold); transform:translate(.26rem,-.26rem); }
+    .work-link:focus-visible { outline:.2rem solid var(--gold-light); outline-offset:.45rem; }
+
+    .catalog-tail { display:grid; grid-template-columns:minmax(0,.72fr) minmax(13rem,.28fr); gap:2rem; align-items:end; padding-top:clamp(4rem,8vw,8rem); }
+    .catalog-tail p { max-width:43ch; margin:0; color:var(--mist); font-size:.9rem; line-height:1.55; }
+    .catalog-tail a { color:var(--gold); font-size:.68rem; font-weight:700; letter-spacing:.14em; text-decoration:none; text-transform:uppercase; }
+
+    @media (max-width: 78rem) {
+      .opening { grid-template-columns:minmax(16rem,.7fr) minmax(37rem,1.3fr); }
+      .spread { min-height:min(48rem, calc(100dvh - 13rem)); }
+      .work-link { grid-template-columns:var(--cover) minmax(17rem,1.2fr) minmax(12rem,.75fr) auto; gap:clamp(1rem,2vw,2rem); }
+    }
+
+    @media (max-width: 61rem) {
+      .opening { grid-template-columns:1fr; gap:0; min-height:auto; }
+      .opening-copy { padding-top:2.5rem; padding-bottom:0; }
+      .spread { min-height:min(47rem, calc(100dvh - 17rem)); margin-inline:-1.5rem; }
+      .portfolio-threshold { bottom:1.25rem; width:min(100%,40rem); }
+      .catalog-head { grid-template-columns:1fr; gap:1.5rem; }
+      .work-link { grid-template-columns:var(--cover) minmax(0,1fr) auto; gap:1.5rem; }
+      .work-main { grid-column:2; }
+      .work-at-a-glance { grid-column:2; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; padding-top:.2rem; padding-left:0; border-left:0; }
+      .facts-heading { grid-column:1 / -1; }
+      .work-facts { grid-column:1 / -1; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; }
+      .work-facts div { padding:0; border:0; }
+      .work-action { grid-column:3; grid-row:1 / span 2; align-self:center; }
+      .cosmos::before { height:min(100dvh, 61rem); background-image:linear-gradient(180deg, rgba(5,9,20,.12), transparent 42%), url("../../../../../tbxBg2.jpeg"); background-position:center top; background-size:cover; mask-image:linear-gradient(180deg, #000 0 70%, rgba(0,0,0,.78) 81%, transparent 100%); }
+    }
+
+    @media (max-width: 42rem) {
+      .shell,.catalog-shell { width:min(100% - 2rem,38rem); }
+      .nav-links li:last-child { display:none; }
+      .nav-links { gap:.8rem; font-size:.62rem; }
+      .brand { font-size:.64rem; }
+      h1 { font-size:clamp(3.2rem,16vw,4.8rem); }
+      .spread { min-height:min(42rem, calc(100dvh - 20rem)); margin-inline:-1rem; }
+      .choice-card { --card:10.85rem; }
+      .choice-a { transform:translate(-93%,-49%) rotate(-20deg); }
+      .choice-b { transform:translate(-50%,-58%) rotate(-1deg) translateZ(1rem); }
+      .choice-c { transform:translate(-7%,-47%) rotate(18deg); }
+      .choice-copy { padding:.74rem .82rem .9rem; }
+      .choice-copy p { display:none; }
+      .portfolio-threshold { bottom:.85rem; width:calc(100% - 2rem); column-gap:.6rem; }
+      .threshold-label { margin-top:.58rem; }
+      .portfolio-threshold strong { font-size:1.16rem; }
+      .threshold-arrow { width:2.1rem; margin-top:.56rem; }
+      .catalog-controls { align-items:flex-start; flex-direction:column; }
+      .filters { width:100%; }
+      .filter { flex:1 1 auto; justify-content:center; min-height:2.5rem; padding-inline:.55rem; font-size:.56rem; }
+      .work-link { grid-template-columns:clamp(7.5rem,34vw,10rem) minmax(0,1fr); gap:1rem; min-height:auto; padding-block:1.4rem; }
+      .work-cover { grid-row:1 / span 3; }
+      .work-main { grid-column:2; gap:.7rem; }
+      .work-classification { gap:.35rem .55rem; }
+      .work-number,.work-type,.work-compatible { font-size:.63rem; }
+      .work-summary h3 { font-size:clamp(1.9rem,8vw,2.8rem); }
+      .work-summary p { font-size:.77rem; }
+      .work-at-a-glance { grid-column:1 / -1; grid-template-columns:1fr; gap:.55rem; padding-top:.6rem; }
+      .work-facts { grid-template-columns:repeat(3,minmax(0,1fr)); gap:.55rem; }
+      .work-facts dd { font-size:.7rem; }
+      .work-action { display:none; }
+      .catalog-tail { grid-template-columns:1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation:none!important; transition:none!important; scroll-behavior:auto!important; } }
+  </style>
+</head>
+<body>
+  <main class="cosmos">
+    <div class="shell">
+      <nav class="nav" aria-label="Primary navigation">
+        <a class="brand" href="#start"><img src="../../../../../src/assets/brand/TbX_logo.png" alt=""><span>Tales by Xero</span></a>
+        <ul class="nav-links"><li><a href="#works">Works</a></li><li><a href="#about">About</a></li><li><a href="#">Ko-fi</a></li></ul>
+      </nav>
+
+      <section class="opening" id="start" aria-labelledby="opening-title">
+        <div class="opening-copy">
+          <p class="eyebrow">Tested at the table</p>
+          <h1 id="opening-title">Choose the shape of your next session.</h1>
+          <p class="opening-lede">Start with the kind of night you want to run. Each card opens a published work built for a real table.</p>
+          <p class="opening-note"><strong>First choice</strong><span>The spread is an invitation, not a replacement for browsing. Every title remains visible and directly reachable.</span></p>
+        </div>
+
+        <div class="spread" aria-label="Three paths into published works">
+          <div class="constellation" aria-hidden="true"></div>
+          <a class="choice-card choice-a" href="/works/ephemera"><img src="../../../../../src/assets/works/ephemera/Selfmade_Cover.png" alt="Ephemera cover art showing an underground prison city beneath a mountain with four figures in the foreground."><span class="choice-copy"><span class="label">I. Run something tonight</span><h2>Ephemera</h2><p>A prison city, an artifact, and a decision that will not stay simple.</p></span></a>
+          <a class="choice-card choice-b" href="/works/abythera"><img src="../../../../../src/assets/works/abythera/abythera-cover.png" alt="Abythera cover art showing a dark fantasy figure against a deep blue background."><span class="choice-copy"><span class="label">II. Build a campaign around it</span><h2>Abythera</h2><p>A living hub, an opening mission, and room for the group to change the world.</p></span></a>
+          <a class="choice-card choice-c" href="/works/daggerheart-item-bundle"><img src="../../../../../src/assets/works/daggerheart-item-bundle/daggerheart-item-bundle-cover.jpg" alt="Daggerheart Item Bundle cover art showing a sword, chest, parchment, potion bottles, and printable item cards."><span class="choice-copy"><span class="label">III. Bring something to the table</span><h2>Item Bundle</h2><p>More than 120 items ready to move from page to table.</p></span></a>
+        </div>
+        <a class="portfolio-threshold" href="#works">
+          <span class="threshold-mark" aria-hidden="true">✦</span>
+          <span class="threshold-label">All published works</span>
+          <strong>Continue through the portfolio</strong>
+          <span class="threshold-arrow" aria-hidden="true">↓</span>
+        </a>
+      </section>
+    </div>
+
+    <section class="catalog" id="works" aria-labelledby="works-title">
+      <div class="catalog-shell">
+        <header class="catalog-head">
+          <div><p class="entry-number">Works / Index 001</p><h2 id="works-title">Find the right work for your table.</h2></div>
+          <p>The opening spread makes one quick choice. The index below is deliberately quieter: every work exposes the same essential decision information in the same place.</p>
+        </header>
+
+        <div class="catalog-controls">
+          <nav aria-label="Browse work types"><ul class="filters"><li><a class="filter" aria-current="page" href="#all">All works</a></li><li><a class="filter" href="#one-shots">One-shots</a></li><li><a class="filter" href="#campaigns">Campaigns</a></li><li><a class="filter" href="#resources">Table resources</a></li></ul></nav>
+          <p><strong>03</strong> released works</p>
+        </div>
+
+        <ol class="work-index" id="all">
+          <li class="work-item" id="campaigns">
+            <a class="work-link" href="/works/abythera">
+              <span class="work-cover"><img src="../../../../../src/assets/works/abythera/abythera-cover.png" alt="Abythera cover art showing a dark fantasy figure against a deep blue background."></span>
+              <div class="work-main"><div class="work-classification"><span class="work-number">01</span><span class="work-type">Campaign framework</span><span class="work-compatible">Daggerheart compatible</span></div><div class="work-summary"><h3>Abythera</h3><p>A modular Daggerheart campaign framework built around a central hub, an opening mission, and room to add the adventures that suit your group.</p></div></div>
+              <div class="work-at-a-glance"><p class="facts-heading">At a glance</p><dl class="work-facts"><div><dt>Includes</dt><dd>Karrhold opening mission</dd></div><div><dt>Use</dt><dd>Hub-based campaigns</dd></div><div><dt>Arc</dt><dd>12+ missions recommended</dd></div></dl></div>
+              <span class="work-action" aria-hidden="true">↗</span>
+            </a>
+          </li>
+
+          <li class="work-item" id="one-shots">
+            <a class="work-link" href="/works/ephemera">
+              <span class="work-cover"><img src="../../../../../src/assets/works/ephemera/Selfmade_Cover.png" alt="Ephemera cover art showing an underground prison city beneath a mountain with four figures in the foreground."></span>
+              <div class="work-main"><div class="work-classification"><span class="work-number">02</span><span class="work-type">One-shot adventure</span><span class="work-compatible">Daggerheart compatible</span></div><div class="work-summary"><h3>Ephemera</h3><p>A standalone Daggerheart adventure of investigation, infiltration, and faction choices in a prison city beneath a mountain.</p></div></div>
+              <div class="work-at-a-glance"><p class="facts-heading">At a glance</p><dl class="work-facts"><div><dt>Session</dt><dd>5-8 hours</dd></div><div><dt>Characters</dt><dd>Tier 1</dd></div><div><dt>Play</dt><dd>3-5 players</dd></div></dl></div>
+              <span class="work-action" aria-hidden="true">↗</span>
+            </a>
+          </li>
+
+          <li class="work-item" id="resources">
+            <a class="work-link" href="/works/daggerheart-item-bundle">
+              <span class="work-cover"><img src="../../../../../src/assets/works/daggerheart-item-bundle/daggerheart-item-bundle-cover.jpg" alt="Daggerheart Item Bundle cover art showing a sword, chest, parchment, potion bottles, and printable item cards."></span>
+              <div class="work-main"><div class="work-classification"><span class="work-number">03</span><span class="work-type">Table resource</span><span class="work-compatible">Daggerheart compatible</span></div><div class="work-summary"><h3>Daggerheart Item Bundle</h3><p>More than 120 Daggerheart items across Item Volumes 1-4, with printable variants for physical use at the table.</p></div></div>
+              <div class="work-at-a-glance"><p class="facts-heading">At a glance</p><dl class="work-facts"><div><dt>Items</dt><dd>120+ unique items</dd></div><div><dt>Format</dt><dd>Printable variants</dd></div><div><dt>Volumes</dt><dd>1-4 included</dd></div></dl></div>
+              <span class="work-action" aria-hidden="true">↗</span>
+            </a>
+          </li>
+        </ol>
+
+        <footer class="catalog-tail" id="about"><p>Each release starts in play, then becomes material another game master can make their own. This collection stays a portfolio, never a storefront.</p><a href="/about">How Tales by Xero is made ↗</a></footer>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

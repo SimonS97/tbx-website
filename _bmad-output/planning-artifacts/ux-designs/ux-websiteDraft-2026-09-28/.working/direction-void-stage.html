@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tales by Xero - Direction 03: The Void Stage</title>
+  <style>
+    /* Direction 03: The Void Stage. High-contrast theatre architecture with a deck that opens like a curtain. */
+    :root {
+      --ink: #080d1b;
+      --blue: #15294e;
+      --white: #f4f1e8;
+      --mist: #c3cfda;
+      --gold: #f0c65e;
+      --coral: #db776b;
+      --rule: rgba(244, 241, 232, 0.34);
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      --card-w: clamp(11.5rem, 16.5vw, 15.4rem);
+    }
+    * { box-sizing: border-box; }
+    html { background: var(--ink); }
+    body { margin: 0; min-width: 20rem; color: var(--white); background: var(--ink); font-family: Arial, sans-serif; }
+    a { color: inherit; }
+    .world { position: relative; min-height: 100dvh; overflow: hidden; isolation: isolate; background: radial-gradient(ellipse at 50% 49%, rgba(63, 94, 152, 0.49), transparent 29rem), linear-gradient(115deg, #080d1b 0 22%, #13284f 49%, #080d1b 89%); }
+    .world::before, .world::after { position: absolute; z-index: -1; inset: 0; content: ""; pointer-events: none; }
+    .world::before { background: repeating-linear-gradient(90deg, rgba(244,241,232,.035) 0 1px, transparent 1px 8.333%); mask-image: linear-gradient(90deg, #000, transparent 14%, transparent 86%, #000); }
+    .world::after { background: radial-gradient(circle at 9% 27%, rgba(240,198,94,.88) 0 .05rem, transparent .08rem), radial-gradient(circle at 19% 15%, #fff 0 .04rem, transparent .07rem), radial-gradient(circle at 76% 23%, #fff 0 .04rem, transparent .07rem), radial-gradient(circle at 89% 59%, rgba(240,198,94,.75) 0 .04rem, transparent .07rem), radial-gradient(circle at 71% 82%, #fff 0 .04rem, transparent .07rem), radial-gradient(circle at 28% 83%, #fff 0 .04rem, transparent .07rem); background-size: 29rem 29rem, 34rem 34rem, 39rem 39rem, 31rem 31rem, 43rem 43rem, 37rem 37rem; opacity: .68; }
+    .frame { width: min(100% - 3rem, 108rem); margin-inline: auto; }
+    .nav { display: flex; justify-content: space-between; align-items: center; min-height: 4.5rem; border-bottom: 1px solid var(--rule); }
+    .brand { display: inline-flex; align-items: center; gap: .8rem; color: var(--white); font-size: .72rem; font-weight: 700; letter-spacing: .16em; text-decoration: none; text-transform: uppercase; }
+    .brand img { width: 2rem; height: 2rem; object-fit: contain; }
+    .nav p { margin: 0; color: var(--mist); font-size: .68rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+    .stage { display: grid; grid-template-columns: minmax(0,.88fr) minmax(33rem,1.12fr); min-height: calc(100dvh - 4.5rem); }
+    .copy { position: relative; z-index: 3; align-self: center; padding-bottom: 6rem; }
+    .copy .eyebrow { display: flex; gap: .7rem; align-items: center; margin: 0 0 1.1rem; color: var(--gold); font-size: .68rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+    .copy .eyebrow::before { width: 2.4rem; height: 1px; content: ""; background: currentColor; }
+    h1 { max-width: 7ch; margin: 0; font-family: Georgia, serif; font-size: clamp(3.6rem,6.8vw,7.5rem); font-weight: 400; letter-spacing: -.08em; line-height: .82; }
+    .lead { max-width: 31ch; margin: 1.45rem 0 0; color: var(--mist); font-size: 1rem; line-height: 1.55; }
+    .direction { display: flex; gap: .6rem; align-items: baseline; max-width: 30rem; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--rule); color: var(--mist); font-size: .72rem; line-height: 1.45; }
+    .direction strong { color: var(--gold); font-size: .67rem; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
+    .deck { position: relative; min-height: 43rem; perspective: 1500px; }
+    .deck::before { position: absolute; top: 50%; left: 50%; width: min(46vw,40rem); height: min(46vw,40rem); content: ""; border: 1px solid rgba(240,198,94,.25); border-radius: 50%; box-shadow: 0 0 0 2.6rem rgba(240,198,94,.035), 0 0 8rem rgba(240,198,94,.15); transform: translate(-50%,-52%); }
+    .deck::after { position: absolute; top: 8%; right: 0; bottom: 8%; left: 0; content: ""; border-top: 1px solid rgba(244,241,232,.13); border-bottom: 1px solid rgba(244,241,232,.13); transform: skewY(-13deg); pointer-events: none; }
+    .card { position: absolute; top: 50%; left: 50%; display: grid; grid-template-rows: 1fr auto; width: var(--card-w); aspect-ratio: .7; overflow: hidden; border: 1px solid rgba(244,241,232,.55); background: #0b1327; box-shadow: 0 1.7rem 3.5rem rgba(0,0,0,.58); text-decoration: none; transform-origin: center 125%; transition: transform 720ms var(--ease), filter 440ms var(--ease), box-shadow 720ms var(--ease), border-color 360ms ease; will-change: transform; }
+    .card::before { position: absolute; z-index: 2; inset: .48rem; content: ""; border: 1px solid rgba(240,198,94,.42); pointer-events: none; }
+    .card::after { position: absolute; z-index: 1; right: 0; bottom: 0; left: 0; height: 42%; content: ""; background: linear-gradient(transparent, rgba(8,13,27,.98)); }
+    .card img { width: 100%; height: 100%; grid-column: 1; grid-row: 1 / -1; padding: .6rem; object-fit: contain; filter: brightness(.85) saturate(.8); transition: filter 440ms var(--ease); }
+    .card .meta { position: relative; z-index: 3; grid-column: 1; grid-row: 2; padding: .95rem; }
+    .meta small { display: block; color: var(--gold); font-size: .64rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    .meta h2 { margin: .35rem 0 0; font-family: Georgia,serif; font-size: 1.55rem; font-weight: 400; letter-spacing: -.04em; line-height: .95; }
+    .meta p { margin: .36rem 0 0; color: var(--mist); font-size: .7rem; line-height: 1.35; }
+    .one { z-index: 1; transform: translate(-112%,-48%) rotate(-24deg); }
+    .two { z-index: 3; transform: translate(-50%,-57%) rotate(0deg) translateZ(3rem); }
+    .three { z-index: 2; transform: translate(12%,-47%) rotate(24deg); }
+    .deck:has(.card:hover) .card:not(:hover) { filter: brightness(.55) saturate(.5); }
+    .card:hover, .card:focus-visible { z-index: 5; outline: none; border-color: var(--gold); box-shadow: 0 2.8rem 5rem rgba(0,0,0,.72),0 0 3rem rgba(240,198,94,.25); filter: brightness(1.1) !important; }
+    .card:hover img, .card:focus-visible img { filter: brightness(1.08) saturate(1.05); }
+    .one:hover, .one:focus-visible { transform: translate(-119%,-66%) rotate(-10deg) translateZ(7rem); }
+    .two:hover, .two:focus-visible { transform: translate(-50%,-71%) rotate(0) translateZ(8rem) scale(1.04); }
+    .three:hover, .three:focus-visible { transform: translate(19%,-65%) rotate(10deg) translateZ(7rem); }
+    .deck-note { position: absolute; right: 0; bottom: 2.2rem; left: 0; z-index: 4; display: flex; justify-content: space-between; gap: 1rem; border-top: 1px solid var(--rule); padding-top: .8rem; color: var(--mist); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; }
+    .deck-note b { color: var(--gold); font-weight: 700; }
+    @media (max-width: 64rem) { .stage { grid-template-columns: 1fr; } .copy { padding: 4rem 0 0; } .deck { min-height: 42rem; } }
+    @media (max-width: 36rem) { .frame { width: min(100% - 2rem,35rem); } .nav p { display:none; } .deck { min-height: 39rem; margin-inline: -1rem; } .card { --card-w: 10rem; } .one { transform: translate(-104%,-48%) rotate(-23deg); } .three { transform: translate(4%,-47%) rotate(23deg); } .meta { padding:.7rem !important; } .meta p { display:none; } .deck-note { display:none; } }
+    @media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation:none!important; transition:none!important; scroll-behavior:auto!important; } }
+  </style>
+</head>
+<body>
+  <main class="world">
+    <div class="frame">
+      <nav class="nav" aria-label="Study navigation"><a class="brand" href="#stage"><img src="../../../../../src/assets/brand/TbX_logo.png" alt=""> Tales by Xero</a><p>Direction 03 / The Void Stage</p></nav>
+      <section class="stage" id="stage" aria-labelledby="void-stage-title">
+        <div class="copy">
+          <p class="eyebrow">A table needs an opening move</p>
+          <h1 id="void-stage-title">Start where the story catches.</h1>
+          <p class="lead">A bolder theatre of light and void. The fanned cards are the stage entrance; a selected work becomes the next act.</p>
+          <div class="direction"><strong>Detail transition</strong><span>On selection, the chosen cover expands into the detail-page hero before the practical content arrives in a deliberate reading rhythm.</span></div>
+        </div>
+        <div class="deck" aria-label="Choose an adventure route">
+          <a class="card one" href="/works/ephemera"><img src="../../../../../src/assets/works/ephemera/Selfmade_Cover.png" alt="Ephemera cover art showing an underground prison city beneath a mountain."><span class="meta"><small>Run something tonight</small><h2>Ephemera</h2><p>Investigation, infiltration, and a difficult choice underground.</p></span></a>
+          <a class="card two" href="/works/abythera"><img src="../../../../../src/assets/works/abythera/abythera-cover.png" alt="Abythera cover art showing a dark fantasy figure against a deep blue background."><span class="meta"><small>Build a campaign around it</small><h2>Abythera</h2><p>A campaign framework built to make room for a group.</p></span></a>
+          <a class="card three" href="/works/daggerheart-item-bundle"><img src="../../../../../src/assets/works/daggerheart-item-bundle/daggerheart-item-bundle-cover.jpg" alt="Daggerheart Item Bundle cover art showing items and printable cards."><span class="meta"><small>Bring something to the table</small><h2>Item Bundle</h2><p>Printed objects that make their way into play.</p></span></a>
+          <div class="deck-note" aria-hidden="true"><span>Each card is a real route, not a decorative carousel</span><b>Choose your act</b></div>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

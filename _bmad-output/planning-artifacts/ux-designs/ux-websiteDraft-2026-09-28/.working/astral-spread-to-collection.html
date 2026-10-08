@@ -1,0 +1,879 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tales by Xero - Astral Spread to Collection Study</title>
+  <style>
+    /*
+      UX study: selected Direction 01 extended into the full discovery journey.
+      Act I: intent-led astral spread. Act II: deliberate catalog browsing.
+      Hero world artwork is intentionally represented by replaceable CSS atmosphere.
+    */
+    :root {
+      --void: #050914;
+      --night: #0a1125;
+      --mineral: #14284f;
+      --mineral-bright: #1b376c;
+      --recess: #080d1c;
+      --chalk: #f1f2ee;
+      --mist: #b4c1d1;
+      --muted: #8595aa;
+      --saffron: #efc363;
+      --saffron-bright: #f7d98a;
+      --coral: #dd7666;
+      --line: rgba(225, 234, 240, 0.24);
+      --line-soft: rgba(225, 234, 240, 0.12);
+      --hero-card-width: clamp(15.25rem, 22vw, 23rem);
+      --catalog-image-width: clamp(13rem, 21vw, 20rem);
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--void);
+    }
+
+    body {
+      min-width: 20rem;
+      margin: 0;
+      color: var(--chalk);
+      background: var(--void);
+      font-family: Arial, sans-serif;
+    }
+
+    a { color: inherit; }
+
+    .world {
+      position: relative;
+      overflow: clip;
+      isolation: isolate;
+      background:
+        radial-gradient(circle at 69% 31%, rgba(136, 166, 229, 0.23), transparent 21rem),
+        radial-gradient(circle at 15% 20%, rgba(239, 195, 99, 0.13), transparent 15rem),
+        radial-gradient(circle at 84% 77%, rgba(106, 68, 135, 0.18), transparent 26rem),
+        var(--void);
+    }
+
+    .world::before,
+    .world::after {
+      position: absolute;
+      z-index: -2;
+      inset: 0;
+      content: "";
+      pointer-events: none;
+    }
+
+    /* A deliberately temporary atmospheric layer. A future hero artwork can replace it. */
+    .world::before {
+      opacity: 0.82;
+      background-image:
+        radial-gradient(circle at 8% 17%, #fff 0 0.05rem, transparent 0.1rem),
+        radial-gradient(circle at 20% 67%, rgba(239, 195, 99, 0.86) 0 0.045rem, transparent 0.09rem),
+        radial-gradient(circle at 35% 13%, #fff 0 0.04rem, transparent 0.08rem),
+        radial-gradient(circle at 52% 28%, rgba(220, 229, 237, 0.78) 0 0.04rem, transparent 0.08rem),
+        radial-gradient(circle at 65% 10%, #fff 0 0.05rem, transparent 0.09rem),
+        radial-gradient(circle at 82% 41%, rgba(239, 195, 99, 0.78) 0 0.04rem, transparent 0.08rem),
+        radial-gradient(circle at 93% 76%, #fff 0 0.04rem, transparent 0.08rem),
+        radial-gradient(circle at 73% 89%, rgba(220, 229, 237, 0.72) 0 0.04rem, transparent 0.08rem),
+        radial-gradient(circle at 43% 82%, #fff 0 0.05rem, transparent 0.09rem),
+        radial-gradient(circle at 7% 86%, rgba(239, 195, 99, 0.82) 0 0.04rem, transparent 0.08rem);
+      background-size: 31rem 31rem, 41rem 41rem, 29rem 29rem, 37rem 37rem, 43rem 43rem, 34rem 34rem, 47rem 47rem, 39rem 39rem, 33rem 33rem, 51rem 51rem;
+    }
+
+    .world::after {
+      z-index: -1;
+      opacity: 0.33;
+      background-image:
+        linear-gradient(rgba(225, 234, 240, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(225, 234, 240, 0.035) 1px, transparent 1px);
+      background-size: 8rem 8rem;
+      mask-image: radial-gradient(ellipse at 61% 31%, #000, transparent 65%);
+    }
+
+    .shell {
+      width: min(100% - 3rem, 110rem);
+      margin-inline: auto;
+    }
+
+    .site-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      min-height: 4.6rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      min-height: 2.75rem;
+      color: var(--chalk);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .brand img {
+      width: 2rem;
+      height: 2rem;
+      object-fit: contain;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.4rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      color: var(--mist);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .nav-links a { text-decoration: none; }
+    .nav-links a:hover, .nav-links a:focus-visible { color: var(--saffron); }
+
+    .first-act {
+      display: grid;
+      grid-template-columns: minmax(19rem, 0.66fr) minmax(47rem, 1.34fr);
+      gap: clamp(2rem, 4vw, 6rem);
+      min-height: calc(100dvh - 4.6rem);
+      padding-block: clamp(2rem, 4vw, 5rem) 0;
+    }
+
+    .intro {
+      position: relative;
+      z-index: 4;
+      align-self: center;
+      max-width: 35rem;
+      padding-bottom: clamp(4rem, 9vw, 8.5rem);
+    }
+
+    .eyebrow,
+    .route-index,
+    .index-number,
+    .filter-button,
+    .catalog-count {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin: 0 0 1.15rem;
+      color: var(--saffron);
+    }
+
+    .eyebrow::before {
+      width: 2.6rem;
+      height: 1px;
+      content: "";
+      background: currentColor;
+    }
+
+    h1,
+    h2,
+    h3 { font-family: Georgia, serif; }
+
+    h1 {
+      max-width: 7.8ch;
+      margin: 0;
+      color: #f6f7f8;
+      font-size: clamp(3.6rem, 6.7vw, 7.6rem);
+      font-weight: 400;
+      letter-spacing: -0.08em;
+      line-height: 0.81;
+    }
+
+    .lede {
+      max-width: 34ch;
+      margin: 1.5rem 0 0;
+      color: var(--mist);
+      font-size: clamp(1rem, 1.25vw, 1.12rem);
+      line-height: 1.55;
+    }
+
+    .intro-note {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.72rem;
+      align-items: baseline;
+      max-width: 31rem;
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.74rem;
+      line-height: 1.45;
+    }
+
+    .intro-note strong {
+      color: var(--saffron);
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .spread-stage {
+      position: relative;
+      min-height: min(50rem, 67vw);
+      perspective: 1700px;
+      isolation: isolate;
+    }
+
+    .spread-stage::before,
+    .spread-stage::after {
+      position: absolute;
+      z-index: -1;
+      content: "";
+      pointer-events: none;
+    }
+
+    .spread-stage::before {
+      top: 47%;
+      left: 50%;
+      width: min(54vw, 47rem);
+      aspect-ratio: 1;
+      border: 1px solid rgba(239, 195, 99, 0.24);
+      border-radius: 50%;
+      box-shadow: 0 0 0 1.6rem rgba(239, 195, 99, 0.035), 0 0 7rem rgba(137, 167, 229, 0.13);
+      transform: translate(-50%, -50%);
+    }
+
+    .spread-stage::after {
+      top: 47%;
+      left: 50%;
+      width: min(77vw, 60rem);
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(239, 195, 99, 0.75), transparent);
+      transform: translateX(-50%) rotate(-8deg);
+    }
+
+    .constellation {
+      position: absolute;
+      z-index: -1;
+      top: 47%;
+      left: 50%;
+      width: min(47vw, 40rem);
+      aspect-ratio: 1;
+      border: 1px dashed rgba(225, 234, 240, 0.24);
+      border-radius: 50%;
+      transform: translate(-50%, -50%) rotate(19deg);
+    }
+
+    .constellation::before,
+    .constellation::after {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      height: 1px;
+      content: "";
+      background: rgba(225, 234, 240, 0.35);
+      transform-origin: left center;
+    }
+
+    .constellation::before { width: 59%; transform: rotate(36deg); }
+    .constellation::after { width: 42%; transform: rotate(154deg); }
+
+    .route-card {
+      position: absolute;
+      top: 47%;
+      left: 50%;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      width: var(--hero-card-width);
+      aspect-ratio: 0.7;
+      overflow: hidden;
+      border: 1px solid rgba(239, 195, 99, 0.74);
+      color: var(--chalk);
+      background: linear-gradient(150deg, #18243f, #050914 68%);
+      box-shadow: 0 2.3rem 4.5rem rgba(0, 0, 0, 0.52), inset 0 0 0 0.25rem rgba(239, 195, 99, 0.07);
+      text-decoration: none;
+      transform-origin: center 125%;
+      transition: transform 660ms var(--ease-soft), border-color 280ms ease, box-shadow 660ms var(--ease-soft), filter 440ms var(--ease-soft);
+      will-change: transform;
+    }
+
+    .route-card::before {
+      position: absolute;
+      z-index: 2;
+      inset: 0.55rem;
+      content: "";
+      border: 1px solid rgba(239, 195, 99, 0.36);
+      pointer-events: none;
+    }
+
+    .route-card::after {
+      position: absolute;
+      z-index: 1;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 45%;
+      content: "";
+      background: linear-gradient(transparent, rgba(5, 9, 20, 0.97));
+      pointer-events: none;
+    }
+
+    .route-card img {
+      width: 100%;
+      height: 100%;
+      grid-column: 1;
+      grid-row: 1 / -1;
+      padding: 0.72rem;
+      object-fit: contain;
+      filter: saturate(0.94) contrast(1.05);
+      transition: filter 440ms var(--ease-soft);
+    }
+
+    .route-copy {
+      position: relative;
+      z-index: 3;
+      grid-column: 1;
+      grid-row: 2;
+      padding: 1.15rem 1.15rem 1.34rem;
+    }
+
+    .route-index { color: var(--saffron); }
+
+    .route-copy h2 {
+      margin: 0.42rem 0 0;
+      color: #f8f8f6;
+      font-size: clamp(1.42rem, 2vw, 1.95rem);
+      font-weight: 400;
+      letter-spacing: -0.045em;
+      line-height: 0.93;
+    }
+
+    .route-copy p {
+      margin: 0.45rem 0 0;
+      color: #c8d2dc;
+      font-size: 0.76rem;
+      line-height: 1.38;
+    }
+
+    .route-one { z-index: 2; transform: translate(-99%, -49%) rotate(-18deg) translateZ(0); }
+    .route-two { z-index: 3; transform: translate(-50%, -59%) rotate(-1deg) translateZ(2.5rem); }
+    .route-three { z-index: 1; transform: translate(-1%, -47%) rotate(17deg) translateZ(0); }
+
+    .spread-stage:has(.route-card:hover) .route-card:not(:hover) { filter: brightness(0.61) saturate(0.64); }
+
+    .route-card:hover,
+    .route-card:focus-visible {
+      z-index: 5;
+      border-color: var(--saffron-bright);
+      outline: none;
+      box-shadow: 0 3rem 5.8rem rgba(0, 0, 0, 0.67), 0 0 3.3rem rgba(239, 195, 99, 0.26), inset 0 0 0 0.25rem rgba(239, 195, 99, 0.17);
+      filter: brightness(1.08) saturate(1.06) !important;
+    }
+
+    .route-card:hover img,
+    .route-card:focus-visible img { filter: brightness(1.06) saturate(1.07); }
+    .route-one:hover, .route-one:focus-visible { transform: translate(-108%, -66%) rotate(-9deg) translateZ(7rem); }
+    .route-two:hover, .route-two:focus-visible { transform: translate(-50%, -72%) rotate(0deg) translateZ(8rem) scale(1.035); }
+    .route-three:hover, .route-three:focus-visible { transform: translate(8%, -65%) rotate(9deg) translateZ(7rem); }
+
+    .scroll-cue {
+      position: absolute;
+      z-index: 4;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 1rem;
+      min-height: 5.35rem;
+      padding: 1.15rem 0;
+      border-top: 1px solid var(--line);
+      color: var(--mist);
+      text-decoration: none;
+    }
+
+    .scroll-cue-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .scroll-cue-copy small {
+      color: var(--saffron);
+      font-size: 0.64rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .scroll-cue-copy strong {
+      font-family: Georgia, serif;
+      font-size: clamp(1.05rem, 1.55vw, 1.35rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+    }
+
+    .scroll-mark {
+      display: grid;
+      width: 2.75rem;
+      aspect-ratio: 1;
+      place-items: center;
+      border: 1px solid rgba(239, 195, 99, 0.65);
+      color: var(--saffron);
+      font-family: Georgia, serif;
+      font-size: 1.5rem;
+      transition: transform 280ms var(--ease-out), color 280ms ease, background-color 280ms ease;
+    }
+
+    .scroll-cue:hover .scroll-mark,
+    .scroll-cue:focus-visible .scroll-mark {
+      color: var(--void);
+      background: var(--saffron);
+      outline: none;
+      transform: translateY(0.34rem);
+    }
+
+    .collection {
+      position: relative;
+      z-index: 2;
+      padding-block: clamp(5rem, 11vw, 11rem);
+      background:
+        linear-gradient(180deg, rgba(5, 9, 20, 0), rgba(5, 9, 20, 0.86) 8rem),
+        linear-gradient(130deg, #0b1630, #07101f 58%, #0c1831);
+    }
+
+    .collection::before {
+      position: absolute;
+      top: -14rem;
+      right: 0;
+      left: 0;
+      height: 15rem;
+      content: "";
+      background: radial-gradient(ellipse at 56% 0%, rgba(239, 195, 99, 0.18), transparent 53%);
+      pointer-events: none;
+    }
+
+    .collection-shell {
+      width: min(100% - 3rem, 110rem);
+      margin-inline: auto;
+    }
+
+    .collection-intro {
+      display: grid;
+      grid-template-columns: minmax(12rem, 0.63fr) minmax(22rem, 1.37fr);
+      gap: clamp(2rem, 7vw, 9rem);
+      align-items: end;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .collection-intro p { margin: 0; }
+    .collection-intro .index-number { color: var(--saffron); }
+
+    .collection-intro h2 {
+      max-width: 9ch;
+      margin: 0.8rem 0 0;
+      color: #f5f6f4;
+      font-size: clamp(3rem, 5.9vw, 6.6rem);
+      font-weight: 400;
+      letter-spacing: -0.075em;
+      line-height: 0.84;
+    }
+
+    .collection-description {
+      max-width: 34ch;
+      color: var(--mist);
+      font-size: 1rem;
+      line-height: 1.55;
+    }
+
+    .catalog-tools {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      padding-block: 1.25rem;
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .format-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      border: 1px solid var(--line);
+    }
+
+    .filter-button {
+      display: inline-flex;
+      min-height: 2.8rem;
+      align-items: center;
+      padding-inline: 1rem;
+      border-right: 1px solid var(--line);
+      color: var(--mist);
+      text-decoration: none;
+      transition: color 220ms ease, background-color 220ms ease;
+    }
+
+    .format-filters li:last-child .filter-button { border-right: 0; }
+
+    .filter-button[aria-current="page"],
+    .filter-button:hover,
+    .filter-button:focus-visible {
+      color: var(--void);
+      background: var(--saffron);
+      outline: none;
+    }
+
+    .catalog-count { color: var(--muted); }
+    .catalog-count strong { color: var(--saffron); }
+
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: clamp(1.5rem, 3vw, 3.5rem);
+      padding-top: clamp(2.5rem, 5vw, 5rem);
+    }
+
+    .catalog-entry {
+      min-width: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .catalog-entry:nth-child(1) { grid-column: 1 / span 7; }
+    .catalog-entry:nth-child(2) { grid-column: 8 / -1; margin-top: clamp(4rem, 11vw, 11rem); }
+    .catalog-entry:nth-child(3) { grid-column: 3 / span 7; }
+
+    .catalog-link {
+      display: grid;
+      grid-template-columns: minmax(9rem, var(--catalog-image-width)) minmax(0, 1fr);
+      gap: clamp(1.1rem, 2.4vw, 2.5rem);
+      align-items: start;
+      padding-top: 1rem;
+      color: var(--chalk);
+      text-decoration: none;
+    }
+
+    .catalog-visual {
+      position: relative;
+      display: grid;
+      overflow: hidden;
+      aspect-ratio: 0.7;
+      border: 1px solid rgba(225, 234, 240, 0.45);
+      background: var(--recess);
+      box-shadow: 0 1.1rem 2.5rem rgba(0, 0, 0, 0.25);
+    }
+
+    .catalog-visual::before {
+      position: absolute;
+      z-index: 2;
+      inset: 0.42rem;
+      content: "";
+      border: 1px solid rgba(239, 195, 99, 0.3);
+      pointer-events: none;
+      transition: inset 480ms var(--ease-soft), border-color 340ms ease;
+    }
+
+    .catalog-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: saturate(0.86) contrast(1.02);
+      transition: transform 620ms var(--ease-soft), filter 450ms var(--ease-soft);
+    }
+
+    .catalog-copy {
+      display: grid;
+      gap: clamp(1.1rem, 2vw, 2rem);
+      align-self: stretch;
+      padding-top: 0.25rem;
+    }
+
+    .catalog-meta {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+      color: var(--saffron);
+    }
+
+    .catalog-meta small { color: var(--muted); font-size: 0.67rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+
+    .catalog-copy h3 {
+      max-width: 10ch;
+      margin: 0;
+      color: #f6f7f5;
+      font-size: clamp(2.1rem, 4.1vw, 4.55rem);
+      font-weight: 400;
+      letter-spacing: -0.065em;
+      line-height: 0.85;
+    }
+
+    .catalog-copy > p {
+      max-width: 38ch;
+      margin: 0;
+      color: var(--mist);
+      font-size: 0.94rem;
+      line-height: 1.53;
+    }
+
+    .catalog-action {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      gap: 0.65rem;
+      margin-top: auto;
+      color: var(--saffron);
+      font-size: 0.69rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .catalog-action::after {
+      display: inline-grid;
+      width: 1.5rem;
+      aspect-ratio: 1;
+      place-items: center;
+      border: 1px solid currentColor;
+      content: "↗";
+      font-family: Georgia, serif;
+      font-size: 1rem;
+      font-weight: 400;
+      transition: transform 310ms var(--ease-out), color 310ms ease, background-color 310ms ease;
+    }
+
+    .catalog-link:hover .catalog-visual,
+    .catalog-link:focus-visible .catalog-visual {
+      border-color: var(--saffron);
+      box-shadow: 0 1.7rem 3.5rem rgba(0, 0, 0, 0.44), 0 0 2.1rem rgba(239, 195, 99, 0.13);
+    }
+
+    .catalog-link:hover .catalog-visual::before,
+    .catalog-link:focus-visible .catalog-visual::before {
+      inset: 0.7rem;
+      border-color: rgba(239, 195, 99, 0.77);
+    }
+
+    .catalog-link:hover .catalog-visual img,
+    .catalog-link:focus-visible .catalog-visual img {
+      filter: saturate(1.05) contrast(1.04);
+      transform: scale(1.035);
+    }
+
+    .catalog-link:hover .catalog-action::after,
+    .catalog-link:focus-visible .catalog-action::after {
+      color: var(--void);
+      background: var(--saffron);
+      transform: translate(0.25rem, -0.25rem);
+    }
+
+    .catalog-link:focus-visible { outline: 0.2rem solid var(--saffron-bright); outline-offset: 0.65rem; }
+
+    .catalog-closure {
+      display: grid;
+      grid-template-columns: minmax(0, 0.7fr) minmax(13rem, 0.3fr);
+      gap: 2rem;
+      align-items: end;
+      margin-top: clamp(5rem, 10vw, 10rem);
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--line);
+    }
+
+    .catalog-closure p { max-width: 42ch; margin: 0; color: var(--mist); line-height: 1.55; }
+    .catalog-closure a { color: var(--saffron); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-decoration: none; text-transform: uppercase; }
+
+    @media (max-width: 72rem) {
+      .first-act { grid-template-columns: minmax(16rem, 0.7fr) minmax(37rem, 1.3fr); }
+      .spread-stage { min-height: 48rem; }
+      .catalog-entry:nth-child(1) { grid-column: 1 / span 8; }
+      .catalog-entry:nth-child(2) { grid-column: 9 / -1; }
+      .catalog-entry:nth-child(3) { grid-column: 2 / span 9; }
+    }
+
+    @media (max-width: 59rem) {
+      .first-act { grid-template-columns: 1fr; gap: 0; min-height: auto; }
+      .intro { padding-top: 2.5rem; padding-bottom: 0; }
+      .spread-stage { min-height: 47rem; margin-inline: -1.5rem; }
+      .scroll-cue { position: relative; }
+      .collection-intro { grid-template-columns: 1fr; gap: 1.5rem; }
+      .catalog-entry:nth-child(1), .catalog-entry:nth-child(2), .catalog-entry:nth-child(3) { grid-column: 1 / -1; margin-top: 0; }
+      .catalog-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 39rem) {
+      .shell, .collection-shell { width: min(100% - 2rem, 37rem); }
+      .nav-links li:last-child { display: none; }
+      .nav-links { gap: 0.85rem; font-size: 0.63rem; }
+      .brand { font-size: 0.64rem; }
+      h1 { font-size: clamp(3.2rem, 16vw, 4.8rem); }
+      .spread-stage { min-height: 42rem; margin-inline: -1rem; }
+      .route-card { --hero-card-width: 10.9rem; }
+      .route-one { transform: translate(-93%, -49%) rotate(-20deg); }
+      .route-two { transform: translate(-50%, -58%) rotate(-1deg) translateZ(1rem); }
+      .route-three { transform: translate(-7%, -47%) rotate(18deg); }
+      .route-copy { padding: 0.74rem 0.82rem 0.9rem; }
+      .route-copy p { display: none; }
+      .scroll-cue { min-height: 4.6rem; }
+      .catalog-tools { align-items: flex-start; flex-direction: column; }
+      .format-filters { width: 100%; }
+      .filter-button { flex: 1 1 auto; justify-content: center; min-height: 2.55rem; padding-inline: 0.65rem; font-size: 0.58rem; }
+      .catalog-link { grid-template-columns: minmax(7.2rem, 42%) 1fr; gap: 1rem; }
+      .catalog-copy { gap: 0.75rem; }
+      .catalog-copy h3 { font-size: clamp(1.8rem, 8vw, 2.6rem); }
+      .catalog-copy > p { font-size: 0.78rem; }
+      .catalog-meta { flex-direction: column; gap: 0.25rem; align-items: flex-start; }
+      .catalog-closure { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="world">
+    <div class="shell">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="#top"><img src="../../../../../src/assets/brand/TbX_logo.png" alt=""><span>Tales by Xero</span></a>
+        <ul class="nav-links">
+          <li><a href="#collection">Collection</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#">Ko-fi</a></li>
+        </ul>
+      </nav>
+
+      <section class="first-act" id="top" aria-labelledby="home-title">
+        <div class="intro">
+          <p class="eyebrow">Tested at the table</p>
+          <h1 id="home-title">Choose the shape of your next session.</h1>
+          <p class="lede">Start with the kind of night you want to run. Each card opens a published work built for a real table.</p>
+          <p class="intro-note"><strong>First choice</strong><span>The spread is an invitation, not a replacement for browsing. Every title remains visible and directly reachable.</span></p>
+        </div>
+
+        <div class="spread-stage" aria-label="Three paths into published works">
+          <div class="constellation" aria-hidden="true"></div>
+
+          <a class="route-card route-one" href="/works/ephemera">
+            <img src="../../../../../src/assets/works/ephemera/Selfmade_Cover.png" alt="Ephemera cover art showing an underground prison city beneath a mountain with four figures in the foreground.">
+            <span class="route-copy">
+              <span class="route-index">I. Run something tonight</span>
+              <h2>Ephemera</h2>
+              <p>A prison city, an artifact, and a decision that will not stay simple.</p>
+            </span>
+          </a>
+
+          <a class="route-card route-two" href="/works/abythera">
+            <img src="../../../../../src/assets/works/abythera/abythera-cover.png" alt="Abythera cover art showing a dark fantasy figure against a deep blue background.">
+            <span class="route-copy">
+              <span class="route-index">II. Build a campaign around it</span>
+              <h2>Abythera</h2>
+              <p>A living hub, an opening mission, and room for the group to change the world.</p>
+            </span>
+          </a>
+
+          <a class="route-card route-three" href="/works/daggerheart-item-bundle">
+            <img src="../../../../../src/assets/works/daggerheart-item-bundle/daggerheart-item-bundle-cover.jpg" alt="Daggerheart Item Bundle cover art showing a sword, chest, parchment, potions, and printable item cards.">
+            <span class="route-copy">
+              <span class="route-index">III. Bring something to the table</span>
+              <h2>Item Bundle</h2>
+              <p>More than 120 items ready to move from page to table.</p>
+            </span>
+          </a>
+        </div>
+      </section>
+
+      <a class="scroll-cue" href="#collection">
+        <span class="scroll-cue-copy"><small>Then browse every release</small><strong>The collection continues below.</strong></span>
+        <span class="scroll-mark" aria-hidden="true">↓</span>
+      </a>
+    </div>
+
+    <section class="collection" id="collection" aria-labelledby="collection-title">
+      <div class="collection-shell">
+        <header class="collection-intro">
+          <div>
+            <p class="index-number">Works / Index 001</p>
+            <h2 id="collection-title">Every published work.</h2>
+          </div>
+          <p class="collection-description">The opening spread answers a fast question. This collection is for comparison, return visits, and finding the work that fits a particular table.</p>
+        </header>
+
+        <div class="catalog-tools">
+          <nav aria-label="Browse works by type">
+            <ul class="format-filters">
+              <li><a class="filter-button" href="#all" aria-current="page">All works</a></li>
+              <li><a class="filter-button" href="#one-shots">One-shots</a></li>
+              <li><a class="filter-button" href="#campaigns">Campaigns</a></li>
+              <li><a class="filter-button" href="#table-resources">Table resources</a></li>
+            </ul>
+          </nav>
+          <p class="catalog-count"><strong>03</strong> released works</p>
+        </div>
+
+        <div class="catalog-grid" id="all">
+          <article class="catalog-entry" id="campaigns">
+            <a class="catalog-link" href="/works/abythera">
+              <span class="catalog-visual"><img src="../../../../../src/assets/works/abythera/abythera-cover.png" alt="Abythera cover art showing a dark fantasy figure against a deep blue background."></span>
+              <span class="catalog-copy">
+                <span class="catalog-meta"><span class="index-number">01 / Campaign framework</span><small>Daggerheart compatible</small></span>
+                <h3>Abythera</h3>
+                <p>A modular Daggerheart campaign framework built around a central hub, an opening mission, and room to add the adventures that suit your group.</p>
+                <span class="catalog-action">Enter the framework</span>
+              </span>
+            </a>
+          </article>
+
+          <article class="catalog-entry" id="one-shots">
+            <a class="catalog-link" href="/works/ephemera">
+              <span class="catalog-visual"><img src="../../../../../src/assets/works/ephemera/Selfmade_Cover.png" alt="Ephemera cover art showing an underground prison city beneath a mountain with four figures in the foreground."></span>
+              <span class="catalog-copy">
+                <span class="catalog-meta"><span class="index-number">02 / One-shot adventure</span><small>Daggerheart compatible</small></span>
+                <h3>Ephemera</h3>
+                <p>A standalone Daggerheart adventure of investigation, infiltration, and faction choices in a prison city beneath a mountain.</p>
+                <span class="catalog-action">Enter the adventure</span>
+              </span>
+            </a>
+          </article>
+
+          <article class="catalog-entry" id="table-resources">
+            <a class="catalog-link" href="/works/daggerheart-item-bundle">
+              <span class="catalog-visual"><img src="../../../../../src/assets/works/daggerheart-item-bundle/daggerheart-item-bundle-cover.jpg" alt="Daggerheart Item Bundle cover art showing a sword, chest, parchment, potion bottles, and printable item cards."></span>
+              <span class="catalog-copy">
+                <span class="catalog-meta"><span class="index-number">03 / Table resource</span><small>Daggerheart compatible</small></span>
+                <h3>Daggerheart Item Bundle</h3>
+                <p>More than 120 Daggerheart items across Item Volumes 1-4, with printable variants for physical use at the table.</p>
+                <span class="catalog-action">Open the bundle</span>
+              </span>
+            </a>
+          </article>
+        </div>
+
+        <footer class="catalog-closure" id="about">
+          <p>Each release starts in play, then becomes material another game master can make their own. The catalog remains a portfolio, never a storefront.</p>
+          <a href="/about">How Tales by Xero is made ↗</a>
+        </footer>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tales by Xero - Direction 01: The Astral Spread</title>
+  <style>
+    /* Direction 01: The Astral Spread. Premium celestial tarot selection, using current approved work covers. */
+    :root {
+      --void: #050914;
+      --night: #0b1530;
+      --mineral: #18284a;
+      --silver: #dce5ed;
+      --mist: #9eaec2;
+      --saffron: #efc363;
+      --ember: #dd7666;
+      --line: rgba(220, 229, 237, 0.28);
+      --card-width: clamp(12.5rem, 19vw, 18rem);
+      --card-height: calc(var(--card-width) * 1.43);
+      --ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-card: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { background: var(--void); }
+
+    body {
+      min-width: 20rem;
+      margin: 0;
+      overflow-x: hidden;
+      color: var(--silver);
+      background:
+        radial-gradient(circle at 50% 43%, rgba(97, 126, 189, 0.24), transparent 20rem),
+        radial-gradient(circle at 9% 18%, rgba(239, 195, 99, 0.17), transparent 15rem),
+        radial-gradient(circle at 88% 80%, rgba(104, 67, 126, 0.22), transparent 22rem),
+        var(--void);
+      font-family: Arial, sans-serif;
+    }
+
+    body::before,
+    body::after {
+      position: fixed;
+      z-index: -1;
+      inset: 0;
+      content: "";
+      pointer-events: none;
+    }
+
+    body::before {
+      opacity: 0.78;
+      background-image:
+        radial-gradient(circle at 8% 17%, #fff 0 0.05rem, transparent 0.1rem),
+        radial-gradient(circle at 20% 67%, rgba(239, 195, 99, 0.86) 0 0.045rem, transparent 0.09rem),
+        radial-gradient(circle at 35% 13%, #fff 0 0.04rem, transparent 0.08rem),
+        radial-gradient(circle at 52% 28%, rgba(220, 229, 237, 0.78) 0 0.04rem, transparent 0.08rem),
+        radial-gradient(circle at 65% 10%, #fff 0 0.05rem, transparent 0.09rem),
+        radial-gradient(circle at 82% 41%, rgba(239, 195, 99, 0.78) 0 0.04rem, transparent 0.08rem),
+        radial-gradient(circle at 93% 76%, #fff 0 0.04rem, transparent 0.08rem),
+        radial-gradient(circle at 73% 89%, rgba(220, 229, 237, 0.72) 0 0.04rem, transparent 0.08rem),
+        radial-gradient(circle at 43% 82%, #fff 0 0.05rem, transparent 0.09rem),
+        radial-gradient(circle at 7% 86%, rgba(239, 195, 99, 0.82) 0 0.04rem, transparent 0.08rem);
+      background-size: 31rem 31rem, 41rem 41rem, 29rem 29rem, 37rem 37rem, 43rem 43rem, 34rem 34rem, 47rem 47rem, 39rem 39rem, 33rem 33rem, 51rem 51rem;
+    }
+
+    body::after {
+      opacity: 0.32;
+      background-image: linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 7rem 7rem;
+      mask-image: radial-gradient(circle at 50% 47%, #000, transparent 77%);
+    }
+
+    a { color: inherit; }
+
+    .shell {
+      position: relative;
+      width: min(100% - 2.5rem, 100rem);
+      min-height: 100dvh;
+      margin-inline: auto;
+      padding: 1.25rem 0 2rem;
+    }
+
+    .shell::before {
+      position: absolute;
+      z-index: -1;
+      top: 9rem;
+      right: 0;
+      left: 0;
+      height: min(61vw, 49rem);
+      content: "";
+      border: 1px solid rgba(220, 229, 237, 0.14);
+      border-radius: 50%;
+      transform: scaleX(1.32);
+      box-shadow: inset 0 0 9rem rgba(91, 118, 180, 0.09), 0 0 8rem rgba(91, 118, 180, 0.07);
+    }
+
+    .site-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      min-height: 3.25rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.72rem;
+      min-height: 2.75rem;
+      color: var(--silver);
+      font-size: 0.73rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .brand img {
+      width: 2rem;
+      height: 2rem;
+      object-fit: contain;
+    }
+
+    .nav-list {
+      display: flex;
+      gap: 1.4rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      color: var(--mist);
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    .nav-list a { text-decoration: none; }
+    .nav-list a:hover, .nav-list a:focus-visible { color: var(--saffron); }
+
+    .masthead {
+      display: grid;
+      grid-template-columns: minmax(0, 0.78fr) minmax(30rem, 1.22fr);
+      gap: clamp(2rem, 5vw, 7rem);
+      align-items: center;
+      min-height: calc(100dvh - 5.25rem);
+      padding-block: clamp(2rem, 5vw, 5rem);
+    }
+
+    .intro {
+      position: relative;
+      z-index: 3;
+      max-width: 35rem;
+    }
+
+    .kicker,
+    .route-index,
+    .study-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .kicker {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin: 0 0 1.15rem;
+      color: var(--saffron);
+    }
+
+    .kicker::before {
+      width: 2.5rem;
+      height: 1px;
+      content: "";
+      background: currentColor;
+    }
+
+    h1 {
+      max-width: 8ch;
+      margin: 0;
+      color: #f2f5f7;
+      font-family: Georgia, serif;
+      font-size: clamp(3.5rem, 6.9vw, 7.4rem);
+      font-weight: 400;
+      letter-spacing: -0.075em;
+      line-height: 0.83;
+    }
+
+    .lede {
+      max-width: 34ch;
+      margin: 1.55rem 0 0;
+      color: var(--mist);
+      font-size: clamp(1rem, 1.3vw, 1.15rem);
+      line-height: 1.55;
+    }
+
+    .study-note {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.7rem;
+      align-items: baseline;
+      max-width: 31rem;
+      margin-top: 2.2rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--line);
+      color: var(--mist);
+      font-size: 0.78rem;
+      line-height: 1.45;
+    }
+
+    .study-label { color: var(--saffron); }
+
+    .spread-region {
+      position: relative;
+      min-height: min(48rem, 68vw);
+      perspective: 1600px;
+      isolation: isolate;
+    }
+
+    .spread-region::before,
+    .spread-region::after {
+      position: absolute;
+      z-index: -1;
+      content: "";
+      pointer-events: none;
+    }
+
+    .spread-region::before {
+      top: 50%;
+      left: 50%;
+      width: min(54vw, 43rem);
+      aspect-ratio: 1;
+      border: 1px solid rgba(239, 195, 99, 0.23);
+      border-radius: 50%;
+      transform: translate(-50%, -52%);
+      box-shadow: 0 0 0 1.4rem rgba(239, 195, 99, 0.035), 0 0 6rem rgba(239, 195, 99, 0.13);
+    }
+
+    .spread-region::after {
+      top: calc(50% - 0.05rem);
+      left: 50%;
+      width: min(76vw, 56rem);
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(239, 195, 99, 0.75), transparent);
+      transform: translateX(-50%) rotate(-8deg);
+    }
+
+    .constellation {
+      position: absolute;
+      z-index: -1;
+      top: 50%;
+      left: 50%;
+      width: min(47vw, 37rem);
+      aspect-ratio: 1;
+      border: 1px dashed rgba(220, 229, 237, 0.24);
+      border-radius: 50%;
+      transform: translate(-50%, -50%) rotate(21deg);
+    }
+
+    .constellation::before,
+    .constellation::after {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      content: "";
+      background: rgba(220, 229, 237, 0.36);
+      transform-origin: 0 0;
+    }
+
+    .constellation::before {
+      width: 57%;
+      height: 1px;
+      transform: rotate(33deg);
+    }
+
+    .constellation::after {
+      width: 39%;
+      height: 1px;
+      transform: rotate(155deg);
+    }
+
+    .spread-card {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      width: var(--card-width);
+      height: var(--card-height);
+      overflow: hidden;
+      border: 1px solid rgba(239, 195, 99, 0.72);
+      color: var(--silver);
+      background: linear-gradient(150deg, #17213a, #050914 68%);
+      box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.48), inset 0 0 0 0.25rem rgba(239, 195, 99, 0.08);
+      text-decoration: none;
+      transform-origin: center 125%;
+      transition: transform 620ms var(--ease-card), border-color 300ms ease, box-shadow 620ms var(--ease-card), filter 460ms var(--ease-card);
+      will-change: transform;
+    }
+
+    .spread-card::before {
+      position: absolute;
+      z-index: 2;
+      inset: 0.44rem;
+      content: "";
+      border: 1px solid rgba(239, 195, 99, 0.35);
+      pointer-events: none;
+    }
+
+    .spread-card::after {
+      position: absolute;
+      z-index: 1;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 46%;
+      content: "";
+      background: linear-gradient(transparent, rgba(5, 9, 20, 0.96));
+      pointer-events: none;
+    }
+
+    .spread-card img {
+      width: 100%;
+      height: 100%;
+      grid-column: 1;
+      grid-row: 1 / -1;
+      padding: 0.58rem;
+      object-fit: contain;
+      filter: saturate(0.94) contrast(1.05);
+    }
+
+    .card-copy {
+      position: relative;
+      z-index: 3;
+      grid-column: 1;
+      grid-row: 2;
+      padding: 1rem 1rem 1.18rem;
+    }
+
+    .route-index { color: var(--saffron); }
+
+    .card-copy h2 {
+      margin: 0.38rem 0 0;
+      color: #f6f7f8;
+      font-family: Georgia, serif;
+      font-size: clamp(1.22rem, 1.85vw, 1.72rem);
+      font-weight: 400;
+      letter-spacing: -0.035em;
+      line-height: 0.94;
+    }
+
+    .card-copy p {
+      margin: 0.42rem 0 0;
+      color: #c2ced9;
+      font-size: 0.73rem;
+      line-height: 1.35;
+    }
+
+    .card-one {
+      z-index: 2;
+      transform: translate(-95%, -47%) rotate(-18deg) translateZ(0);
+    }
+
+    .card-two {
+      z-index: 3;
+      transform: translate(-50%, -56%) rotate(-1deg) translateZ(2rem);
+    }
+
+    .card-three {
+      z-index: 1;
+      transform: translate(-4%, -45%) rotate(17deg) translateZ(0);
+    }
+
+    .spread-region:has(.spread-card:hover) .spread-card:not(:hover) {
+      filter: brightness(0.66) saturate(0.66);
+    }
+
+    .spread-card:hover,
+    .spread-card:focus-visible {
+      z-index: 5;
+      border-color: var(--saffron);
+      box-shadow: 0 2.6rem 5.2rem rgba(0, 0, 0, 0.62), 0 0 3rem rgba(239, 195, 99, 0.24), inset 0 0 0 0.25rem rgba(239, 195, 99, 0.18);
+      outline: none;
+      filter: brightness(1.08) saturate(1.06) !important;
+    }
+
+    .card-one:hover, .card-one:focus-visible { transform: translate(-103%, -62%) rotate(-9deg) translateZ(6rem); }
+    .card-two:hover, .card-two:focus-visible { transform: translate(-50%, -67%) rotate(0deg) translateZ(7rem) scale(1.035); }
+    .card-three:hover, .card-three:focus-visible { transform: translate(3%, -60%) rotate(9deg) translateZ(6rem); }
+
+    .spread-footer {
+      position: absolute;
+      right: 1.2rem;
+      bottom: 1rem;
+      left: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      color: var(--mist);
+      font-size: 0.69rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .spread-footer span:last-child { color: var(--saffron); }
+
+    @media (max-width: 58rem) {
+      .shell { width: min(100% - 2rem, 44rem); }
+      .nav-list { gap: 0.8rem; font-size: 0.67rem; }
+      .masthead { grid-template-columns: 1fr; gap: 0; padding-top: 2.5rem; }
+      .intro { max-width: 36rem; }
+      .spread-region { min-height: 37rem; margin-inline: -1rem; }
+      .spread-footer { bottom: 0; }
+    }
+
+    @media (max-width: 34rem) {
+      .nav-list li:last-child { display: none; }
+      .brand { font-size: 0.65rem; }
+      h1 { font-size: clamp(3.3rem, 17vw, 5rem); }
+      .spread-region { min-height: 41rem; }
+      .spread-card { --card-width: 10.6rem; }
+      .card-one { transform: translate(-91%, -49%) rotate(-20deg); }
+      .card-two { transform: translate(-50%, -55%) rotate(-1deg) translateZ(1rem); }
+      .card-three { transform: translate(-9%, -47%) rotate(18deg); }
+      .card-copy { padding: 0.7rem 0.75rem 0.82rem; }
+      .card-copy p { display: none; }
+      .spread-footer { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <nav class="site-nav" aria-label="Study navigation">
+      <a class="brand" href="#choice">
+        <img src="../../../../../src/assets/brand/TbX_logo.png" alt="">
+        <span>Tales by Xero</span>
+      </a>
+      <ul class="nav-list">
+        <li><a href="#choice">Choose a path</a></li>
+        <li><a href="#study">Direction 01</a></li>
+        <li><a href="#">Ko-fi</a></li>
+      </ul>
+    </nav>
+
+    <section class="masthead" id="choice" aria-labelledby="page-title">
+      <div class="intro">
+        <p class="kicker">Made for the table</p>
+        <h1 id="page-title">Choose the shape of your next session.</h1>
+        <p class="lede">Three routes, each tied to a real work. The cards are not a catalog. They are the first decision at the table.</p>
+        <div class="study-note" id="study">
+          <span class="study-label">Direction 01</span>
+          <span>Celestial tarot spread. Hover brings one route toward the player; selecting it continues into the work detail.</span>
+        </div>
+      </div>
+
+      <div class="spread-region" aria-label="Choose a route for your next session">
+        <div class="constellation" aria-hidden="true"></div>
+
+        <a class="spread-card card-one" href="/works/ephemera">
+          <img src="../../../../../src/assets/works/ephemera/Selfmade_Cover.png" alt="Ephemera cover art showing an underground prison city beneath a mountain.">
+          <span class="card-copy">
+            <span class="route-index">I. Run something tonight</span>
+            <h2>Ephemera</h2>
+            <p>A prison city, an artifact, and a decision that will not stay simple.</p>
+          </span>
+        </a>
+
+        <a class="spread-card card-two" href="/works/abythera">
+          <img src="../../../../../src/assets/works/abythera/abythera-cover.png" alt="Abythera cover art showing a dark fantasy figure against a deep blue background.">
+          <span class="card-copy">
+            <span class="route-index">II. Build a campaign around it</span>
+            <h2>Abythera</h2>
+            <p>A living hub, an opening mission, and room for the group to change the world.</p>
+          </span>
+        </a>
+
+        <a class="spread-card card-three" href="/works/daggerheart-item-bundle">
+          <img src="../../../../../src/assets/works/daggerheart-item-bundle/daggerheart-item-bundle-cover.jpg" alt="Daggerheart Item Bundle cover art showing items and printable cards.">
+          <span class="card-copy">
+            <span class="route-index">III. Bring something to the table</span>
+            <h2>Item Bundle</h2>
+            <p>More than 120 items ready to move from page to table.</p>
+          </span>
+        </a>
+
+        <div class="spread-footer" aria-hidden="true">
+          <span>Hover or focus a card to bring it forward</span>
+          <span>Choose a route</span>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
