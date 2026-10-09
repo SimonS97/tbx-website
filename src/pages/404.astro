@@ -1,0 +1,20 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Page not found"
+  description="The page you requested is not available."
+  currentPath="/404"
+  mainClass="not-found-main"
+>
+  <article class="not-found" aria-labelledby="not-found-title">
+    <p class="not-found-label">Not found</p>
+    <h1 id="not-found-title">This page is not available.</h1>
+    <p>The address may be outdated or the work may not be part of the published collection.</p>
+    <nav class="not-found-actions" aria-label="Not found navigation">
+      <a class="not-found-link" href="/works">Works</a>
+      <a class="not-found-link" href="/">Home</a>
+    </nav>
+  </article>
+</BaseLayout>

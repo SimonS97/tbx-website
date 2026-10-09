@@ -9,7 +9,7 @@ const worksDirectory = resolve(projectRoot, "src/content/works");
 const workAssetsDirectory = resolve(projectRoot, "src/assets/works");
 const worksCatalogPage = resolve(projectRoot, "src/pages/works/index.astro");
 const worksCatalogComponent = resolve(projectRoot, "src/components/works/WorksCatalog.astro");
-const pages = ["index.html", "works/index.html", "about/index.html"];
+const pages = ["index.html", "works/index.html", "about/index.html", "404.html"];
 const typeLabels = {
   "one-shot": "One-shot",
   "campaign-framework": "Campaign framework",
@@ -92,6 +92,19 @@ async function hashFile(filePath) {
 const works = await readWorks();
 const publishedWorks = works.filter((work) => work.status === "published");
 const unpublishedSlugs = [...works.filter((work) => work.status !== "published").map((work) => work.slug), "unknown-work"];
+const karrhold = publishedWorks.find((work) => work.slug === "karrhold");
+const karrholdExternalUrl = "https://www.drivethrurpg.com/en/product/551666/karrhold-a-one-shot-adventure-compatible-with-daggerheart";
+const karrholdIncludedNotice = "Owners of the Abythera Campaign Framework do not need to purchase Karrhold separately.";
+
+if (
+  !karrhold ||
+  karrhold.externalUrl !== karrholdExternalUrl ||
+  karrhold.includedWith?.work !== "abythera" ||
+  karrhold.includedWith.label !== "Included with Abythera" ||
+  karrhold.includedWith.notice !== karrholdIncludedNotice
+) {
+  throw new Error("Karrhold must retain its verified DriveThruRPG URL and Included with Abythera relationship.");
+}
 
 if (!hasReducedMotionFallback || !hasContainedHero || !hasCatalogHeroFrame) {
   throw new Error("Reduced-motion fallback, contained work-hero styling, or the 2:3 catalog hero frame is missing from the global styles.");
@@ -103,6 +116,7 @@ if (!hasConditionalEmptyState || !hasHeroOnlyCatalogSource || !hasPublishedHeroR
 
 for (const page of pages) {
   const html = await readFile(resolve("dist", page), "utf8");
+  const isNotFoundPage = page === "404.html";
   const headingCount = (html.match(/<h1(?:\s[^>]*)?>/giu) ?? []).length;
   const hasSkipLink = /<a[^>]+href="#main-content"[^>]*>Skip to main content<\/a>/iu.test(html);
   const hasHeader = /<header(?:\s[^>]*)?>/iu.test(html);
@@ -115,7 +129,7 @@ for (const page of pages) {
   const hasAboutLink = /<a[^>]+href="\/about"[^>]*>About<\/a>/iu.test(html);
   const hasKofiLink = /<a[^>]+href="https:\/\/ko-fi\.com\/talesbyxero"[^>]*>Ko-fi\s*<span[^>]*>\(external\)<\/span><\/a>/iu.test(html);
   const expectedCurrentPath = page === "index.html" ? "/" : `/${page.split("/")[0]}`;
-  const hasActiveInternalLink = new RegExp(`<a[^>]+href="${expectedCurrentPath === "/" ? "\\/" : expectedCurrentPath}"[^>]+aria-current="page"[^>]*>`, "iu").test(html);
+  const hasActiveInternalLink = isNotFoundPage || new RegExp(`<a[^>]+href="${expectedCurrentPath === "/" ? "\\/" : expectedCurrentPath}"[^>]+aria-current="page"[^>]*>`, "iu").test(html);
   const hasMobileMenu = /<details[^>]+class="mobile-navigation"[^>]*>[\s\S]*?<summary>Menu<\/summary>[\s\S]*?<a[^>]+href="\/works"[\s\S]*?<a[^>]+href="\/about"[\s\S]*?https:\/\/ko-fi\.com\/talesbyxero/iu.test(html);
   const hasNativeLink = /<a[^>]+href="\/(?:works|about)?"/iu.test(html);
   const hasNewTabTarget = /target="_blank"/iu.test(html);
@@ -129,6 +143,47 @@ for (const page of pages) {
 
     if (!hasPracticeStatement || !hasOriginalWorkStatement || !hasInPersonRefinementStatement || !hasAboutKofiLink) {
       throw new Error("About practice or same-tab Ko-fi verification failed.");
+    }
+  }
+
+  if (isNotFoundPage) {
+    const notFoundMain = /<main\b[^>]*>([\s\S]*?)<\/main>/iu.exec(html)?.[1] ?? "";
+    const hasNotFoundTitle = /This page is not available\./iu.test(notFoundMain);
+    const hasNotFoundWorksRoute = /<a[^>]+href="\/works"[^>]*>Works<\/a>/iu.test(notFoundMain);
+    const hasNotFoundHomeRoute = /<a[^>]+href="\/"[^>]*>Home<\/a>/iu.test(notFoundMain);
+    const productValues = works.flatMap((work) => [
+      work.slug,
+      work.title,
+      typeLabels[work.type],
+      work.compatibility,
+      work.premise,
+      work.hook,
+      work.theMoment,
+      work.tableUse,
+      work.authorsNote,
+      work.externalUrl,
+      work.includedWith?.label,
+      work.includedWith?.notice,
+      work.campaignRelation?.label,
+      ...(work.facts ?? []).flatMap((fact) => [fact.label, fact.value])
+    ]);
+    const hasProductCopy = productValues
+      .filter((value) => typeof value === "string" && value.length > 0)
+      .some((value) => html.includes(escapeHtml(value)));
+    const hasProductImage = works.some((work) =>
+      (work.images ?? []).some((image) => html.includes(parse(image.src).name))
+    );
+    const hasExternalProductCta = /View on DriveThruRPG|drivethrurpg\.com/iu.test(html);
+
+    if (!hasNotFoundTitle || !hasNotFoundWorksRoute || !hasNotFoundHomeRoute || hasProductCopy || hasProductImage || hasExternalProductCta) {
+      throw new Error(`Not Found static HTML verification failed: ${JSON.stringify({
+        hasNotFoundTitle,
+        hasNotFoundWorksRoute,
+        hasNotFoundHomeRoute,
+        hasProductCopy,
+        hasProductImage,
+        hasExternalProductCta
+      })}.`);
     }
   }
 
@@ -271,6 +326,7 @@ if (
 for (const work of publishedWorks) {
   const page = `works/${work.slug}/index.html`;
   const html = await readFile(resolve("dist", page), "utf8");
+  const nextWork = publishedWorks.find((candidate) => candidate.slug === work.nextWork);
   const hero = work.images.find((image) => image.role === "hero");
   const heroFilename = parse(hero.src);
   const builtAssets = await readdir(resolve("dist", "_astro"));
@@ -300,6 +356,20 @@ for (const work of publishedWorks) {
   const tableUseIndex = mainMarkup.indexOf(`<p>${escapeHtml(work.tableUse)}</p>`);
   const authorsNoteHeadingIndex = mainMarkup.indexOf("A note from Xero");
   const authorsNoteIndex = mainMarkup.indexOf(`<p>${escapeHtml(work.authorsNote)}</p>`);
+  const backLinkIndex = mainMarkup.indexOf("All published works");
+  const ctaIndex = mainMarkup.indexOf("View on DriveThruRPG");
+  const nextWorkFooter = /<footer[^>]+class="work-detail-next-work"[^>]*>([\s\S]*?)<\/footer>/iu.exec(mainMarkup)?.[1] ?? "";
+  const nextWorkRoutes = [...nextWorkFooter.matchAll(/<a(?=[^>]*\bhref="\/works\/([^"]+)")[^>]*>/gu)].map(([, slug]) => slug);
+  const hasPrimaryCta = nextWork !== undefined && new RegExp(
+    `<a(?=[^>]*\\bhref="${escapeRegExp(escapeHtml(work.externalUrl))}")[^>]*>\\s*View on DriveThruRPG\\s*<span(?=[^>]*\\bclass="[^"]*\\bexternal-label\\b[^"]*")[^>]*>\\(external\\)<\\/span>\\s*<\\/a>`,
+    "u"
+  ).test(mainMarkup);
+  const hasCtaSameTab = !/<a(?=[^>]*\bclass="[^"]*\bwork-primary-action\b[^"]*")[^>]*\btarget=/iu.test(mainMarkup);
+  const hasBackRoute = /<a[^>]+href="\/works"[^>]*>All published works<\/a>/iu.test(mainMarkup);
+  const hasSecondaryWorksRoute = /<a[^>]+href="\/works"[^>]*>Browse all works<\/a>/iu.test(mainMarkup);
+  const hasIncludedWithNotice = work.includedWith
+    ? mainMarkup.includes(`<h2 id="included-with-title">${escapeHtml(work.includedWith.label)}</h2>`) && mainMarkup.includes(`<p>${escapeHtml(work.includedWith.notice)}</p>`)
+    : !mainMarkup.includes("included-with-notice");
   const facts = [...mainMarkup.matchAll(/<div class="work-fact"><dt>([^<]+)<\/dt><dd>([^<]+)<\/dd><\/div>/giu)];
   const hasCanonicalFacts = facts.length === work.facts.length && facts.every(([match], index) => match === `<div class="work-fact"><dt>${escapeHtml(work.facts[index].label)}</dt><dd>${escapeHtml(work.facts[index].value)}</dd></div>`);
   const hasDescription = html.includes(`<meta name="description" content="${escapeHtml(work.seo.description)}">`);
@@ -322,14 +392,23 @@ for (const work of publishedWorks) {
     hasCanonicalFacts,
     hasHeroOnlyMedia: workImageCount === 1,
     hasNoClientScript: !hasClientScript,
+    hasPrimaryCta,
+    hasCtaSameTab,
+    hasBackRoute,
+    hasSecondaryWorksRoute,
+    hasExactlyOneNextWorkRoute: nextWorkRoutes.length === 1 && nextWorkRoutes[0] === work.nextWork,
+    hasIncludedWithNotice,
     hasOrderedContent:
-      typeIndex >= 0 &&
+      backLinkIndex >= 0 &&
+      typeIndex > backLinkIndex &&
       compatibilityIndex >= typeIndex &&
       titleIndex >= compatibilityIndex &&
       premiseIndex >= titleIndex &&
       hookIndex >= premiseIndex &&
       factsIndex >= hookIndex &&
        heroIndex >= factsIndex &&
+       ctaIndex > factsIndex &&
+       ctaIndex < heroIndex &&
        (!hasMoment || (momentHeadingIndex >= heroIndex && momentIndex >= momentHeadingIndex)) &&
        tableUseHeadingIndex >= (hasMoment ? momentIndex : heroIndex) &&
       tableUseIndex >= tableUseHeadingIndex &&

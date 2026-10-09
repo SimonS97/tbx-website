@@ -316,7 +316,7 @@ So that I can decide whether it fits my table before moving to DriveThruRPG.
 
 **Given** the page is viewed on mobile
 **When** its layout becomes one column
-**Then** its content order is type and compatibility, title, hook and facts, image, moment, table use, Author's Note, CTA, and Next Work.
+**Then** its content order is type and compatibility, title, hook and facts, image, moment, table use, and Author's Note. Story 2.6 adds the approved product-introduction actions and Next Work.
 
 **Given** imagery is below the viewport
 **When** the page loads
@@ -349,6 +349,50 @@ So that I can deliberately continue to a work or remain meaningfully within the 
 **Given** I request a missing or unpublished work slug
 **When** the route resolves
 **Then** I receive an accessible Not Found page with a route back to Works and no detail from a draft work is exposed.
+
+**Implementation note:** The final product-detail spine places the primary DriveThruRPG CTA and quiet `/works` route after hook and facts in the product-introduction action group, before the official cover. This supersedes older CTA placement wording in the detail-page requirements. Story 2.6 does not implement the Evidence Reader; Story 2.7 adds the Product evidence cue and reader below the official cover.
+
+### Story 2.7: Apply the Approved Astral Product-Detail Spine and Present Curated Product Evidence
+
+As an interested Daggerheart game master,
+I want each product detail page to continue the approved Astral product world and let me inspect Abythera's real material without losing my place,
+So that I can judge practical table fit in the final Tales by Xero experience before I continue to DriveThruRPG.
+
+**Acceptance Criteria:**
+
+**Given** I open any published product detail route
+**When** the page renders
+**Then** it uses the approved Astral product-detail spine rather than the old functional detail treatment, while preserving Story 2.6's same-tab DriveThruRPG CTA, quiet Works route, Included-with notice where configured, and exactly one Next Work.
+
+**Given** the detail introduction and official cover render
+**When** I view them on desktop or mobile
+**Then** the product remains readable in the approved Astral Threshold stage, the official cover stays complete and free of decorative overlays or clipping frames, and copy stays separate from the image on a reliable dark field.
+
+**Given** I open Abythera
+**When** its approved product evidence is available
+**Then** a visible `Product evidence` cue leads to an Evidence Reader after the complete official cover, with the current selection shown in full at a useful reading scale and with adjacent English context.
+
+**Given** the Evidence Reader renders
+**When** I choose an item with mouse, touch, or keyboard
+**Then** its selected state is programmatic and non-color-only, the selected original and its contextual copy update without moving focus, and a polite status announces the selected item.
+
+**Given** I inspect the selected original
+**When** JavaScript is available
+**Then** its preview may open a native dialog that closes with Escape or backdrop activation and restores focus to the preview; a clearly labelled direct original route remains available independently.
+
+**Given** JavaScript is unavailable or does not run
+**When** the detail page renders
+**Then** its primary product information, DriveThruRPG CTA, and return route remain usable, and the initial evidence item plus its contextual direct original route remain available as static HTML.
+
+**Given** the published works collection validates
+**When** Evidence Reader data is configured
+**Then** it is optional per work, contains two to five explicitly approved assets in an explicit order with exactly one initial selection, and only the configured approved assets may be emitted for the reader.
+
+**Given** I open Ephemera or the Daggerheart Item Bundle
+**When** their detail pages render
+**Then** they receive the approved shared Astral detail shell but remain hero-only until their own supporting assets and public placement receive an explicit later approval.
+
+**Implementation note:** This is one cohesive product-detail migration, not an Evidence Reader appended to the old production layout. The approved Home and canonical Work Index migration remains Epic 3 work.
 
 ### Story 2.2: Prepare the Representative Minimum Catalog
 

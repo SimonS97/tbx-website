@@ -193,7 +193,7 @@ Besucher koennen einen Gallery Tile oder eine gruppierte Produktdarstellung oeff
 
 ### 4.4 Product Detail Pages
 
-**Description:** Jede Produktdetailseite laesst eine Spielleitung zuerst die praktische Passung bewerten, danach die Welt und die kreative Absicht erleben und schliesslich bewusst zu DriveThruRPG wechseln. Die verbindliche Inhaltsreihenfolge ist Produkttyp und Kompatibilitaet, Titel, Hook und Facts Strip, Szenenbild, `The moment`, Spieltisch-Nutzen, Author's Note, CTA und Next Work. Der **Hook** ist der ein Satz lange, praezise Nutzen- oder Praemissen-Satz direkt unter dem Titel. Die Seite ist keine Kopie der Marketplace-Beschreibung. Realisiert UJ-1 und UJ-2.
+**Description:** Jede Produktdetailseite laesst eine Spielleitung zuerst die praktische Passung bewerten, danach die Welt und die kreative Absicht erleben und schliesslich bewusst zu DriveThruRPG wechseln. Die verbindliche Inhaltsreihenfolge ist Produkttyp und Kompatibilitaet, Titel, Hook und Facts Strip, klar benannte DriveThruRPG- und Works-Aktionen, Szenenbild, `The moment`, Spieltisch-Nutzen, Author's Note und Next Work. Der **Hook** ist der ein Satz lange, praezise Nutzen- oder Praemissen-Satz direkt unter dem Titel. Die Seite ist keine Kopie der Marketplace-Beschreibung. Realisiert UJ-1 und UJ-2.
 
 **Functional Requirements:**
 
@@ -321,7 +321,7 @@ Der Betreiber kann aggregiert pro Produkt den DriveThruRPG-CTA-Klick sowie die N
 - Alle interaktiven Elemente sind per Tastatur erreichbar, zeigen einen deutlichen `:focus-visible`-Zustand und haben kompakte Touch-Ziele von mindestens 44 x 44 CSS-Pixeln.
 - Jedes informative Bild hat einen kontextgerechten Alternativtext. Dekorative Texturen und wiederholte Maker's Seals sind fuer Screenreader verborgen.
 - Inhalt oder Bedeutung darf nicht ausschliesslich von Farbe, Hover, Bewegung oder Bildinhalt abhaengen.
-- Verbindliche Testbreiten sind 375 px, 768 px, 1024 px und 1440 px. Mobile folgt immer der Lesereihenfolge Produkttyp und Kompatibilitaet, Titel, Hook und Facts Strip, Bild, `The moment`, Spieltisch-Nutzen, Author's Note, CTA und Next Work.
+- Verbindliche Testbreiten sind 375 px, 768 px, 1024 px und 1440 px. Mobile folgt immer der Lesereihenfolge Produkttyp und Kompatibilitaet, Titel, Hook und Facts Strip, klar benannte DriveThruRPG- und Works-Aktionen, Bild, `The moment`, Spieltisch-Nutzen, Author's Note und Next Work.
 - `prefers-reduced-motion` deaktiviert nicht essenzielle Bewegung oder zeigt direkt ihren Endzustand. Kein Inhalt wird hinter Animation verborgen.
 
 ### 6.2 Motion and Performance

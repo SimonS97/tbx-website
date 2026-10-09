@@ -16,3 +16,6 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-2-5-browse-the-curated-published-works-catalog.md`
   summary: Add browser-driven computed-style and viewport regression coverage for catalog media containment as Story 4.1.
   evidence: Story 2.5 has manual viewport review plus CSS and markup contracts, but no Playwright-based computed geometry assertion; Epic 4 Story 4.1 owns automated responsive and accessibility coverage.
+- source_spec: `_bmad-output/implementation-artifacts/spec-2-6-provide-accurate-purchase-handoff-and-next-work-guidance.md`
+  summary: Define and validate the Story 2.7 Evidence Reader frontmatter contract and static original-asset resolver before rendering Abythera supporting media.
+  evidence: The approved reader needs ordered entries, visible labels, contextual copy, one initial selection, direct-original labels, bounded two-to-five cardinality, and emitted original URLs without a broad non-hero asset glob; Story 2.6 explicitly excluded the Evidence Reader and Story 2.7 now owns this work.

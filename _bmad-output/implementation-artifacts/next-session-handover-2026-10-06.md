@@ -1,5 +1,7 @@
 # Next Session Handover - 2026-10-06
 
+> Superseded by [Next Session Handover - 2026-10-09](next-session-handover-2026-10-09.md).
+
 ## Current State
 
 - BMad Sprint Planning is complete and `_bmad-output/implementation-artifacts/sprint-status.yaml` is valid.

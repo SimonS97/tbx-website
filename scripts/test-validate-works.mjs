@@ -63,6 +63,26 @@ const withoutMoment = [
 ];
 assert.deepEqual(errorsFor(withoutMoment), [], "published works may omit an optional inside section");
 
+const validIncludedWith = [
+  work("included-work", {
+    includedWith: {
+      work: "first-work",
+      label: "Included with First Work",
+      notice: "Owners of First Work do not need to purchase this separately."
+    },
+    nextWork: "first-work"
+  }),
+  work("first-work", { nextWork: "included-work" })
+];
+assert.deepEqual(errorsFor(validIncludedWith), [], "a published work may reference its published inclusion relationship");
+
+const missingNextWork = [work("missing-next-work", { nextWork: "absent-work" })];
+assert.match(
+  errorsFor(missingNextWork).join("\n"),
+  /nextWork must reference another published work/u,
+  "a published work cannot point its next-work route at a missing work"
+);
+
 const draft = work("draft-work", {
   status: "draft",
   facts: [],

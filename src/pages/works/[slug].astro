@@ -10,34 +10,64 @@ export async function getStaticPaths() {
 
   return works.map((work) => ({
     params: { slug: work.data.slug },
-    props: { work }
+    props: {
+      work,
+      nextWork: works.find((candidate) => candidate.data.slug === work.data.nextWork)
+    }
   }));
 }
 
 interface Props {
   work: PublishedWork;
+  nextWork: PublishedWork | undefined;
 }
 
-const { work } = Astro.props;
+const { work, nextWork } = Astro.props;
 const hero = work.data.images.find((image): image is WorkHeroImage => image.role === "hero");
 
 if (!hero) {
   throw new Error(`Published work ${work.data.slug} has no hero image.`);
+}
+
+if (!work.data.externalUrl?.trim()) {
+  throw new Error(`Published work ${work.data.slug} has no external URL.`);
+}
+
+if (
+  !nextWork ||
+  nextWork.data.slug === work.data.slug ||
+  !nextWork.data.title?.trim() ||
+  !nextWork.data.premise?.trim()
+) {
+  throw new Error(`Published work ${work.data.slug} has no different published next work.`);
 }
 ---
 
 <BaseLayout title={work.data.seo.title} description={work.data.seo.description} currentPath={`/works/${work.data.slug}`} mainClass="work-detail-main">
   <article class="work-detail">
     <header class="work-detail-introduction">
+      <a class="work-detail-back-link" href="/works">All published works</a>
       <div class="work-detail-metadata" aria-label="Work classification">
         <p class="work-type-label">{workTypeLabels[work.data.type]}</p>
         <DaggerheartCompatibility compatibility={work.data.compatibility} />
       </div>
       <h1>{work.data.title}</h1>
       <p class="work-premise">{work.data.premise}</p>
+      {work.data.includedWith && (
+        <aside class="included-with-notice" aria-labelledby="included-with-title">
+          <h2 id="included-with-title">{work.data.includedWith.label}</h2>
+          <p>{work.data.includedWith.notice}</p>
+        </aside>
+      )}
       <div class="work-detail-hook-and-facts">
         <p class="work-hook">{work.data.hook}</p>
         <WorkFactsStrip facts={work.data.facts} />
+      </div>
+      <div class="work-detail-actions">
+        <a class="work-primary-action" href={work.data.externalUrl}>
+          View on DriveThruRPG <span class="external-label">(external)</span>
+        </a>
+        <a class="work-secondary-action" href="/works">Browse all works</a>
       </div>
     </header>
 
@@ -59,5 +89,12 @@ if (!hero) {
         <p>{work.data.authorsNote}</p>
       </section>
     </div>
+
+    <footer class="work-detail-next-work">
+      <p class="work-detail-next-label">Next work</p>
+      <h2 id="next-work-heading">{nextWork.data.title}</h2>
+      <p>{nextWork.data.premise}</p>
+      <a class="next-work-link" href={`/works/${nextWork.data.slug}`}>Open {nextWork.data.title}</a>
+    </footer>
   </article>
 </BaseLayout>
