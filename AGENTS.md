@@ -30,3 +30,9 @@ Portfolio and promotional website for a solo indie tabletop creator, focused on 
 - When reading image files with tools, load at most three images per tool call; split larger visual reviews into sequential batches to avoid Bad Request failures.
 
 <!-- /bmad:context -->
+
+## BMAD Delegation Model Policy
+
+- For every subagent delegated from a BMAD workflow or BMAD role, use the `bmad-luna` OpenCode agent. It is pinned to `GPT-5.6 Luna` with the `max` reasoning variant.
+- The workspace's generic `general`, `explore`, and `explore-cbm` subagents are also pinned to the same model and variant. This enforces the policy for BMAD workflows that delegate without naming a worker.
+- Do not change the primary session's model for BMAD work. Keep large, synthesis-heavy research in the primary session when its currently selected model is preferable; only delegated units use Luna.
